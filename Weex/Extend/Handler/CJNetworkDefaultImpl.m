@@ -46,8 +46,15 @@ static NSMutableArray<CJNetworkQueueData *> *queueList;
             NSString *key = [request.URL absoluteString];
             key = [key stringByReplacingOccurrencesOfString:WXCONFIG_INTERFACE_PATH withString:@""];
             
+            CJDatabaseData *data;
+            data = [manager findWithUserId:[CJUserManager getUid] AndType:@"httpCache" AndKey:key AndNeedOpen:YES];
             
-            CJDatabaseData *data = [manager findWithUserId:[CJUserManager getUid] AndType:@"httpCache" AndKey:key AndNeedOpen:YES];
+            //无网络情况并且取不到数据尝试使用0的userId来获取缓存
+            if (!data && ![[AFNetworkReachabilityManager sharedManager] isReachable]){
+                data = [manager findWithUserId:0 AndType:@"httpCache" AndKey:key AndNeedOpen:YES];
+            }
+            
+            
             NSMutableDictionary *parameters = nil;
             if (data && data.keyword){
                 parameters = [NSMutableDictionary new];

@@ -14,6 +14,7 @@ typedef NS_ENUM(NSUInteger, IMManagerLoginOption) {
     IMManagerLoginOptionDefault = 0,
     IMManagerLoginOptionForce,
     IMManagerLoginOptionTimeout,
+    IMManagerLoginOptionOffline,
 };
 
 + (IMManager *)sharedInstance;

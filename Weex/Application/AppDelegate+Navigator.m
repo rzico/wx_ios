@@ -16,6 +16,10 @@
 
 - (void)presentLoginViewController{
     static BOOL isLoading = false;
+    if (isLoading){
+        return;
+    }
+    isLoading = true;
     UIViewController *rootViewController = self.window.rootViewController;
     void (^login)(void) = ^{
         WXPerformBlockOnMainThread(^{
@@ -26,20 +30,16 @@
             }];
         });
     };
-    
-    if (!isLoading){
-        isLoading = true;
-        if (rootViewController.presentedViewController){
-            if (![rootViewController.presentedViewController isKindOfClass:[CJLoginViewController class]]){
-                [rootViewController.presentedViewController dismissViewControllerAnimated:NO completion:^{
-                    login();
-                }];
-            }else{
-                isLoading = false;
-            }
+    if (rootViewController.presentedViewController){
+        if (![rootViewController.presentedViewController isKindOfClass:[CJLoginViewController class]]){
+            [rootViewController.presentedViewController dismissViewControllerAnimated:NO completion:^{
+                login();
+            }];
         }else{
-            login();
+            isLoading = false;
         }
+    }else{
+        login();
     }
 }
 
