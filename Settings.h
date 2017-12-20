@@ -43,9 +43,6 @@ static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.rzico.com/";
 
 //接口地址
 static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com/";
-//static NSString *WXCONFIG_INTERFACE_PATH = @"http://192.168.2.110:8088/";
-//static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com/";
-
 
 
 //微信参数
