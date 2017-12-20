@@ -57,51 +57,50 @@
     loginParam.userSig = [user objectForKey:@"userSig"];
     loginParam.appidAt3rd = kSdkAppId;
     
-    [[TIMManager sharedInstance] login:loginParam succ:^{
-        NSLog(@"login success");
-        [[IMAPlatform sharedInstance] configOnLoginSucc:loginParam];
-        
-        [SharedAppDelegate registNotification];
-        
-        //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(90 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //            [self loginWithUser:[UserManager getUser] loginOption:IMManagerLoginOptionTimeout andBlock:nil];
-        //        });
-        
-        if (finish){
-            finish(YES);
-        }
-    } fail:^(int code, NSString *msg) {
-        NSLog(@"errormsg=%@",msg);
-        if (code == ERR_IMSDK_KICKED_BY_OTHERS){
-            [self loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:nil];
-        }else{
-            if (code == 6012){
-                [[TIMManager sharedInstance] initStorage:loginParam succ:^{
-                    if (finish){
-                        finish(NO);
-                    }
-                } fail:^(int code, NSString *msg) {
-                    [self failedInitTIM];
-                }];
-            }else{
-                [self failedInitTIM];
+    if (option == IMManagerLoginOptionOffline){
+        [[TIMManager sharedInstance] initStorage:loginParam succ:^{
+            if (finish){
+                finish(YES);
             }
+        } fail:^(int code, NSString *msg) {
+            [self failedInitTIM:@"数据初始化失败" title:@"错误"];
+        }];
+    }else{
+        [[TIMManager sharedInstance] login:loginParam succ:^{
+            NSLog(@"login success");
+            [[IMAPlatform sharedInstance] configOnLoginSucc:loginParam];
             
-            //            NSString *content = [NSString stringWithFormat:@"登录失败!\n%@",msg];
-//            ALERT(@"连接服务器失败");
-        }
-    }];
+            [SharedAppDelegate registNotification];
+            
+            //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(90 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //            [self loginWithUser:[UserManager getUser] loginOption:IMManagerLoginOptionTimeout andBlock:nil];
+            //        });
+            
+            if (finish){
+                finish(YES);
+            }
+        } fail:^(int code, NSString *msg) {
+            NSLog(@"errormsg=%@",msg);
+            if (code == ERR_IMSDK_KICKED_BY_OTHERS){
+                [self loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:nil];
+            }else{
+                [self failedInitTIM:@"连接聊天服务器失败" title:DisplayName];
+            }
+        }];
+    }
 }
 
-- (void)failedInitTIM{
+- (void)failedInitTIM:(NSString *)error title:(NSString *)title{
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:DisplayName message:@"数据初始化失败" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];
     });
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
-    exit(0);
+    if ([alertView.title isEqualToString:@"错误"]){
+        exit(0);
+    }
 }
 
 + (NSInteger)getUnReadCount{

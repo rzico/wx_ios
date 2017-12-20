@@ -24,6 +24,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     CJRegisterNotification(@selector(onInitialized:),CJNOTIFICATION_INITIALIZED);
+    [self checkNetwork];
     _isLoaded = false;
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -49,21 +50,17 @@
 }
 
 - (void)onInitialized:(NSNotification *)notification{
-    [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:^(BOOL success) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            CJTabbarViewController *tabBar = [[CJTabbarViewController alloc] initWithJsDictionary:notification.userInfo];
-            self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabBar];
-            self.window.rootViewController.view.alpha = 0.0f;
-            [UIView animateWithDuration:0.8f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                self.window.rootViewController.view.alpha = 1.0f;
-            } completion:^(BOOL finished) {
-                _isLoaded = true;
-            }];
-        });
-    }];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CJTabbarViewController *tabBar = [[CJTabbarViewController alloc] initWithJsDictionary:notification.userInfo];
+        self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabBar];
+        self.window.rootViewController.view.alpha = 0.0f;
+        [UIView animateWithDuration:0.8f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            self.window.rootViewController.view.alpha = 1.0f;
+        } completion:^(BOOL finished) {
+            _isLoaded = true;
+        }];
+    });
 }
-
-
 
 - (void) onReq:(BaseReq *)req{
     [WXApi sendReq:req];
