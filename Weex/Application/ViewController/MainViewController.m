@@ -13,6 +13,7 @@
 #import <WeexSDK.h>
 #import "CJUpdateManager.h"
 #import "CJWeexViewController.h"
+#import "IMManager.h"
 
 @interface MainViewController ()<CJUpdateDelegate, UIAlertViewDelegate>
 
@@ -248,7 +249,7 @@
         if ([CJUserManager getUid] > 0){
             [self requestRouter];
         }else{
-            [self alertErrorMessage:@"获取用户信息失败"];
+            [self alertErrorMessage:@"获取用户信息失败" title:nil];
         }
     }];
 }
@@ -265,36 +266,57 @@
                     data = [data objectForKey:@"tabnav"];
                 }
                 [data writeToFile:[DOCUMENT_PATH stringByAppendingPathComponent:@"router.plist"] atomically:YES];
-                CJPostNotification(CJNOTIFICATION_INITIALIZED,data);
+                [self loginIm:data];
             }
         }
     } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[DOCUMENT_PATH stringByAppendingPathComponent:@"router.plist"]]){
-            //路由存在，允许离线模式
-            CJPostNotification(CJNOTIFICATION_INITIALIZED, nil);
-        }else{
-            [self alertErrorMessage:@"获取路由失败"];
-        }
+        [self offlineState];
     }];
 }
 
 - (void)updateOnError:(NSString *)error{
     static int count = 0;
-    if (count < 2){
-        count ++;
-        [[CJUpdateManager sharedInstance] checkUpdate];
-    }else{
-        if ([CJUserManager getUid] > 0){
-            [self checkAuthentication];
+    if ([[AFNetworkReachabilityManager sharedManager] isReachable]){
+        if (count < 2){
+            count ++;
+            [[CJUpdateManager sharedInstance] checkUpdate];
         }else{
-            [self alertErrorMessage:error];
+            if ([CJUserManager getUid] > 0){
+                [self checkAuthentication];
+            }else{
+                [self alertErrorMessage:error title:nil];
+            }
         }
+    }else{
+        [self offlineState];
     }
 }
 
-- (void)alertErrorMessage:(NSString *)error{
+- (void)loginIm:(NSDictionary *)data{
+    [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:^(BOOL success) {
+        CJPostNotification(CJNOTIFICATION_INITIALIZED,data);
+    }];
+}
+
+- (void)offlineLoginIm{
+    [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionOffline andBlock:^(BOOL success) {
+        CJPostNotification(CJNOTIFICATION_INITIALIZED,nil);
+    }];
+}
+
+- (void)offlineState{
+    [self setProgress:0.95];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[DOCUMENT_PATH stringByAppendingPathComponent:@"router.plist"]] && [CJUserManager getUid] > 0){
+        //路由存在，且已登录允许离线模式
+        [self offlineLoginIm];
+    }else{
+        [self alertErrorMessage:@"未连接到互联网，请检查网络设置" title:[NSString stringWithFormat:@"“%@” 网络提示",DisplayName]];
+    }
+}
+
+- (void)alertErrorMessage:(NSString *)error title:(NSString *)title{
     WXPerformBlockOnMainThread(^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:error delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];
     });
 }
