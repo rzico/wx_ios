@@ -13,12 +13,12 @@
 
 //本地KeyChain参数
 #define ApplicationID @"com.rzico.weex"
-#define SERVICE @"com.rsico.mopian"
+#define SERVICE @"com.rzico.weex"
 #define ACCOUNT @"accountUDID"
 #define ACCOUNTMD5 @"ACCOUNTMD5"
 
 //高德地图
-static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
+static NSString *AMapAPIKey = @"72e0eed9d55695b21e1ec6639f1387f4";
 
 //腾讯IM参数
 #define kTLSAppid       @"1400043914"//TLS_APPID
@@ -39,10 +39,10 @@ static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 
 //资源地址
-static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdn.rzico.com/";
+static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.rzico.com/";
 
 //接口地址
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.1xx.me/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://192.168.2.110:8088/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com/";
 
@@ -55,18 +55,23 @@ static NSString *kAuthState = @"xxx";
 static NSString *WECHAT_APPID = @"wx490857e2baff7cfd";
 
 //阿里云参数
-static NSString *aliOSSEndPoint = @"http://oss-cn-shenzhen.aliyuncs.com";
-static NSString *aliOSSBucketName = @"rzico";
+static NSString *aliOSSEndPoint = @"http://oss-cn-hangzhou.aliyuncs.com";
+static NSString *aliOSSBucketName = @"rzico-weex";
 
 //主题颜色
 static int UINavigationBarColor = 0xEB4E40;
 
 //本地资源版本号
-static NSString *localResVersion = @"1.0.0";
+static NSString *localResVersion = @"1.0.3";
+
+//伪协议头
+static NSString *openURLScheme = @"yundian";
 
 //伪协议头
 static NSString *openURLScheme = @"yundian";
 
 //应用名
-#define DisplayName [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleDisplayName"]
+#define DisplayName [[NSBundle mainBundle].infoDictionary objectForKey:@"Bundle display name"]
 #endif /* Settings_h */
+
+
