@@ -466,13 +466,16 @@
                 updateSucc = YES;
                 
                 
-                NSMutableDictionary *message = [NSMutableDictionary new];
+                __block NSMutableDictionary *message = [NSMutableDictionary new];
                 [message setObject:@"receive" forKey:@"type"];
                 [message setObject:msg forKey:@"msg"];
                 [message setObject:@"success" forKey:@"result"];
                 [message setObject:imaconvReceiver forKey:@"receiver"];
                 
-                CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
+                });
+                
                 
                 
                 

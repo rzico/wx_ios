@@ -29,6 +29,4 @@
 - (void)dismissViewController:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))completion;
 - (void)pushToChatViewControllerWith:(IMAUser *)user;
 
-
-
 @end

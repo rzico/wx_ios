@@ -18,4 +18,6 @@
 
 #define ROOTNAV ((UINavigationController *)[UIApplication sharedApplication].delegate.window.rootViewController)
 
+
+#define ALERT(msg)    if (![[UIApplication sharedApplication].delegate window].rootViewController.presentedViewController) {UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:msg preferredStyle:UIAlertControllerStyleAlert];UIAlertAction * Sure = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];[alert addAction:Sure];[[[UIApplication sharedApplication].delegate window].rootViewController presentViewController:alert animated:YES completion:nil];}
 #endif /* Constants_h */

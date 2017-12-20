@@ -7,6 +7,7 @@
 //
 
 #import "IMAPlatform+AppConfig.h"
+#import "IMManager.h"
 
 @implementation IMAPlatform (AppConfig)
 
@@ -26,7 +27,7 @@
     [[IMAPlatform sharedInstance] saveToLocal];
     
     
-    NSUInteger unReadCount = [[IMAPlatform sharedInstance].conversationMgr unReadMessageCount];
+    NSUInteger unReadCount = [IMManager getUnReadCount];
     [UIApplication sharedApplication].applicationIconBadgeNumber = unReadCount;
     
     TIMBackgroundParam  *param = [[TIMBackgroundParam alloc] init];

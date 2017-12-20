@@ -17,6 +17,7 @@
 #import <WeexSDK/WXTracingManager.h>
 
 #import "CJDatabaseManager.h"
+#import "IMManager.h"
 
 @interface CJWeexViewController () <UIScrollViewDelegate, UIWebViewDelegate>
 
@@ -383,7 +384,8 @@
 - (void)notificationImUnreadCount:(NSNotification *)notification{
     if ([self.label isEqualToString:@"message"]){
         if ([[TIMManager sharedInstance] getLoginUser]){
-            NSNumber *number = [NSNumber numberWithInteger:[self getUnReadMessageCount]];
+            NSInteger unReadCount = [IMManager getUnReadCount];
+            NSNumber *number = [NSNumber numberWithInteger:unReadCount];
             NSString *badgeValue = [NSString string];
             if ([number integerValue] > 99){
                 badgeValue = @"···";
@@ -393,20 +395,9 @@
                 badgeValue = nil;
             }
             [self.tabBarController.tabBar.items objectAtIndex:3].badgeValue = badgeValue;
-            [UIApplication sharedApplication].applicationIconBadgeNumber = [badgeValue integerValue];
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unReadCount];
         }
     }
-}
-
-- (NSInteger)getUnReadMessageCount{
-    NSArray *conversationList = [[TIMManager sharedInstance] getConversationList];
-    NSInteger count = 0;
-    for (TIMConversation *conversation in conversationList){
-        if ([conversation getReceiver].length > 0){
-            count += [conversation getUnReadMessageNum];
-        }
-    }
-    return count;
 }
 
 - (void)notificationWXSendGlobalEvent:(NSNotification *)notification{

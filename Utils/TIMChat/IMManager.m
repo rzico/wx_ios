@@ -103,4 +103,15 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     exit(0);
 }
+
++ (NSInteger)getUnReadCount{
+    NSArray *conversationList = [[TIMManager sharedInstance] getConversationList];
+    NSInteger count = 0;
+    for (TIMConversation *conversation in conversationList){
+        if ([conversation getReceiver].length > 0){
+            count += [conversation getUnReadMessageNum];
+        }
+    }
+    return count;
+}
 @end

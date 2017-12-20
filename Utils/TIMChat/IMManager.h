@@ -19,4 +19,5 @@ typedef NS_ENUM(NSUInteger, IMManagerLoginOption) {
 + (IMManager *)sharedInstance;
 - (void)loginWithUser:(NSDictionary *)user loginOption:(IMManagerLoginOption)option andBlock:(void (^)(BOOL success))finish;
 
++ (NSInteger)getUnReadCount;
 @end

@@ -93,9 +93,32 @@
     [self initWeexClassArray];
     [self setProgress:0.1];
     [self initWeexSDK];
-    [self setProgress:0.2];
-    [CJUpdateManager sharedInstance].delegate = self;
-    [[CJUpdateManager sharedInstance] checkUpdate];
+    [self removeMNT:^{
+        [self setProgress:0.2];
+        [CJUpdateManager sharedInstance].delegate = self;
+        [[CJUpdateManager sharedInstance] checkUpdate];
+    }];
+}
+
+- (void)removeMNT:(void(^)(void))complete{
+    __block BOOL isComplete = false;
+    dispatch_async(dispatch_queue_create(nil, nil), ^{
+        while (!isComplete) {
+            WXPerformBlockOnMainThread(^{
+                for (UIWindow *window in [UIApplication sharedApplication].windows){
+                    if ([window isKindOfClass:NSClassFromString(@"WXWindow")]){
+                        [window removeSubviews];
+                        [window setHidden:true];
+                        [window setWindowLevel:0];
+                        isComplete = true;
+                        complete();
+                        break;
+                    }
+                }
+            });
+            [NSThread sleepForTimeInterval:0.1];
+        }
+    });
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -159,8 +182,8 @@
     
     moduleArray = nil;
     
-    [WXDebugTool setDebug:YES];
-    [WXLog setLogLevel:WXLogLevelInfo];
+    [WXDebugTool setDebug:NO];
+    [WXLog setLogLevel:WXLogLevelOff];
 }
 
 - (void)navigationBarAppearance{

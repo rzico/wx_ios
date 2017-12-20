@@ -9,6 +9,7 @@
 #import "AppDelegate+Navigator.h"
 #import "CJLoginViewController.h"
 #import "FriendshipManager.h"
+#import "IMManager.h"
 
 @implementation AppDelegate (Navigator)
 
