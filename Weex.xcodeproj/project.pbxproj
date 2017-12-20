@@ -4205,8 +4205,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Weex/Weex.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = V29MML2E6Q;
+				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4223,10 +4224,10 @@
 					"$(PROJECT_DIR)/Utils/TIMChat/CommonLibrary/BlocksKit",
 					"$(PROJECT_DIR)/Utils/TIMChat/TIMChat/AppUI/ChatUI/Chat/MicroVideo/PituMotionLibrary/Framework",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.assistant;
+				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "42df5fb2-f75d-4e92-bd6a-3f6ce097fa24";
-				PROVISIONING_PROFILE_SPECIFIER = assistant;
+				PROVISIONING_PROFILE = "da5b2416-8ae6-42ad-9f75-0afb9a929c08";
+				PROVISIONING_PROFILE_SPECIFIER = "mopian Development Provisioning Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
 					"-Wno-documentation",
@@ -4247,7 +4248,7 @@
 				CODE_SIGN_ENTITLEMENTS = Weex/Weex.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = V29MML2E6Q;
+				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4264,10 +4265,10 @@
 					"$(PROJECT_DIR)/Utils/TIMChat/CommonLibrary/BlocksKit",
 					"$(PROJECT_DIR)/Utils/TIMChat/TIMChat/AppUI/ChatUI/Chat/MicroVideo/PituMotionLibrary/Framework",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.assistant;
+				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "99df7cde-440e-4b52-bfee-5689db47e2fe";
-				PROVISIONING_PROFILE_SPECIFIER = distribution;
+				PROVISIONING_PROFILE = "ce0f4900-8397-43f2-995f-8a6677ad04cb";
+				PROVISIONING_PROFILE_SPECIFIER = "mopian Distribution Provisioning Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
 					"-Wno-documentation",
@@ -4396,7 +4397,7 @@
 				CODE_SIGN_ENTITLEMENTS = Weex/Weex.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = V29MML2E6Q;
+				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4413,10 +4414,10 @@
 					"$(PROJECT_DIR)/Utils/TIMChat/CommonLibrary/BlocksKit",
 					"$(PROJECT_DIR)/Utils/TIMChat/TIMChat/AppUI/ChatUI/Chat/MicroVideo/PituMotionLibrary/Framework",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.assistant;
+				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "da4a59ce-19fa-4d0d-8f34-5146c0894035";
-				PROVISIONING_PROFILE_SPECIFIER = Ad.Hoc.com.rzico.assistant;
+				PROVISIONING_PROFILE = "5941f40f-1bba-44b1-b198-b48f88c2b4d5";
+				PROVISIONING_PROFILE_SPECIFIER = "mopian Ad Hoc Provisioning Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
 					"-Wno-documentation",
