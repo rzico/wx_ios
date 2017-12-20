@@ -67,9 +67,6 @@ static NSString *localResVersion = @"1.0.3";
 //伪协议头
 static NSString *openURLScheme = @"yundian";
 
-//伪协议头
-static NSString *openURLScheme = @"yundian";
-
 //应用名
 #define DisplayName [[NSBundle mainBundle].infoDictionary objectForKey:@"Bundle display name"]
 #endif /* Settings_h */
