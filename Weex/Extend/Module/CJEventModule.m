@@ -38,9 +38,6 @@
 #import "CJDatabaseManager.h"
 #import "TIMActionManager.h"
 
-
-static NSMutableArray<WXModuleCallback> *moduleCallback;
-
 @implementation CJEventModule
 
 @synthesize weexInstance;
@@ -83,7 +80,7 @@ WX_EXPORT_METHOD_SYNC(@selector(deviceInfo))
 
 static NSMutableArray<NSDictionary *> *queueList;
 
-- (void)openURL:(NSString *)url animated:(BOOL)animated ompletion:(void(^)(BOOL finished))completion{
+- (void)openURL:(NSString *)url callback:(nullable WXModuleCallback)callback animated:(BOOL)animated ompletion:(void(^)(BOOL finished))completion{
     NSString *urlStr = [url rewriteURL];
     NSURL *URL;
     if ([urlStr hasPrefix:@"/"]){
@@ -92,6 +89,9 @@ static NSMutableArray<NSDictionary *> *queueList;
         URL = [NSURL URLWithString:urlStr];
     }
     CJWeexViewController *controller = [[CJWeexViewController alloc] initWithUrl:URL];
+    if (callback){
+        controller.callback = callback;
+    }
     [controller render:^(BOOL finished){
         if (finished){
             if (weexInstance.viewController.navigationController){
@@ -114,7 +114,7 @@ static NSMutableArray<NSDictionary *> *queueList;
     static BOOL isOpenning = false;
     if (!isOpenning){
         isOpenning = true;
-        [self openURL:url animated:true ompletion:^(BOOL finished) {
+        [self openURL:url callback:nil animated:true ompletion:^(BOOL finished) {
             isOpenning = false;
         }];
     }
@@ -124,13 +124,7 @@ static NSMutableArray<NSDictionary *> *queueList;
         static BOOL isOpenning = false;
         if (!isOpenning){
             isOpenning = true;
-            if (!moduleCallback){
-                moduleCallback = [NSMutableArray<WXModuleCallback> new];
-            }
-            if (callback){
-                [moduleCallback addObject:callback];
-            }
-            [self openURL:url animated:true ompletion:^(BOOL finished) {
+            [self openURL:url callback:callback animated:true ompletion:^(BOOL finished) {
                 isOpenning = false;
             }];
         }

@@ -12,7 +12,7 @@
 
 @interface CJWeexViewController : UIViewController
 
-@property (nonatomic, assign) WXModuleCallback callback;
+@property (nonatomic, strong) WXModuleCallback callback;
 @property (nonatomic, strong) NSDictionary *data;
 
 @property (nonatomic, strong) NSString *script;
