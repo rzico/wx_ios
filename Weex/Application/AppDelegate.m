@@ -110,7 +110,9 @@
                     articleUrlStr = [NSString stringWithFormat:@"file://%@",articleUrlStr];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         CJWeexViewController *viewController = [[CJWeexViewController alloc] initWithUrl:[NSURL URLWithString:articleUrlStr]];
-                        [(WXRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
+                        [viewController render:^(BOOL finished) {
+                            [(WXRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
+                        }];
                     });
                     return YES;
                 }else if ([interface isEqualToString:@"topic"]){
@@ -119,12 +121,14 @@
                     topicUrlStr = [NSString stringWithFormat:@"file://%@",topicUrlStr];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         CJWeexViewController *viewController = [[CJWeexViewController alloc] initWithUrl:[NSURL URLWithString:topicUrlStr]];
-                        [(WXRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
+                        [viewController render:^(BOOL finished) {
+                            [(WXRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
+                        }];
                     });
                     return YES;
                 }else if ([interface isEqualToString:@"chat"]){
                     NSString *userId = [params lastObject];
-//                    [self pushToChatViewControllerWith:[[IMAUser alloc] initWith:userId]];
+                    [self pushToChatViewControllerWith:[[IMAUser alloc] initWith:userId]];
                     return YES;
                 }else{
                     return NO;
