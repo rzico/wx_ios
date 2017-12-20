@@ -74,4 +74,3 @@ static NSString *openURLScheme = @"yundian";
 #define DisplayName [[NSBundle mainBundle].infoDictionary objectForKey:@"Bundle display name"]
 #endif /* Settings_h */
 
-
