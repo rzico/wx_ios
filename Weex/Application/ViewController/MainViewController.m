@@ -280,14 +280,23 @@
 
 - (void)updateOnError:(NSString *)error{
     static int count = 0;
-    if (count < 2){
-        count ++;
-        [[CJUpdateManager sharedInstance] checkUpdate];
-    }else{
-        if ([CJUserManager getUid] > 0){
-            [self checkAuthentication];
+    if ([[AFNetworkReachabilityManager sharedManager] isReachable]){
+        if (count < 2){
+            count ++;
+            [[CJUpdateManager sharedInstance] checkUpdate];
         }else{
-            [self alertErrorMessage:error];
+            if ([CJUserManager getUid] > 0){
+                [self checkAuthentication];
+            }else{
+                [self alertErrorMessage:error];
+            }
+        }
+    }else{
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[DOCUMENT_PATH stringByAppendingPathComponent:@"router.plist"]]){
+            //路由存在，允许离线模式
+            CJPostNotification(CJNOTIFICATION_INITIALIZED, nil);
+        }else{
+            [self alertErrorMessage:@"未连接到互联网，请检查网络设置"];
         }
     }
 }
