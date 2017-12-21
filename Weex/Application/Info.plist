@@ -78,17 +78,19 @@
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string></string>
+	<string>是否允许此App访问您的媒体？</string>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>是否允许此App使用您的相机？</string>
 	<key>NSContactsUsageDescription</key>
-	<string></string>
+	<string>是否允许此App访问您的通讯录？</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>是否允许此App访问您的地理位置？</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string></string>
+	<string>是否允许此App访问您的麦克风？</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>是否允许此App访问您的相册？</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>是否允许此App添加图片到您的相册？</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
