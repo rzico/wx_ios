@@ -9,7 +9,7 @@
 #import "HttpHead+Utils.h"
 #import "CJKeyChain.h"
 #import "MD5+Util.h"
-//#import "LocalResourceManager.h"
+#import "CJUpdateManager.h"
 //#import "DictionaryUtil.h"
 
 @implementation HttpHead_Utils
@@ -26,16 +26,13 @@
         uid = [CJUUID getUUID];
     }
     if (!appKey){
-//        NSDictionary *resourceInfo = [[LocalResourceManager sharedInstance] getResourceInfo];
-//        if (resourceInfo){
-//            appKey = [resourceInfo objectForKey:@"key"];
-//        }
-//        if (!appKey){
-//            [[LocalResourceManager sharedInstance] updateResource:^(UpdateResult result) {
-//
-//            }];
-//            return @{@"User-Agent":userAgent};
-//        }
+        NSDictionary *resourceInfo = [[CJUpdateManager sharedInstance] resourceInfo];
+        if (resourceInfo){
+            appKey = [resourceInfo objectForKey:@"key"];
+        }
+        if (!appKey){
+            [[CJUpdateManager sharedInstance] checkUpdate];
+        }
     }
     unsigned long timeInterval = [[NSDate date] timeIntervalSince1970] * 1000;
     Md5key = [MD5_Util md5:[NSString stringWithFormat:@"%@%@%lu%@",uid,ApplicationID,timeInterval,appKey]];

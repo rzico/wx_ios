@@ -158,6 +158,7 @@
     };
     
     _instance.onFailed = ^(NSError *error) {
+#ifdef DEBUG
         if ([[error domain] isEqualToString:@"1"]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSMutableString *errMsg=[NSMutableString new];
@@ -169,7 +170,7 @@
                 [alertView show];
             });
         }
-        
+#endif
         if (complete!=nil){
             complete(false);
         }

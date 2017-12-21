@@ -17,6 +17,7 @@
         if (![lowerCaseUrl isContains:@"var/mobile"]){
             url = [url stringByReplacingOccurrencesOfString:@"file://" withString:@""];
             url = [[DOCUMENT_PATH stringByAppendingPathComponent:@"resource"] stringByAppendingPathComponent:url];
+            url = [@"file://" stringByAppendingString:url];
         }
     }else if ([lowerCaseUrl hasPrefix:@"http://"] || [lowerCaseUrl hasPrefix:@"https://"]){
         

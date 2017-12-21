@@ -182,9 +182,13 @@
     }
     
     moduleArray = nil;
-    
-    [WXDebugTool setDebug:NO];
+#ifdef DEBUG
+    [WXDebugTool setDebug:true];
+    [WXLog setLogLevel:WXLogLevelInfo];
+#else
+    [WXDebugTool setDebug:false];
     [WXLog setLogLevel:WXLogLevelOff];
+#endif
 }
 
 - (void)navigationBarAppearance{
@@ -241,9 +245,11 @@
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
             if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"] && [[[responseObject objectForKey:@"data"] objectForKey:@"loginStatus"] boolValue]){
                 [CJUserManager setUser:[responseObject objectForKey:@"data"]];
+                [self requestRouter];
+                return;
             }
         }
-        [self requestRouter];
+        [SharedAppDelegate logOut:nil];
     } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         //如果存在登录信息，尝试获取路由
         if ([CJUserManager getUid] > 0){
