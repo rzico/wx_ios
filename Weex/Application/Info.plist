@@ -76,7 +76,7 @@
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>是否允许此App访问您的媒体？</string>
+	<string>是否允许此App访问您的媒体?</string>
 	<key>NSCameraUsageDescription</key>
 	<string>是否允许此App使用您的相机？</string>
 	<key>NSContactsUsageDescription</key>
