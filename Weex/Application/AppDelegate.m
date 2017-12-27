@@ -24,8 +24,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     CJRegisterNotification(@selector(onInitialized:),CJNOTIFICATION_INITIALIZED);
-    [self checkNetwork];
     _isLoaded = false;
+    [self checkNetwork];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = [NSClassFromString(@"MainViewController") new];
@@ -40,7 +40,9 @@
             status == AFNetworkReachabilityStatusReachableViaWWAN){
             //网络连通后处理
             NSLog(@"on connected");
-            [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:nil];
+            if (_isLoaded){
+                [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:nil];
+            }
         }else{
             //网络不通处理
             NSLog(@"on disconnected");
