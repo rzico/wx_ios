@@ -101,6 +101,13 @@
     }];
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    [CJUpdateManager sharedInstance].delegate = nil;
+    [self.view removeSubviews];
+    borderView = nil;
+    progressView = nil;
+}
+
 - (void)removeMNT:(void(^)(void))complete{
     __block BOOL isComplete = false;
     dispatch_async(dispatch_queue_create(nil, nil), ^{
@@ -120,12 +127,6 @@
             [NSThread sleepForTimeInterval:0.1];
         }
     });
-}
-
-- (void)viewDidDisappear:(BOOL)animated{
-    [self.view removeSubviews];
-    borderView = nil;
-    progressView = nil;
 }
 
 - (void)didReceiveMemoryWarning {
