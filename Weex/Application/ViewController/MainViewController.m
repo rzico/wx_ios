@@ -124,7 +124,7 @@
                     }
                 }
             });
-            [NSThread sleepForTimeInterval:0.1];
+            [NSThread sleepForTimeInterval:0.01];
         }
     });
 }
@@ -244,13 +244,20 @@
     [CJNetworkManager GetHttp:HTTPAPI(@"login/isAuthenticated") Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         //获取用户信息成功
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
-            if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"] && [[[responseObject objectForKey:@"data"] objectForKey:@"loginStatus"] boolValue]){
-                [CJUserManager setUser:[responseObject objectForKey:@"data"]];
-                [self requestRouter];
-                return;
+            if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
+                if ([[[responseObject objectForKey:@"data"] objectForKey:@"loginStatus"] boolValue]){
+                    [CJUserManager setUser:[responseObject objectForKey:@"data"]];
+                    [self requestRouter];
+                }else{
+                    [CJUserManager removeUser];
+                    [self requestRouter];
+                }
+            }else{
+                [self alertErrorMessage:@"获取用户信息失败" title:nil];
             }
+        }else{
+            [self alertErrorMessage:@"获取用户信息失败" title:nil];
         }
-        [SharedAppDelegate logOut:nil];
     } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         //如果存在登录信息，尝试获取路由
         if ([CJUserManager getUid] > 0){
@@ -263,7 +270,7 @@
 
 
 - (void)requestRouter{
-    [self setProgress:1.0];
+    [self setProgress:0.95];
     NSString *url = [NSString stringWithFormat:@"common/router.jhtml?rand=%ld",(long)[[NSDate date] timeIntervalSince1970]];
     [CJNetworkManager GetHttp:HTTPAPI(url) Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]){
@@ -300,19 +307,20 @@
 }
 
 - (void)loginIm:(NSDictionary *)data{
+    [self setProgress:1.0];
     [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:^(BOOL success) {
         CJPostNotification(CJNOTIFICATION_INITIALIZED,data);
     }];
 }
 
 - (void)offlineLoginIm{
+    [self setProgress:1.0];
     [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionOffline andBlock:^(BOOL success) {
         CJPostNotification(CJNOTIFICATION_INITIALIZED,nil);
     }];
 }
 
 - (void)offlineState{
-    [self setProgress:0.95];
     if ([[NSFileManager defaultManager] fileExistsAtPath:[DOCUMENT_PATH stringByAppendingPathComponent:@"router.plist"]] && [CJUserManager getUid] > 0){
         //路由存在，且已登录允许离线模式
         [self offlineLoginIm];

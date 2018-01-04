@@ -27,5 +27,6 @@ typedef void(^CJLogOutComplete)(BOOL success);
 
 - (void)registNotification;
 
+- (void)actionLocalNotification:(NSString *)body;
 @end
 

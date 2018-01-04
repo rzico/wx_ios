@@ -93,11 +93,32 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
+    if (@available(iOS 11.0, *)) {
+        // 设置允许摇一摇功能
+        [UIApplication sharedApplication].applicationSupportsShakeToEdit = YES;
+        [self becomeFirstResponder];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
+    if (@available(iOS 11.0, *)) {
+        // 设置允许摇一摇功能
+        [UIApplication sharedApplication].applicationSupportsShakeToEdit = NO;
+    }
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    if (event.subtype == UIEventSubtypeMotionShake) { // 判断是否是摇动结束
+        if (@available(iOS 11.0, *)) {
+            NSLog(@"refresh");
+            [self render:nil];
+        }
+    }
+    return;
 }
 
 - (void)dealloc{
@@ -344,6 +365,10 @@
             [dic setObject:@"success" forKey:@"content"];
             [dic setObject:message forKey:@"data"];
             [_instance fireGlobalEvent:@"onMessage" params:[[NSDictionary alloc] initWithObjectsAndKeys:dic,@"data", nil]];
+            
+            if ([type isEqualToString:@"receive"]){
+                [SharedAppDelegate actionLocalNotification:[NSString stringWithFormat:@"%@:%@",nickName,content]];
+            }
         }
     } fail:^(int code, NSString *msg) {
         NSLog(@"error=%d,%@",code,msg);
@@ -377,7 +402,16 @@
         [dic setObject:message forKey:@"data"];
         
         [_instance fireGlobalEvent:@"onMessage" params:[[NSDictionary alloc] initWithObjectsAndKeys:dic,@"data", nil]];
+        
+        
+        if ([type isEqualToString:@"receive"]){
+            [SharedAppDelegate actionLocalNotification:[NSString stringWithFormat:@"%@:%@",receiver,content]];
+        }
+        
     }];
+    
+    
+    
     
     CJPostNotification(CJNOTIFICATION_IM_UNREAD_COUNT, nil);
 }
