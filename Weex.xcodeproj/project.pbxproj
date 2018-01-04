@@ -501,6 +501,7 @@
 		88C2DAA21FE9C266000BCAB4 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 88C2DAA11FE9C266000BCAB4 /* libstdc++.tbd */; };
 		88C2DAA41FE9C26F000BCAB4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 88C2DAA31FE9C26F000BCAB4 /* libz.tbd */; };
 		88C2DAA71FE9D0B9000BCAB4 /* IMManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C2DAA61FE9D0B9000BCAB4 /* IMManager.m */; };
+		88F056CF1FF6030700B4908D /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F056CE1FF6030700B4908D /* UserNotifications.framework */; };
 		EF209E87479DF7DBDFBC056D /* libPods-Weex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95553F05A6A1F2ACBC394A3C /* libPods-Weex.a */; };
 /* End PBXBuildFile section */
 
@@ -1455,6 +1456,7 @@
 		88C2DAA31FE9C26F000BCAB4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		88C2DAA51FE9D0B9000BCAB4 /* IMManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMManager.h; sourceTree = "<group>"; };
 		88C2DAA61FE9D0B9000BCAB4 /* IMManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IMManager.m; sourceTree = "<group>"; };
+		88F056CE1FF6030700B4908D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		95553F05A6A1F2ACBC394A3C /* libPods-Weex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Weex.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB6CC0E3562C4ED21645C172 /* Pods-Weex.ad-hoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weex.ad-hoc.xcconfig"; path = "Pods/Target Support Files/Pods-Weex/Pods-Weex.ad-hoc.xcconfig"; sourceTree = "<group>"; };
 		E6071F2B2F1933733A53F202 /* Pods-Weex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weex.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Weex/Pods-Weex.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1465,6 +1467,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88F056CF1FF6030700B4908D /* UserNotifications.framework in Frameworks */,
 				88C2DAA41FE9C26F000BCAB4 /* libz.tbd in Frameworks */,
 				88C2DAA21FE9C266000BCAB4 /* libstdc++.tbd in Frameworks */,
 				88C2DAA01FE9C25C000BCAB4 /* libsqlite3.0.tbd in Frameworks */,
@@ -3378,6 +3381,7 @@
 		E5E19751120BDB4B2F8141B2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				88F056CE1FF6030700B4908D /* UserNotifications.framework */,
 				88C2DAA31FE9C26F000BCAB4 /* libz.tbd */,
 				88C2DAA11FE9C266000BCAB4 /* libstdc++.tbd */,
 				88C2DA9F1FE9C25C000BCAB4 /* libsqlite3.0.tbd */,
@@ -3707,9 +3711,6 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Weex/Pods-Weex-resources.sh",
-				"${PODS_ROOT}/ATSDK-Weex/ATSDK.framework/Versions/A/Resources/ATSDK.bundle",
-				"${PODS_ROOT}/ATSDK-Weex/ATSDK.framework/Versions/A/Resources/en.lproj",
-				"${PODS_ROOT}/ATSDK-Weex/ATSDK.framework/Versions/A/Resources/zh-Hans.lproj",
 				"${PODS_ROOT}/CLImageEditor/CLImageEditor/CLImageEditor.bundle",
 				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
 				"${PODS_ROOT}/../sdk/WeexSDK/Resources/native-bundle-main.js",

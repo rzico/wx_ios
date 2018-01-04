@@ -189,10 +189,10 @@ static NSMutableArray<NSDictionary *> *queueList;
         if ([localPath hasPrefix:@"video:"]){
             [[CJFetchImage sharedInstance] fetchVideoWithSchemeUrl:localPath AndBlock:^(NSString *path) {
                 if (path){
-                    [[CJAliOSSManager defautManager] uploadObjectAsyncWithPath:path AndBlock:^(NSString *url) {
-                        completeBlock(url);
-                    } AndProcess:^(NSString *percent) {
+                    [[CJAliOSSManager defautManager] uploadObjectWithPath:path progress:^(NSString *percent) {
                         processBlock(percent);
+                    } complete:^(CJAliOSSUploadResult result, NSString *url) {
+                        completeBlock(url);
                     }];
                 }else{
                     failureBlock();
@@ -202,10 +202,10 @@ static NSMutableArray<NSDictionary *> *queueList;
             [[CJFetchImage sharedInstance] fetchAssetWithSchemeUrl:localPath AndBlock:^(UIImage *image) {
                 if (image){
                     localPath = [image getImagePathWithUuid:[NSString getUUID]];
-                    [[CJAliOSSManager defautManager] uploadObjectAsyncWithPath:localPath AndBlock:^(NSString *url) {
-                        completeBlock(url);
-                    } AndProcess:^(NSString *percent) {
+                    [[CJAliOSSManager defautManager] uploadObjectWithPath:localPath progress:^(NSString *percent) {
                         processBlock(percent);
+                    } complete:^(CJAliOSSUploadResult result, NSString *url) {
+                        completeBlock(url);
                     }];
                 }else{
                     failureBlock();
@@ -215,12 +215,10 @@ static NSMutableArray<NSDictionary *> *queueList;
     }else{
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSLog(@"exist:%d",[fileManager fileExistsAtPath:localPath]);
-        
-        
-        [[CJAliOSSManager defautManager] uploadObjectAsyncWithPath:localPath AndBlock:^(NSString *url) {
-            completeBlock(url);
-        } AndProcess:^(NSString *percent) {
+        [[CJAliOSSManager defautManager] uploadObjectWithPath:localPath progress:^(NSString *percent) {
             processBlock(percent);
+        } complete:^(CJAliOSSUploadResult result, NSString *url) {
+            completeBlock(url);
         }];
     }
 }

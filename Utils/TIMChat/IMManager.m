@@ -58,13 +58,16 @@
     loginParam.appidAt3rd = kSdkAppId;
     
     if (option == IMManagerLoginOptionOffline){
-        [[TIMManager sharedInstance] initStorage:loginParam succ:^{
-            if (finish){
-                finish(YES);
-            }
-        } fail:^(int code, NSString *msg) {
-            [self failedInitTIM:@"数据初始化失败" title:@"错误"];
-        }];
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            [[TIMManager sharedInstance] initStorage:loginParam succ:^{
+                if (finish){
+                    finish(YES);
+                }
+            } fail:^(int code, NSString *msg) {
+                [self failedInitTIM:@"数据初始化失败" title:@"错误"];
+            }];
+        });
     }else{
         [[TIMManager sharedInstance] login:loginParam succ:^{
             NSLog(@"login success");

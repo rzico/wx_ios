@@ -83,7 +83,7 @@
     if ([[self topViewController] isKindOfClass:[IMAChatViewController class]]){
         AudioServicesPlaySystemSound(1003);
     }else{
-        AudioServicesPlaySystemSound(1007);
+//        AudioServicesPlaySystemSound(1007);
     }
 }
 

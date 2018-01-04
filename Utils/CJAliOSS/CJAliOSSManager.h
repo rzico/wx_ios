@@ -8,12 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^CJAliOSSUploadBlock)(NSString  * url);
-typedef void(^CJAliOSSUploadProcessBlock)(NSString  * percent);
+typedef NS_ENUM(NSUInteger, CJAliOSSUploadResult) {
+    CJAliOSSUploadResultFileNotFound = 0,
+    CJAliOSSUploadResultSuccess,
+    CJAliOSSUploadResultSTSError,
+    CJAliOSSUploadResultUploadError
+};
+
+typedef void(^CJAliOSSProgressBlock)(NSString *percent);
+typedef void(^CJAliOSSCompleteBlock)(CJAliOSSUploadResult result,  NSString * url);
 
 @interface CJAliOSSManager : NSObject
 
 + (CJAliOSSManager *)defautManager;
-- (void)uploadObjectAsyncWithPath:(NSString *)path AndBlock:(CJAliOSSUploadBlock)block AndProcess:(CJAliOSSUploadProcessBlock)process;
-
+- (void)uploadObjectWithPath:(NSString *)path progress:(CJAliOSSProgressBlock)progress complete:(CJAliOSSCompleteBlock)complete;
 @end

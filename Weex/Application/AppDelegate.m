@@ -12,7 +12,14 @@
 #import "IMManager.h"
 #import "TIMActionManager.h"
 
-@interface AppDelegate ()
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#import <UserNotifications/UserNotifications.h>
+#endif
+
+
+#import <ZipArchive.h>
+
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 @property (nonatomic, assign) BOOL isLoaded;
 
@@ -24,12 +31,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     CJRegisterNotification(@selector(onInitialized:),CJNOTIFICATION_INITIALIZED);
-    [self checkNetwork];
     _isLoaded = false;
+    [self checkNetwork];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = [NSClassFromString(@"MainViewController") new];
     [self.window makeKeyAndVisible];
+    
+    
+    [self registLocalNotification];
     return YES;
 }
 
@@ -40,7 +50,9 @@
             status == AFNetworkReachabilityStatusReachableViaWWAN){
             //网络连通后处理
             NSLog(@"on connected");
-            [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:nil];
+            if (_isLoaded){
+                [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:nil];
+            }
         }else{
             //网络不通处理
             NSLog(@"on disconnected");
@@ -50,6 +62,9 @@
 }
 
 - (void)onInitialized:(NSNotification *)notification{
+    
+    
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CJTabbarViewController *tabBar = [[CJTabbarViewController alloc] initWithJsDictionary:notification.userInfo];
         self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabBar];
@@ -139,6 +154,72 @@
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
     return [self handleOpenURL:url];
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
+    if (@available(iOS 10.0, *)) {
+        completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionSound);
+    } else {
+        // Fallback on earlier versions
+    }
+    NSLog(@"present notification");
+}
+
+- (void)actionLocalNotification:(NSString *)body{
+    if (@available(iOS 10.0, *)) {
+//        UNNotificationAction *action = [UNNotificationAction actionWithIdentifier:@"Identifier" title:@"title" options:UNNotificationActionOptionNone];
+//        UNNotificationCategory *category = [UNNotificationCategory categoryWithIdentifier:@"cateIden" actions:@[action] intentIdentifiers:@[] options:UNNotificationCategoryOptionNone];
+//        [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithArray:@[category]]];
+        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+//        content.title = @"title";
+//        content.subtitle = @"subtitle";
+        content.body = body;
+        content.sound = [UNNotificationSound defaultSound];
+        content.categoryIdentifier = @"category1";
+        
+        
+        UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.1f repeats:NO];
+        
+        NSString *requestIdentifier = @"sampleRequest";
+        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:trigger];
+        
+        
+        
+        [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+            if (error){
+                NSLog(@"action local notification error : %@",error);
+            }else{
+                NSLog(@"local notification success");
+            }
+        }];
+    }
+}
+
+- (void)registLocalNotification{
+    if (@available(iOS 10.0, *)) {
+        UNNotificationAction *action1 = [UNNotificationAction actionWithIdentifier:@"action1" title:@"action1" options:UNNotificationActionOptionForeground];
+        
+        UNNotificationCategory *category1 = [UNNotificationCategory categoryWithIdentifier:@"category1" actions:@[action1] intentIdentifiers:@[] options:UNNotificationCategoryOptionCustomDismissAction];
+        
+        
+        [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithArray:@[category1]]];
+        
+                                             
+        
+        
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        center.delegate = self;
+        [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+            if (error){
+                NSLog(@"authorization notification error %@",error);
+            }else{
+                NSLog(@"request authorization notification success");
+            }
+        }];
+    }else{
+        UIUserNotificationSettings *setting = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert) categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:setting];
+    }
 }
 
 - (void)registNotification{
