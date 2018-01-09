@@ -50,6 +50,8 @@
         }
     }
     
+    SharedAppDelegate.launchImage = launchImage;
+    
     UIColor *launchColor = [UIColor colorWithPatternImage:[UIImage imageNamed:launchImage]];
     self.view.backgroundColor = launchColor;
 }

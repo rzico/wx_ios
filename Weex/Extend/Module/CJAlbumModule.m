@@ -71,7 +71,7 @@ WX_EXPORT_METHOD(@selector(openVideo:))
         CJALbumData *album = [CJALbumData new];
         NSString *uuid = [NSString getUUID];
 //        NSString *path = [self getImagePath:[photos firstObject] uuid:uuid];
-        NSString *path = [[photos firstObject] getImagePathWithUuid:uuid];
+        NSString *path = [[photos firstObject] getJPGImagePathWithUuid:uuid compressionQuality:1.0];
         album.originalPath = path;
         album.thumbnailSmallPath = path;
         
@@ -125,7 +125,7 @@ WX_EXPORT_METHOD(@selector(openVideo:))
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
         NSString *uuid = [NSString getUUID];
 //        NSString *path = [self getImagePath:[photos firstObject] uuid:uuid];
-        NSString *path = [[photos firstObject] getImagePathWithUuid:uuid];
+        NSString *path = [[photos firstObject] getJPGImagePathWithUuid:uuid compressionQuality:1.0];
         NSLog(@"%@",path);
         
         CJCallbackMessage *message = [CJCallbackMessage new];
@@ -176,7 +176,7 @@ WX_EXPORT_METHOD(@selector(openVideo:))
     CJALbumData *album = [CJALbumData new];
     NSString *uuid = [NSString getUUID];
 //    NSString *path = [self getImagePath:image uuid:uuid];
-    NSString *path = [image getImagePathWithUuid:uuid];
+    NSString *path = [image getJPGImagePathWithUuid:uuid compressionQuality:1.0];
     album.originalPath = path;
     album.thumbnailSmallPath = path;
     CJCallbackMessage *message = [CJCallbackMessage new];
@@ -212,32 +212,51 @@ WX_EXPORT_METHOD(@selector(openVideo:))
     
     imagePickerVc.naviBgColor = [UIColor colorWithHex:UINavigationBarColor];
     
-    [imagePickerVc setDidFinishPickingGifImageHandle:^(UIImage *animatedImage, id sourceAssets) {
-        NSString *localIdentifier = [sourceAssets valueForKey:@"localIdentifier"];
-        NSString *thumbnailSmallPath = [NSString stringWithFormat:@"thumb://%@",localIdentifier];
-        NSString *originalPath = [NSString stringWithFormat:@"original://%@",localIdentifier];
-        CJALbumData *album = [CJALbumData new];
-        album.originalPath = originalPath;
-        album.thumbnailSmallPath = thumbnailSmallPath;
-        if (callback){
-            CJCallbackMessage *message = [CJCallbackMessage new];
-            message.type = YES;
-            message.content = @"选择成功";
-            message.data = [NSArray arrayWithObject:album];
-            callback(message.getMessage);
-        }
-    }];
+    NSString *uuid = [NSString getUUID];
     
+    
+    
+    [imagePickerVc setDidFinishPickingGifImageHandle:^(UIImage *animatedImage, id sourceAssets) {
+        
+        [[TZImageManager manager] getPhotoWithAsset:sourceAssets completion:^(UIImage *photo, NSDictionary *info, BOOL isDegraded) {
+            NSString *thumbPath = [photo getJPGImagePathWithUuid:uuid compressionQuality:1.0];
+            // 再显示gif动图
+            [[TZImageManager manager] getOriginalPhotoDataWithAsset:sourceAssets completion:^(NSData *data, NSDictionary *info, BOOL isDegraded) {
+                if (!isDegraded) {
+                    NSString *gifPath = [UIImage getGIFImagePathWithUuid:uuid data:data];
+                    CJALbumData *album = [CJALbumData new];
+                    album.originalPath = gifPath;
+                    album.thumbnailSmallPath = thumbPath;
+                    if (callback){
+                        CJCallbackMessage *message = [CJCallbackMessage new];
+                        message.type = YES;
+                        message.content = @"选择成功";
+                        message.data = [NSArray arrayWithObject:album];
+                        callback(message.getMessage);
+                    }
+                }
+            }];
+        } progressHandler:nil networkAccessAllowed:NO];
+    }];
+     
     
     [imagePickerVc setDidFinishPickingPhotosWithInfosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto, NSArray<NSDictionary *> *infos) {
         NSMutableArray *dataArray = [NSMutableArray new];
         for (int i = 0; i < photos.count; i++){
-            NSString *localIdentifier = [[assets objectAtIndex:i] valueForKey:@"localIdentifier"];
-            NSString *thumbnailSmallPath = [NSString stringWithFormat:@"thumb://%@",localIdentifier];
-            NSString *originalPath = [NSString stringWithFormat:@"original://%@",localIdentifier];
+            NSString *path = [[photos objectAtIndex:i] getJPGImagePathWithUuid:uuid compressionQuality:1.0];
+            
+            
+//            NSString *localIdentifier = [[assets objectAtIndex:i] valueForKey:@"localIdentifier"];
+//            NSString *thumbnailSmallPath = [NSString stringWithFormat:@"thumb://%@",localIdentifier];
+//            NSString *originalPath = [NSString stringWithFormat:@"original://%@",localIdentifier];
+            
+            
+            
             CJALbumData *album = [CJALbumData new];
-            album.originalPath = originalPath;
-            album.thumbnailSmallPath = thumbnailSmallPath;
+//            album.originalPath = originalPath;
+//            album.thumbnailSmallPath = thumbnailSmallPath;
+            album.originalPath = path;
+            album.thumbnailSmallPath = path;
             [dataArray addObject:album];
         }
         if (callback){
@@ -301,7 +320,7 @@ WX_EXPORT_METHOD(@selector(openVideo:))
     [imagePickerVc setDidFinishPickingVideoHandle:^(UIImage *coverImage, id asset) {
         NSString *localIdentifier = [asset valueForKey:@"localIdentifier"];
 //        NSString *coverImagePath = [self getImagePath:coverImage uuid:[NSString uuid]];
-        NSString *coverImagePath = [coverImage getImagePathWithUuid:[NSString getUUID]];
+        NSString *coverImagePath = [coverImage getJPGImagePathWithUuid:[NSString getUUID] compressionQuality:1.0];
         NSString *path = [NSString stringWithFormat:@"video://%@",localIdentifier];
         CJCallbackMessage *message = [CJCallbackMessage new];
         message.type = YES;

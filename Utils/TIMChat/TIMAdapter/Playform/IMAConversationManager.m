@@ -346,10 +346,6 @@
  */
 - (void)onNewMessage:(NSArray *)msgs
 {
-    //收到消息 播放提示音  by cj
-    [SharedAppDelegate playSoundOnNewMessage];
-    
-    
     for (TIMMessage *msg in msgs)
     {
         IMAMsg *imamsg = [IMAMsg msgWith:msg];
@@ -472,10 +468,16 @@
                 [message setObject:@"success" forKey:@"result"];
                 [message setObject:imaconvReceiver forKey:@"receiver"];
                 
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
-                });
                 
+                if ([[SharedAppDelegate topViewController] isKindOfClass:[ChatViewController class]]){
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
+                    });
+                }else{
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
+                    });
+                }
                 
                 
                 

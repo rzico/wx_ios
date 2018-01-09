@@ -15,6 +15,8 @@
 - (UIImage *)circleImage;
 - (UIImage *)OriginImage:(UIImage *)image scaleToSize:(CGSize)size;
 - (UIImage *) imageCompressForWidthScale:(UIImage *)sourceImage targetWidth:(CGFloat)defineWidth;
-- (NSString *)getImagePathWithUuid:(NSString *)uuid;
+- (NSString *)getPNGImagePathWithUuid:(NSString *)uuid;
+- (NSString *)getJPGImagePathWithUuid:(NSString *)uuid compressionQuality:(CGFloat)compressionQuality;
++ (NSString *)getGIFImagePathWithUuid:(NSString *)uuid data:(NSData *)data;
 + (UIImage *)createImageWithColor:(UIColor *)color frame:(CGRect)rect;
 @end
