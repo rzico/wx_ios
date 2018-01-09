@@ -16,7 +16,7 @@
         
         if (msg){
             NSMutableDictionary *message = [NSMutableDictionary new];
-            [message setObject:@"receive" forKey:@"type"];
+            [message setObject:@"lastmsg" forKey:@"type"];
             [message setObject:msg forKey:@"msg"];
             [message setObject:@"success" forKey:@"result"];
             [message setObject:[conversation getReceiver] forKey:@"receiver"];

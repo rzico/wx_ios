@@ -15,10 +15,6 @@
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
 #endif
-
-
-#import <ZipArchive.h>
-
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 @property (nonatomic, assign) BOOL isLoaded;
@@ -30,6 +26,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    if (launchOptions && [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"]){
+        NSDictionary *userInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
+        if ([userInfo objectForKey:@"ext"]){
+            self.sender = [userInfo objectForKey:@"ext"];
+        }
+    }
+    
+    
     CJRegisterNotification(@selector(onInitialized:),CJNOTIFICATION_INITIALIZED);
     _isLoaded = false;
     [self checkNetwork];
@@ -62,9 +67,6 @@
 }
 
 - (void)onInitialized:(NSNotification *)notification{
-    
-    
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CJTabbarViewController *tabBar = [[CJTabbarViewController alloc] initWithJsDictionary:notification.userInfo];
         self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabBar];
@@ -156,6 +158,15 @@
     return [self handleOpenURL:url];
 }
 
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    if (notification && notification.userInfo){
+        if ([notification.userInfo objectForKey:@"sender"]){
+            NSString *sender = [notification.userInfo objectForKey:@"sender"];
+            [self pushToChatViewControllerWith:[[IMAUser alloc] initWith:sender]];
+        }
+    }
+}
+
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
     if (@available(iOS 10.0, *)) {
         completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionSound);
@@ -165,26 +176,24 @@
     NSLog(@"present notification");
 }
 
-- (void)actionLocalNotification:(NSString *)body{
+- (void)actionLocalNotificationWithSender:(NSString *)sender body:(NSString *)body{
+    if ([[self topViewController] isKindOfClass:[ChatViewController class]]){
+        //收到消息 播放提示音  by cj
+        AudioServicesPlaySystemSound(1003);
+        return;
+    }
     if (@available(iOS 10.0, *)) {
-//        UNNotificationAction *action = [UNNotificationAction actionWithIdentifier:@"Identifier" title:@"title" options:UNNotificationActionOptionNone];
-//        UNNotificationCategory *category = [UNNotificationCategory categoryWithIdentifier:@"cateIden" actions:@[action] intentIdentifiers:@[] options:UNNotificationCategoryOptionNone];
-//        [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithArray:@[category]]];
         UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-//        content.title = @"title";
-//        content.subtitle = @"subtitle";
         content.body = body;
         content.sound = [UNNotificationSound defaultSound];
         content.categoryIdentifier = @"category1";
-        
-        
+        if (sender){
+            content.userInfo = @{@"sender":sender};
+        }
+        content.launchImageName = self.launchImage;
         UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.1f repeats:NO];
-        
         NSString *requestIdentifier = @"sampleRequest";
         UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:trigger];
-        
-        
-        
         [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
             if (error){
                 NSLog(@"action local notification error : %@",error);
@@ -192,6 +201,16 @@
                 NSLog(@"local notification success");
             }
         }];
+    }else{
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        localNotification.alertBody = body;
+        localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0.1f];
+        localNotification.soundName = UILocalNotificationDefaultSoundName;
+        if (sender){
+            localNotification.userInfo = @{@"sender":sender};
+        }
+        localNotification.alertLaunchImage = self.launchImage;
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     }
 }
 
@@ -235,7 +254,10 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
-    self.userInfo = userInfo;
+    if ([userInfo objectForKey:@"ext"]){
+        self.sender = [userInfo objectForKey:@"ext"];
+    }
+    
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
@@ -280,11 +302,12 @@
     void(^finishBlock)() = ^(){
         if ([CJUserManager getUid] > 0){
             [TIMActionManager PostAllConversationWithLastMessage];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                if (self.userInfo){
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (self.sender){
                     if ([[self topViewController] isKindOfClass:[UITabBarController class]]){
-                        UITabBarController *tabbar = (UITabBarController *)[self topViewController];
-                        tabbar.selectedIndex = 3;
+//                        UITabBarController *tabbar = (UITabBarController *)[self topViewController];
+//                        tabbar.selectedIndex = 3;
+                        [self pushToChatViewControllerWith:[[IMAUser alloc] initWith:self.sender]];
                     }
                 }
             });
@@ -295,7 +318,7 @@
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             //等待载入完毕
             while (!_isLoaded) {
-                [NSThread sleepForTimeInterval:0.5];
+                [NSThread sleepForTimeInterval:0.2];
             }
             [[TIMManager sharedInstance] doForeground:^() {
                 DebugLog(@"doForegroud Succ");

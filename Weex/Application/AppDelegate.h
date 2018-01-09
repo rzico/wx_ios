@@ -23,10 +23,13 @@ typedef void(^CJLogOutComplete)(BOOL success);
 @property (strong, nonatomic) WXShareComplete wxShareComplete;
 @property (strong, nonatomic) CJLogOutComplete wxLogOutComplete;
 
-@property (strong, nonatomic) NSDictionary *userInfo;
+@property (strong, nonatomic) NSString *launchImage;
+
+@property (strong, nonatomic) NSString *sender;
 
 - (void)registNotification;
 
 - (void)actionLocalNotification:(NSString *)body;
+- (void)actionLocalNotificationWithSender:(NSString *)sender body:(NSString *)body;
 @end
 

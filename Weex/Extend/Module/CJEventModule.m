@@ -201,7 +201,7 @@ static NSMutableArray<NSDictionary *> *queueList;
         }else{
             [[CJFetchImage sharedInstance] fetchAssetWithSchemeUrl:localPath AndBlock:^(UIImage *image) {
                 if (image){
-                    localPath = [image getImagePathWithUuid:[NSString getUUID]];
+                    localPath = [image getJPGImagePathWithUuid:[NSString getUUID] compressionQuality:1.0];
                     [[CJAliOSSManager defautManager] uploadObjectWithPath:localPath progress:^(NSString *percent) {
                         processBlock(percent);
                     } complete:^(CJAliOSSUploadResult result, NSString *url) {
