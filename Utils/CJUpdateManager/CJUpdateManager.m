@@ -9,6 +9,7 @@
 #import "CJUpdateManager.h"
 #import <ZipArchive.h>
 #import "AFHTTPRequestOperation.h"
+#import "CJDownloader.h"
 
 @interface CJUpdateManager ()<UIAlertViewDelegate>
 
@@ -117,42 +118,33 @@
         if (isNeedToUpdate){
             unsigned long timeInterval = [[NSDate date] timeIntervalSince1970] * 1000;
             NSString *urlStr = [NSString stringWithFormat:@"%@?rand=%lu",[info objectForKey:@"resUrl"],timeInterval];
-            NSURL *url = [NSURL URLWithString:urlStr];
-            
             NSString *path = [CACHES_PATH stringByAppendingPathComponent:@"temp.zip"];
-            
-            //初始化请求
-            NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:60];
-            
-            //初始化队列
-            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-            
-            AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-            
-            op.outputStream = [NSOutputStream outputStreamToFileAtPath:path append:NO];
-            
-            [op setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
-                double progress = (double)totalBytesRead/totalBytesExpectedToRead;
-                
+            CJDownloader *downloader = [[CJDownloader alloc] init];
+            downloader.progress = ^(int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
+                double progress = (double)totalBytesWritten/totalBytesExpectedToWrite;
+                NSLog(@"%.2lf",progress);
                 [_delegate updateWithDownloadProgress:progress];
-            }];
-            
-            [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                BOOL releaseResult = [self releaseZip:path];
-                if (releaseResult){
-                    //更新成功
-                    [self saveResourceInfo:info];
-                    [self updateComplete:UpdateResultSuccess];
-                }else{
-                    //解压资源失败
-                    [self updateComplete:UpdateResultReleaseERROR];
+            };
+            downloader.complete = ^(CJDownloaderResult result, NSString *filePath) {
+                switch (result) {
+                    case CJDownloaderResultDownloadError:
+                        [self updateComplete:UpdateResultDownloadERROR];
+                        break;
+                    case CJDownloaderResultRemoveExistFileError:
+                        [self updateComplete:UpdateResultDownloadERROR];
+                        break;
+                    case CJDownloaderResultSaveFileError:
+                        [self updateComplete:UpdateResultDownloadERROR];
+                        break;
+                    case CJDownloaderResultSuccess:
+                        [self onFileDownloadComplete:filePath resourceInfo:info];
+                        break;
+                    default:
+                        break;
                 }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [self updateComplete:UpdateResultDownloadERROR];
-            }];
+            };
+            [downloader downloadFileWithURL:urlStr writeToPath:path];
             
-            //开始下载
-            [queue addOperation:op];
         }else{
             //无需更新
             [self updateComplete:UpdateResultSuccess];
@@ -160,6 +152,18 @@
     }else{
         //返回data不包含resUrl或resVersion字段
         [self updateComplete:UpdateResultGetResInfoERROR];
+    }
+}
+
+- (void)onFileDownloadComplete:(NSString *)filePath resourceInfo:(NSDictionary *)info{
+    BOOL releaseResult = [self releaseZip:filePath];
+    if (releaseResult){
+        //更新成功
+        [self saveResourceInfo:info];
+        [self updateComplete:UpdateResultSuccess];
+    }else{
+        //解压资源失败
+        [self updateComplete:UpdateResultReleaseERROR];
     }
 }
 
