@@ -109,7 +109,7 @@
         [WXApi sendReq:req];
     }else{
         [message setObject:@"error" forKey:@"type"];
-        [message setObject:@"未安装微信或无法打开授权" forKey:@"content"];
+        [message setObject:@"分享到微信需要先安装微信" forKey:@"content"];
         [message setObject:@"unknown" forKey:@"data"];
         if (complete){
             complete(message);
