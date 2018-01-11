@@ -80,6 +80,21 @@ WX_EXPORT_METHOD_SYNC(@selector(deviceInfo))
 
 static NSMutableArray<NSDictionary *> *queueList;
 
+- (void)router:(NSString *)name parameters:(NSArray *)parameters{
+    UIViewController *viewController;
+    if ([SharedAppDelegate.window.rootViewController presentedViewController]){
+        
+    }else{
+        
+    }
+}
+
+- (void)closeRouter{
+    [weexInstance.viewController.parentViewController dismissViewControllerAnimated:true completion:^{
+        
+    }];
+}
+
 - (void)openURL:(NSString *)url callback:(nullable WXModuleCallback)callback animated:(BOOL)animated ompletion:(void(^)(BOOL finished))completion{
     NSString *urlStr = [url rewriteURL];
     NSURL *URL;

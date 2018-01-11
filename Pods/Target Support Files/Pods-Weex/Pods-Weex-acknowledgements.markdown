@@ -343,11 +343,6 @@ SOFTWARE.
 
 
 
-## WXDevtool
-
-Alibaba-INC copyright
-
-
 ## WechatOpenSDK
 
 Copyright 2017 tencent.com. All rights reserved.
