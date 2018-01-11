@@ -12,6 +12,8 @@
 #import "IMManager.h"
 #import "TIMActionManager.h"
 
+#import "CJRouter.h"
+
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
 #endif
@@ -26,7 +28,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+//    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://139.199.171.149:808/json.json"]];
+//    NSDictionary *dic = [NSDictionary dictionaryWithJsonData:data];
+//
+//    CJRouter *router = [[CJRouter shareInstance] initWithDictionary:[dic objectForKey:@"router"] error:nil];
+//    NSLog(@"%@",[CJRouter shareInstance].tabbar.tab2.name);
+//    exit(0);
+//    
     if (launchOptions && [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"]){
         NSDictionary *userInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
         if ([userInfo objectForKey:@"ext"]){

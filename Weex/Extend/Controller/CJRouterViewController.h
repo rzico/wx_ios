@@ -7,9 +7,8 @@
 //
 
 #import "CJRouter.h"
+#import <WXRootViewController.h>
 
-@interface CJRouterViewController : UIViewController
-
-@property (nonatomic, strong) NSArray<CJRouter *> *pageArray;
+@interface CJRouterViewController : WXRootViewController
 
 @end

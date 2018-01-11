@@ -7,11 +7,14 @@
 //
 
 #import <JSONModel.h>
+#import "CJRouterPage.h"
+#import "CJRouterTabbar.h"
 
 @interface CJRouter : JSONModel
 
-@property (nonatomic, strong) NSString *path;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, assign) BOOL requireAuth;
+@property (nonatomic, strong) NSArray<CJRouterPage *> *page;
+@property (nonatomic, strong) CJRouterTabbar *tabbar;
+
++ (instancetype)shareInstance;
 
 @end
