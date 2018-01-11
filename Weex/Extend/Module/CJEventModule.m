@@ -275,7 +275,7 @@ static NSMutableArray<NSDictionary *> *queueList;
         [WXApi sendReq:req];
     }else{
         [message setValue:@"error" forKey:@"type"];
-        [message setValue:@"未安装微信或无法打开授权" forKey:@"content"];
+        [message setValue:@"未安装微信只能使用手机登录" forKey:@"content"];
         [message setValue:@"unknown" forKey:@"data"];
         if (callback){
             callback(message);
@@ -654,7 +654,7 @@ static NSMutableArray<NSDictionary *> *queueList;
             [WXApi sendReq:request];
         }else{
             [message setValue:@"error" forKey:@"type"];
-            [message setValue:@"未安装微信或无法打开授权" forKey:@"content"];
+            [message setValue:@"请求微信支付失败" forKey:@"content"];
             [message setValue:@"unknown" forKey:@"data"];
             if (callback){
                 callback(message);
