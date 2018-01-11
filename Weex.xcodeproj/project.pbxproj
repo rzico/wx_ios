@@ -37,6 +37,9 @@
 		885186AE2005E75800E48BF8 /* CJDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 885186AD2005E75800E48BF8 /* CJDownloader.m */; };
 		88724BFD20074AFC00C97F82 /* CJRouterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724BFC20074AFB00C97F82 /* CJRouterViewController.m */; };
 		88724C0120074EC900C97F82 /* CJRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0020074EC900C97F82 /* CJRouter.m */; };
+		88724C0420076CA800C97F82 /* CJRouterTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0320076CA800C97F82 /* CJRouterTabbar.m */; };
+		88724C0720076D0800C97F82 /* CJRouterPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0620076D0800C97F82 /* CJRouterPage.m */; };
+		88724C0A20076D7000C97F82 /* CJRouterTabbarTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0920076D7000C97F82 /* CJRouterTabbarTab.m */; };
 		887E30361FE6622000D8627A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 887E30351FE6622000D8627A /* AppDelegate.m */; };
 		887E303E1FE6622000D8627A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 887E303D1FE6622000D8627A /* Assets.xcassets */; };
 		887E30441FE6622000D8627A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 887E30431FE6622000D8627A /* main.m */; };
@@ -587,6 +590,12 @@
 		88724BFC20074AFB00C97F82 /* CJRouterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterViewController.m; sourceTree = "<group>"; };
 		88724BFF20074EC900C97F82 /* CJRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouter.h; sourceTree = "<group>"; };
 		88724C0020074EC900C97F82 /* CJRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouter.m; sourceTree = "<group>"; };
+		88724C0220076CA800C97F82 /* CJRouterTabbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterTabbar.h; sourceTree = "<group>"; };
+		88724C0320076CA800C97F82 /* CJRouterTabbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterTabbar.m; sourceTree = "<group>"; };
+		88724C0520076D0800C97F82 /* CJRouterPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterPage.h; sourceTree = "<group>"; };
+		88724C0620076D0800C97F82 /* CJRouterPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterPage.m; sourceTree = "<group>"; };
+		88724C0820076D7000C97F82 /* CJRouterTabbarTab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterTabbarTab.h; sourceTree = "<group>"; };
+		88724C0920076D7000C97F82 /* CJRouterTabbarTab.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterTabbarTab.m; sourceTree = "<group>"; };
 		887E30311FE6622000D8627A /* Weex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		887E30341FE6622000D8627A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		887E30351FE6622000D8627A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1671,6 +1680,12 @@
 			children = (
 				88724BFF20074EC900C97F82 /* CJRouter.h */,
 				88724C0020074EC900C97F82 /* CJRouter.m */,
+				88724C0520076D0800C97F82 /* CJRouterPage.h */,
+				88724C0620076D0800C97F82 /* CJRouterPage.m */,
+				88724C0220076CA800C97F82 /* CJRouterTabbar.h */,
+				88724C0320076CA800C97F82 /* CJRouterTabbar.m */,
+				88724C0820076D7000C97F82 /* CJRouterTabbarTab.h */,
+				88724C0920076D7000C97F82 /* CJRouterTabbarTab.m */,
 			);
 			path = CJRouter;
 			sourceTree = "<group>";
@@ -3771,6 +3786,7 @@
 				88C2D9BD1FE9C16A000BCAB4 /* IMAContactManager.m in Sources */,
 				88C2DA541FE9C16A000BCAB4 /* ContactPanelTableViewCell.m in Sources */,
 				88C2D9921FE9C16A000BCAB4 /* Reachability.m in Sources */,
+				88724C0720076D0800C97F82 /* CJRouterPage.m in Sources */,
 				88724BFD20074AFC00C97F82 /* CJRouterViewController.m in Sources */,
 				887E30A21FE6ADFD00D8627A /* CJKeyChain.m in Sources */,
 				88C2DA681FE9C16A000BCAB4 /* GroupMemberListViewController.m in Sources */,
@@ -3809,6 +3825,7 @@
 				88C2DA1E1FE9C16A000BCAB4 /* MyAudioManager.m in Sources */,
 				88C2D9901FE9C16A000BCAB4 /* MKNetworkOperation.m in Sources */,
 				88C2D98B1FE9C16A000BCAB4 /* NSDictionary+RequestEncoding.m in Sources */,
+				88724C0A20076D7000C97F82 /* CJRouterTabbarTab.m in Sources */,
 				887E30C71FE7925F00D8627A /* CJWebComponent.m in Sources */,
 				88C2D9521FE9C16A000BCAB4 /* ADTransition.m in Sources */,
 				88C2D9E71FE9C16A000BCAB4 /* ChatInputToolBar.m in Sources */,
@@ -4076,6 +4093,7 @@
 				88C2D9D61FE9C16A000BCAB4 /* IMAConnectConversation.m in Sources */,
 				88C2DA6A1FE9C16A000BCAB4 /* MyProfileViewController.m in Sources */,
 				887E31DE1FE7BB3200D8627A /* CYRLayoutManager.m in Sources */,
+				88724C0420076CA800C97F82 /* CJRouterTabbar.m in Sources */,
 				88C2DA5C1FE9C16A000BCAB4 /* StrangerApplyViewController.m in Sources */,
 				88C2D9C51FE9C16A000BCAB4 /* IMAPlatform.m in Sources */,
 				887E31841FE7BB3200D8627A /* ZSSBarButtonItem.m in Sources */,
