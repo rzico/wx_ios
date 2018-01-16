@@ -265,6 +265,18 @@
         NSMutableArray *array = [self addMsgToList:msg];
         
         [msg changeTo:EIMAMsg_Sending needRefresh:NO];
+        
+        
+        TIMMessage *message = msg.msg;
+        
+        TIMOfflinePushInfo *offlinePushInfo = [[TIMOfflinePushInfo alloc] init];
+//        offlinePushInfo.desc = @"sender";
+        offlinePushInfo.ext = [[TIMManager sharedInstance] getLoginUser];
+        offlinePushInfo.pushFlag = TIM_OFFLINE_PUSH_DEFAULT;
+        
+        [message setOfflinePushInfo:offlinePushInfo];
+        
+        
         [_conversation sendMessage:msg.msg succ:^{
             [msg changeTo:EIMAMsg_SendSucc needRefresh:YES];
             if (block)
@@ -603,14 +615,14 @@
         _receiveMsg(array, YES);
     }
     
-
-    NSMutableDictionary *message = [NSMutableDictionary new];
-    [message setObject:@"receive" forKey:@"type"];
-    [message setObject:msg.msg forKey:@"msg"];
-    [message setObject:@"success" forKey:@"result"];
-    [message setObject:[_conversation getReceiver] forKey:@"receiver"];
-    
-    CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
+//    统一在收到消息处理
+//    NSMutableDictionary *message = [NSMutableDictionary new];
+//    [message setObject:@"receive" forKey:@"type"];
+//    [message setObject:msg.msg forKey:@"msg"];
+//    [message setObject:@"success" forKey:@"result"];
+//    [message setObject:[_conversation getReceiver] forKey:@"receiver"];
+//
+//    CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
 }
 
 - (void)setDraft:(TIMMessageDraft *)draft
@@ -634,6 +646,7 @@
         TIMMessage *imMessage = [[_conversation getLastMsgs:1] firstObject];
         
         if (imMessage){
+            [message setObject:@"lastmsg" forKey:@"type"];
             [message setObject:imMessage forKey:@"msg"];
             [message setObject:@"success" forKey:@"result"];
             [message setObject:[_conversation getReceiver] forKey:@"receiver"];

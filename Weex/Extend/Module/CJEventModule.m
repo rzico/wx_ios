@@ -80,6 +80,21 @@ WX_EXPORT_METHOD_SYNC(@selector(deviceInfo))
 
 static NSMutableArray<NSDictionary *> *queueList;
 
+- (void)router:(NSString *)name parameters:(NSArray *)parameters{
+    UIViewController *viewController;
+    if ([SharedAppDelegate.window.rootViewController presentedViewController]){
+        
+    }else{
+        
+    }
+}
+
+- (void)closeRouter{
+    [weexInstance.viewController.parentViewController dismissViewControllerAnimated:true completion:^{
+        
+    }];
+}
+
 - (void)openURL:(NSString *)url callback:(nullable WXModuleCallback)callback animated:(BOOL)animated ompletion:(void(^)(BOOL finished))completion{
     NSString *urlStr = [url rewriteURL];
     NSURL *URL;
@@ -201,7 +216,7 @@ static NSMutableArray<NSDictionary *> *queueList;
         }else{
             [[CJFetchImage sharedInstance] fetchAssetWithSchemeUrl:localPath AndBlock:^(UIImage *image) {
                 if (image){
-                    localPath = [image getImagePathWithUuid:[NSString getUUID]];
+                    localPath = [image getJPGImagePathWithUuid:[NSString getUUID] compressionQuality:1.0];
                     [[CJAliOSSManager defautManager] uploadObjectWithPath:localPath progress:^(NSString *percent) {
                         processBlock(percent);
                     } complete:^(CJAliOSSUploadResult result, NSString *url) {
@@ -260,7 +275,7 @@ static NSMutableArray<NSDictionary *> *queueList;
         [WXApi sendReq:req];
     }else{
         [message setValue:@"error" forKey:@"type"];
-        [message setValue:@"未安装微信或无法打开授权" forKey:@"content"];
+        [message setValue:@"未安装微信只能使用手机登录" forKey:@"content"];
         [message setValue:@"unknown" forKey:@"data"];
         if (callback){
             callback(message);
@@ -639,7 +654,7 @@ static NSMutableArray<NSDictionary *> *queueList;
             [WXApi sendReq:request];
         }else{
             [message setValue:@"error" forKey:@"type"];
-            [message setValue:@"未安装微信或无法打开授权" forKey:@"content"];
+            [message setValue:@"请求微信支付失败" forKey:@"content"];
             [message setValue:@"unknown" forKey:@"data"];
             if (callback){
                 callback(message);

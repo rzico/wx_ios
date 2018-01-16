@@ -1,4 +1,4 @@
-//
+ //
 //  CJWeexViewController.m
 //  Weex
 //
@@ -295,7 +295,7 @@
     NSString *result = [notification.userInfo objectForKey:@"result"];
     NSString *receiver = @"";
     NSString *content = @"";
-    if ([type isEqualToString:@"send"] || [type isEqualToString:@"draft"]){
+    if ([type isEqualToString:@"send"] || [type isEqualToString:@"draft"] || [type isEqualToString:@"lastmsg"]){
         receiver = [notification.userInfo objectForKey:@"receiver"];
     }else if ([type isEqualToString:@"receive"]){
         receiver = [msg sender];
@@ -367,7 +367,11 @@
             [_instance fireGlobalEvent:@"onMessage" params:[[NSDictionary alloc] initWithObjectsAndKeys:dic,@"data", nil]];
             
             if ([type isEqualToString:@"receive"]){
-                [SharedAppDelegate actionLocalNotification:[NSString stringWithFormat:@"%@:%@",nickName,content]];
+                if ([receiver containsString:@"gm"]){
+                    [SharedAppDelegate actionLocalNotificationWithSender:nil body:[NSString stringWithFormat:@"%@:%@",nickName,content]];
+                }else{
+                    [SharedAppDelegate actionLocalNotificationWithSender:receiver body:[NSString stringWithFormat:@"%@:%@",nickName,content]];
+                }
             }
         }
     } fail:^(int code, NSString *msg) {
@@ -405,7 +409,11 @@
         
         
         if ([type isEqualToString:@"receive"]){
-            [SharedAppDelegate actionLocalNotification:[NSString stringWithFormat:@"%@:%@",receiver,content]];
+            if ([receiver containsString:@"gm"]){
+                [SharedAppDelegate actionLocalNotificationWithSender:nil body:[NSString stringWithFormat:@"%@:%@",receiver,content]];
+            }else{
+                [SharedAppDelegate actionLocalNotificationWithSender:receiver body:[NSString stringWithFormat:@"%@:%@",receiver,content]];
+            }
         }
         
     }];
@@ -429,8 +437,10 @@
             }else{
                 badgeValue = nil;
             }
-            [self.tabBarController.tabBar.items objectAtIndex:3].badgeValue = badgeValue;
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unReadCount];
+            WXPerformBlockOnMainThread(^{
+                [self.tabBarController.tabBar.items objectAtIndex:3].badgeValue = badgeValue;
+                [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unReadCount];
+            });
         }
     }
 }

@@ -34,6 +34,12 @@
 		882C8ACF1FE7F67800C6DB32 /* CJPublicKeyData.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C8ACE1FE7F67800C6DB32 /* CJPublicKeyData.m */; };
 		882C8AD21FE7FA3300C6DB32 /* CJDatabaseOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C8AD11FE7FA3300C6DB32 /* CJDatabaseOption.m */; };
 		882C8AD51FE7FAC400C6DB32 /* CJTabbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C8AD41FE7FAC400C6DB32 /* CJTabbarViewController.m */; };
+		885186AE2005E75800E48BF8 /* CJDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 885186AD2005E75800E48BF8 /* CJDownloader.m */; };
+		88724BFD20074AFC00C97F82 /* CJRouterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724BFC20074AFB00C97F82 /* CJRouterViewController.m */; };
+		88724C0120074EC900C97F82 /* CJRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0020074EC900C97F82 /* CJRouter.m */; };
+		88724C0420076CA800C97F82 /* CJRouterTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0320076CA800C97F82 /* CJRouterTabbar.m */; };
+		88724C0720076D0800C97F82 /* CJRouterPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0620076D0800C97F82 /* CJRouterPage.m */; };
+		88724C0A20076D7000C97F82 /* CJRouterTabbarTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0920076D7000C97F82 /* CJRouterTabbarTab.m */; };
 		887E30361FE6622000D8627A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 887E30351FE6622000D8627A /* AppDelegate.m */; };
 		887E303E1FE6622000D8627A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 887E303D1FE6622000D8627A /* Assets.xcassets */; };
 		887E30441FE6622000D8627A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 887E30431FE6622000D8627A /* main.m */; };
@@ -578,6 +584,18 @@
 		882C8AD11FE7FA3300C6DB32 /* CJDatabaseOption.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJDatabaseOption.m; sourceTree = "<group>"; };
 		882C8AD31FE7FAC400C6DB32 /* CJTabbarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJTabbarViewController.h; sourceTree = "<group>"; };
 		882C8AD41FE7FAC400C6DB32 /* CJTabbarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJTabbarViewController.m; sourceTree = "<group>"; };
+		885186AC2005E75800E48BF8 /* CJDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJDownloader.h; sourceTree = "<group>"; };
+		885186AD2005E75800E48BF8 /* CJDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJDownloader.m; sourceTree = "<group>"; };
+		88724BFB20074AFB00C97F82 /* CJRouterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterViewController.h; sourceTree = "<group>"; };
+		88724BFC20074AFB00C97F82 /* CJRouterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterViewController.m; sourceTree = "<group>"; };
+		88724BFF20074EC900C97F82 /* CJRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouter.h; sourceTree = "<group>"; };
+		88724C0020074EC900C97F82 /* CJRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouter.m; sourceTree = "<group>"; };
+		88724C0220076CA800C97F82 /* CJRouterTabbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterTabbar.h; sourceTree = "<group>"; };
+		88724C0320076CA800C97F82 /* CJRouterTabbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterTabbar.m; sourceTree = "<group>"; };
+		88724C0520076D0800C97F82 /* CJRouterPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterPage.h; sourceTree = "<group>"; };
+		88724C0620076D0800C97F82 /* CJRouterPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterPage.m; sourceTree = "<group>"; };
+		88724C0820076D7000C97F82 /* CJRouterTabbarTab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterTabbarTab.h; sourceTree = "<group>"; };
+		88724C0920076D7000C97F82 /* CJRouterTabbarTab.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterTabbarTab.m; sourceTree = "<group>"; };
 		887E30311FE6622000D8627A /* Weex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		887E30341FE6622000D8627A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		887E30351FE6622000D8627A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1648,6 +1666,30 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		885186AB2005E72600E48BF8 /* CJDownloader */ = {
+			isa = PBXGroup;
+			children = (
+				885186AC2005E75800E48BF8 /* CJDownloader.h */,
+				885186AD2005E75800E48BF8 /* CJDownloader.m */,
+			);
+			path = CJDownloader;
+			sourceTree = "<group>";
+		};
+		88724BFE20074EBE00C97F82 /* CJRouter */ = {
+			isa = PBXGroup;
+			children = (
+				88724BFF20074EC900C97F82 /* CJRouter.h */,
+				88724C0020074EC900C97F82 /* CJRouter.m */,
+				88724C0520076D0800C97F82 /* CJRouterPage.h */,
+				88724C0620076D0800C97F82 /* CJRouterPage.m */,
+				88724C0220076CA800C97F82 /* CJRouterTabbar.h */,
+				88724C0320076CA800C97F82 /* CJRouterTabbar.m */,
+				88724C0820076D7000C97F82 /* CJRouterTabbarTab.h */,
+				88724C0920076D7000C97F82 /* CJRouterTabbarTab.m */,
+			);
+			path = CJRouter;
+			sourceTree = "<group>";
+		};
 		887E30281FE6622000D8627A = {
 			isa = PBXGroup;
 			children = (
@@ -1730,6 +1772,7 @@
 		887E30761FE6A06A00D8627A /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				885186AB2005E72600E48BF8 /* CJDownloader */,
 				887E310D1FE7B87200D8627A /* CJNotificationCenter */,
 				88C2D6841FE9C143000BCAB4 /* TIMChat */,
 				882C8AC61FE7F42000C6DB32 /* CJAliOSS */,
@@ -1887,6 +1930,8 @@
 			children = (
 				887E30ED1FE79F1900D8627A /* CJWeexViewController.h */,
 				887E30EE1FE79F1900D8627A /* CJWeexViewController.m */,
+				88724BFB20074AFB00C97F82 /* CJRouterViewController.h */,
+				88724BFC20074AFB00C97F82 /* CJRouterViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2198,6 +2243,7 @@
 		887E31FA1FE7CE9200D8627A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				88724BFE20074EBE00C97F82 /* CJRouter */,
 				882C8AB41FE7DF9E00C6DB32 /* CJALbumData */,
 				882C8AB01FE7DF3E00C6DB32 /* CJCallbackMessage */,
 				882C8AAA1FE7DEAB00C6DB32 /* CJNetworkQueueData */,
@@ -3740,6 +3786,8 @@
 				88C2D9BD1FE9C16A000BCAB4 /* IMAContactManager.m in Sources */,
 				88C2DA541FE9C16A000BCAB4 /* ContactPanelTableViewCell.m in Sources */,
 				88C2D9921FE9C16A000BCAB4 /* Reachability.m in Sources */,
+				88724C0720076D0800C97F82 /* CJRouterPage.m in Sources */,
+				88724BFD20074AFC00C97F82 /* CJRouterViewController.m in Sources */,
 				887E30A21FE6ADFD00D8627A /* CJKeyChain.m in Sources */,
 				88C2DA681FE9C16A000BCAB4 /* GroupMemberListViewController.m in Sources */,
 				88C2D9BE1FE9C16A000BCAB4 /* IMAConversationManager.m in Sources */,
@@ -3777,6 +3825,7 @@
 				88C2DA1E1FE9C16A000BCAB4 /* MyAudioManager.m in Sources */,
 				88C2D9901FE9C16A000BCAB4 /* MKNetworkOperation.m in Sources */,
 				88C2D98B1FE9C16A000BCAB4 /* NSDictionary+RequestEncoding.m in Sources */,
+				88724C0A20076D7000C97F82 /* CJRouterTabbarTab.m in Sources */,
 				887E30C71FE7925F00D8627A /* CJWebComponent.m in Sources */,
 				88C2D9521FE9C16A000BCAB4 /* ADTransition.m in Sources */,
 				88C2D9E71FE9C16A000BCAB4 /* ChatInputToolBar.m in Sources */,
@@ -3884,6 +3933,7 @@
 				887E31DF1FE7BB3200D8627A /* CYRTextStorage.m in Sources */,
 				88C2DA851FE9C16A000BCAB4 /* UIPlaceHolderTextView.m in Sources */,
 				88C2D9C91FE9C16A000BCAB4 /* IMAGroup+Admin.m in Sources */,
+				88724C0120074EC900C97F82 /* CJRouter.m in Sources */,
 				88C2D9801FE9C16A000BCAB4 /* MoreTableView.m in Sources */,
 				887E31861FE7BB3200D8627A /* ZSSTextView.m in Sources */,
 				887E30941FE6A0EB00D8627A /* NSFileManager+Util.m in Sources */,
@@ -3958,6 +4008,7 @@
 				88C2DA571FE9C16A000BCAB4 /* FutureFriendsViewController.m in Sources */,
 				88C2D99D1FE9C16A000BCAB4 /* LibraryNavigationPanel.m in Sources */,
 				882C8AA21FE7DE5F00C6DB32 /* WXScanQRModule.m in Sources */,
+				885186AE2005E75800E48BF8 /* CJDownloader.m in Sources */,
 				88C2DA6B1FE9C16A000BCAB4 /* RichItemTableViewController.m in Sources */,
 				88C2D99F1FE9C16A000BCAB4 /* LibraryViewController.m in Sources */,
 				88C2DA581FE9C16A000BCAB4 /* GroupSystemMsgViewController.m in Sources */,
@@ -4042,6 +4093,7 @@
 				88C2D9D61FE9C16A000BCAB4 /* IMAConnectConversation.m in Sources */,
 				88C2DA6A1FE9C16A000BCAB4 /* MyProfileViewController.m in Sources */,
 				887E31DE1FE7BB3200D8627A /* CYRLayoutManager.m in Sources */,
+				88724C0420076CA800C97F82 /* CJRouterTabbar.m in Sources */,
 				88C2DA5C1FE9C16A000BCAB4 /* StrangerApplyViewController.m in Sources */,
 				88C2D9C51FE9C16A000BCAB4 /* IMAPlatform.m in Sources */,
 				887E31841FE7BB3200D8627A /* ZSSBarButtonItem.m in Sources */,

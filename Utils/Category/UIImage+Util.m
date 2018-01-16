@@ -155,7 +155,7 @@
     return newImage;  
 }
 
-- (NSString *)getImagePathWithUuid:(NSString *)uuid{
+- (NSString *)getPNGImagePathWithUuid:(NSString *)uuid{
     NSString *basePath = [NSString stringWithFormat:@"%@/DCIM/100APPLE",CACHES_PATH];
     NSFileManager *fm = [NSFileManager defaultManager];
     if (![fm fileExistsAtPath:basePath]){
@@ -163,6 +163,40 @@
     }
     NSString *path = [NSString stringWithFormat:@"%@/%@.png",basePath,uuid];
     BOOL success = [UIImagePNGRepresentation(self) writeToFile:path atomically:YES];
+    if (success){
+        return [path stringByReplacingOccurrencesOfString:CACHES_PATH withString:@"localCachePath://"];
+    }else{
+        return @"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3577784738,4111720376&fm=111&gp=0.jpg";
+    }
+}
+
+- (NSString *)getJPGImagePathWithUuid:(NSString *)uuid compressionQuality:(CGFloat)compressionQuality{
+    NSString *basePath = [NSString stringWithFormat:@"%@/DCIM/100APPLE",CACHES_PATH];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:basePath]){
+        [fm createDirectoryAtPath:basePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSString *path = [NSString stringWithFormat:@"%@/%@.jpg",basePath,uuid];
+    BOOL success = [UIImageJPEGRepresentation(self, compressionQuality) writeToFile:path atomically:YES];
+    
+    NSLog(@"filesize=%.2lf",[PathUtility getFileSize:path] / 1024.0 / 1024.0);
+    
+    
+    if (success){
+        return [path stringByReplacingOccurrencesOfString:CACHES_PATH withString:@"localCachePath://"];
+    }else{
+        return @"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3577784738,4111720376&fm=111&gp=0.jpg";
+    }
+}
+
++ (NSString *)getGIFImagePathWithUuid:(NSString *)uuid data:(NSData *)data{
+    NSString *basePath = [NSString stringWithFormat:@"%@/DCIM/100APPLE",CACHES_PATH];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:basePath]){
+        [fm createDirectoryAtPath:basePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSString *path = [NSString stringWithFormat:@"%@/%@.gif",basePath,uuid];
+    BOOL success = [data writeToFile:path atomically:YES];
     if (success){
         return [path stringByReplacingOccurrencesOfString:CACHES_PATH withString:@"localCachePath://"];
     }else{

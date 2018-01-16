@@ -6,7 +6,6 @@
 //  Copyright © 2017年 rzico. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <WXModuleProtocol.h>
 #import <SRWebSocket.h>
 
