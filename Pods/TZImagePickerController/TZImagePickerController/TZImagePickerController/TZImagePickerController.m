@@ -167,7 +167,7 @@
         
         if (![[TZImageManager manager] authorizationStatusAuthorized]) {
             _tipLabel = [[UILabel alloc] init];
-            _tipLabel.frame = CGRectMake(8, 120, self.view.tz_width - 16, 60);
+            _tipLabel.frame = CGRectMake(8, 120, self.view.tz_width - 16, 100);
             _tipLabel.textAlignment = NSTextAlignmentCenter;
             _tipLabel.numberOfLines = 0;
             _tipLabel.font = [UIFont systemFontOfSize:16];
@@ -185,7 +185,7 @@
             if (iOS8Later) {
                 _settingBtn = [UIButton buttonWithType:UIButtonTypeSystem];
                 [_settingBtn setTitle:self.settingBtnTitleStr forState:UIControlStateNormal];
-                _settingBtn.frame = CGRectMake(0, 180, self.view.tz_width, 44);
+                _settingBtn.frame = CGRectMake(0, 220, self.view.tz_width, 44);
                 _settingBtn.titleLabel.font = [UIFont systemFontOfSize:18];
                 [_settingBtn addTarget:self action:@selector(settingBtnClick) forControlEvents:UIControlEventTouchUpInside];
                 [self.view addSubview:_settingBtn];
