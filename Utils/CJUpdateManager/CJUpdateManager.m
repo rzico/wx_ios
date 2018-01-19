@@ -170,7 +170,11 @@
 - (BOOL)needUpdateResource:(NSString *)version{
 #ifndef DEBUG
     NSDictionary *resInfo = [self getResourceInfo];
-    return (!resInfo || ![[resInfo objectForKey:@"resVersion"] isEqualToString:version]);
+    if (!resInfo || ![resInfo objectForKey:@"resVersion"]){
+        return YES;
+    }else{
+        return [self isNeedUpdateWithLocal:[resInfo objectForKey:@"resVersion"] remote:version];
+    }
 #else
     return YES;
 #endif
@@ -179,8 +183,12 @@
 - (BOOL)checkAppUpdate:(NSString *)version{
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
     NSString *localVersion = [info objectForKey:@"CFBundleShortVersionString"];
-    NSArray *localArray = [localVersion componentsSeparatedByString:@"."];
-    NSArray *remoteArray = [version componentsSeparatedByString:@"."];
+    return [self isNeedUpdateWithLocal:localVersion remote:version];
+}
+
+- (BOOL)isNeedUpdateWithLocal:(NSString *)local remote:(NSString *)remote{
+    NSArray *localArray = [local componentsSeparatedByString:@"."];
+    NSArray *remoteArray = [remote componentsSeparatedByString:@"."];
     NSInteger minLength = MIN(localArray.count, remoteArray.count);
     
     BOOL needUpdate = NO;
@@ -244,3 +252,4 @@
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 @end
+
