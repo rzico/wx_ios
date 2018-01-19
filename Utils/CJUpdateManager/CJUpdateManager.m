@@ -57,14 +57,19 @@
 }
 
 - (BOOL)checkUpdateOfLocalResource{
-    if (![self getResourceInfo]){
-        NSString *zipPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"res.zip"];
-        if ([self releaseZip:zipPath]){
-            NSDictionary *resInfo = @{@"resVersion":localResVersion};
-            [self saveResourceInfo:resInfo];
-            return true;
-        }
+    if (![self getResourceInfo] || [self needUpdateResource:localResVersion]){
+        return [self releaseLocalResource];
     }else{
+        return true;
+    }
+    return false;
+}
+
+- (BOOL)releaseLocalResource{
+    NSString *zipPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"res.zip"];
+    if ([self releaseZip:zipPath]){
+        NSDictionary *resInfo = @{@"resVersion":localResVersion};
+        [self saveResourceInfo:resInfo];
         return true;
     }
     return false;
@@ -168,19 +173,33 @@
 }
 
 - (BOOL)needUpdateResource:(NSString *)version{
-#ifndef DEBUG
-    NSDictionary *resInfo = [self getResourceInfo];
-    return (!resInfo || ![[resInfo objectForKey:@"resVersion"] isEqualToString:version]);
-#else
-    return YES;
-#endif
+//#ifndef DEBUG
+//    NSDictionary *resInfo = [self getResourceInfo];
+//    if (!resInfo || ![resInfo objectForKey:@"resVersion"]){
+//        return YES;
+//    }else{
+//        return [self isNeedUpdateWithLocal:[resInfo objectForKey:@"resVersion"] remote:version];
+//    }
+//#else
+//    return YES;
+//#endif
+        NSDictionary *resInfo = [self getResourceInfo];
+        if (!resInfo || ![resInfo objectForKey:@"resVersion"]){
+            return YES;
+        }else{
+            return [self isNeedUpdateWithLocal:[resInfo objectForKey:@"resVersion"] remote:version];
+        }
 }
 
 - (BOOL)checkAppUpdate:(NSString *)version{
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
     NSString *localVersion = [info objectForKey:@"CFBundleShortVersionString"];
-    NSArray *localArray = [localVersion componentsSeparatedByString:@"."];
-    NSArray *remoteArray = [version componentsSeparatedByString:@"."];
+    return [self isNeedUpdateWithLocal:localVersion remote:version];
+}
+
+- (BOOL)isNeedUpdateWithLocal:(NSString *)local remote:(NSString *)remote{
+    NSArray *localArray = [local componentsSeparatedByString:@"."];
+    NSArray *remoteArray = [remote componentsSeparatedByString:@"."];
     NSInteger minLength = MIN(localArray.count, remoteArray.count);
     
     BOOL needUpdate = NO;
@@ -193,6 +212,9 @@
         
         if (localValue < remoteValue){
             needUpdate = YES;
+            break;
+        }else if(localValue > remoteValue){
+            needUpdate = NO;
             break;
         }else{
             needUpdate = NO;
@@ -244,3 +266,4 @@
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 @end
+
