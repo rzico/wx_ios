@@ -83,8 +83,19 @@ WX_EXPORT_METHOD(@selector(openVideo:))
         message.data = album;
         if (back){
             back(message.getMessage);
+            back = nil;
         }
     }];
+    
+    [imagePickerVc setImagePickerControllerDidCancelHandle:^{
+        NSLog(@"cancel");
+        CJCallbackMessage *message = [CJCallbackMessage new];
+        message.type = NO;
+        message.content = @"取消选择";
+        message.data = @"";
+        callback(message.getMessage);
+    }];
+    
     [weexInstance.viewController presentViewController:imagePickerVc animated:YES completion:nil];
 }
 
@@ -134,8 +145,19 @@ WX_EXPORT_METHOD(@selector(openVideo:))
         message.data = path;
         if (back){
             back(message.getMessage);
+            back = nil;
         }
     }];
+    
+    [imagePickerVc setImagePickerControllerDidCancelHandle:^{
+        NSLog(@"cancel");
+        CJCallbackMessage *message = [CJCallbackMessage new];
+        message.type = NO;
+        message.content = @"取消选择";
+        message.data = @"";
+        callback(message.getMessage);
+    }];
+    
     [weexInstance.viewController presentViewController:imagePickerVc animated:YES completion:nil];
 }
 
@@ -169,6 +191,15 @@ WX_EXPORT_METHOD(@selector(openVideo:))
 }
 
 - (void)imageEditorDidCancel:(CLImageEditor *)editor{
+    NSLog(@"取消编辑");
+    if (back){
+        CJCallbackMessage *message = [CJCallbackMessage new];
+        message.type = NO;
+        message.content = @"取消编辑";
+        message.data = @"";
+        back(message.getMessage);
+        back = nil;
+    }
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -185,6 +216,7 @@ WX_EXPORT_METHOD(@selector(openVideo:))
     message.data = album;
     if (back){
         back(message.getMessage);
+        back = nil;
     }
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
@@ -268,6 +300,7 @@ WX_EXPORT_METHOD(@selector(openVideo:))
         }
     }];
     [imagePickerVc setImagePickerControllerDidCancelHandle:^{
+        NSLog(@"取消选择");
         CJCallbackMessage *message = [CJCallbackMessage new];
         message.type = NO;
         message.content = @"取消选择";
@@ -329,6 +362,14 @@ WX_EXPORT_METHOD(@selector(openVideo:))
         if (callback){
             callback(message.getMessage);
         }
+    }];
+    [imagePickerVc setImagePickerControllerDidCancelHandle:^{
+        NSLog(@"取消选择");
+        CJCallbackMessage *message = [CJCallbackMessage new];
+        message.type = NO;
+        message.content = @"取消选择";
+        message.data = @"";
+        callback(message.getMessage);
     }];
     [weexInstance.viewController presentViewController:imagePickerVc animated:YES completion:nil];
 }
