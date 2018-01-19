@@ -57,14 +57,19 @@
 }
 
 - (BOOL)checkUpdateOfLocalResource{
-    if (![self getResourceInfo]){
-        NSString *zipPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"res.zip"];
-        if ([self releaseZip:zipPath]){
-            NSDictionary *resInfo = @{@"resVersion":localResVersion};
-            [self saveResourceInfo:resInfo];
-            return true;
-        }
+    if (![self getResourceInfo] || [self needUpdateResource:localResVersion]){
+        return [self releaseLocalResource];
     }else{
+        return true;
+    }
+    return false;
+}
+
+- (BOOL)releaseLocalResource{
+    NSString *zipPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"res.zip"];
+    if ([self releaseZip:zipPath]){
+        NSDictionary *resInfo = @{@"resVersion":localResVersion};
+        [self saveResourceInfo:resInfo];
         return true;
     }
     return false;
@@ -168,16 +173,22 @@
 }
 
 - (BOOL)needUpdateResource:(NSString *)version{
-#ifndef DEBUG
-    NSDictionary *resInfo = [self getResourceInfo];
-    if (!resInfo || ![resInfo objectForKey:@"resVersion"]){
-        return YES;
-    }else{
-        return [self isNeedUpdateWithLocal:[resInfo objectForKey:@"resVersion"] remote:version];
-    }
-#else
-    return YES;
-#endif
+//#ifndef DEBUG
+//    NSDictionary *resInfo = [self getResourceInfo];
+//    if (!resInfo || ![resInfo objectForKey:@"resVersion"]){
+//        return YES;
+//    }else{
+//        return [self isNeedUpdateWithLocal:[resInfo objectForKey:@"resVersion"] remote:version];
+//    }
+//#else
+//    return YES;
+//#endif
+        NSDictionary *resInfo = [self getResourceInfo];
+        if (!resInfo || ![resInfo objectForKey:@"resVersion"]){
+            return YES;
+        }else{
+            return [self isNeedUpdateWithLocal:[resInfo objectForKey:@"resVersion"] remote:version];
+        }
 }
 
 - (BOOL)checkAppUpdate:(NSString *)version{
@@ -201,6 +212,9 @@
         
         if (localValue < remoteValue){
             needUpdate = YES;
+            break;
+        }else if(localValue > remoteValue){
+            needUpdate = NO;
             break;
         }else{
             needUpdate = NO;
