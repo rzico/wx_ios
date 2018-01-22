@@ -52,7 +52,7 @@ static NSString * const ZSSRichTextEditorToolbarFonts = @"com.zedsaid.toolbarite
 
 @class ZSSBarButtonItem;
 
-typedef void(^RichEditorBlock)(NSString *content);
+typedef void(^RichEditorBlock)(BOOL isCancel, NSString *content);
 
 /**
  *  The viewController used with ZSSRichTextEditor

@@ -51,6 +51,8 @@
     self.window.rootViewController = [NSClassFromString(@"MainViewController") new];
     [self.window makeKeyAndVisible];
     
+    self.router = [[CJRouterWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.center = self.window.center;
     
     [self registLocalNotification];
     return YES;

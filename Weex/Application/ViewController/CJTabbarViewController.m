@@ -9,6 +9,7 @@
 #import "CJTabbarViewController.h"
 #import <WXRootViewController.h>
 #import "CJUserManager.h"
+#import "CJRouterViewController.h"
 
 @interface CJTabbarViewController ()<UITabBarControllerDelegate>
 
@@ -230,9 +231,10 @@
 
 - (void)selectImagePicker {
     if ([CJUserManager getUid] > 0){
-        CJWeexViewController *editorVc = [[CJWeexViewController alloc] initWithUrl:_addJs];
+        CJRouterViewController *editorVc = [[CJRouterViewController alloc] initWithUrl:_addJs];
         [editorVc render:nil];
-        [[self navigationController] pushViewController:editorVc animated:YES];
+        [SharedAppDelegate transToRouterWindowWithUIViewcontroller:editorVc];
+//        [[self navigationController] pushViewController:editorVc animated:YES];
     }else{
         [SharedAppDelegate presentLoginViewController];
     }

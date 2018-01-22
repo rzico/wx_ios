@@ -35,7 +35,6 @@
 		882C8AD21FE7FA3300C6DB32 /* CJDatabaseOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C8AD11FE7FA3300C6DB32 /* CJDatabaseOption.m */; };
 		882C8AD51FE7FAC400C6DB32 /* CJTabbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C8AD41FE7FAC400C6DB32 /* CJTabbarViewController.m */; };
 		885186AE2005E75800E48BF8 /* CJDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 885186AD2005E75800E48BF8 /* CJDownloader.m */; };
-		88724BFD20074AFC00C97F82 /* CJRouterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724BFC20074AFB00C97F82 /* CJRouterViewController.m */; };
 		88724C0120074EC900C97F82 /* CJRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0020074EC900C97F82 /* CJRouter.m */; };
 		88724C0420076CA800C97F82 /* CJRouterTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0320076CA800C97F82 /* CJRouterTabbar.m */; };
 		88724C0720076D0800C97F82 /* CJRouterPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0620076D0800C97F82 /* CJRouterPage.m */; };
@@ -508,6 +507,8 @@
 		88C2DAA41FE9C26F000BCAB4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 88C2DAA31FE9C26F000BCAB4 /* libz.tbd */; };
 		88C2DAA71FE9D0B9000BCAB4 /* IMManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C2DAA61FE9D0B9000BCAB4 /* IMManager.m */; };
 		88F056CF1FF6030700B4908D /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F056CE1FF6030700B4908D /* UserNotifications.framework */; };
+		88F34F09201346040053266B /* CJRouterWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F34F08201346040053266B /* CJRouterWindow.m */; };
+		88F34F0C201346210053266B /* CJRouterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F34F0B201346210053266B /* CJRouterViewController.m */; };
 		EF209E87479DF7DBDFBC056D /* libPods-Weex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95553F05A6A1F2ACBC394A3C /* libPods-Weex.a */; };
 /* End PBXBuildFile section */
 
@@ -586,8 +587,6 @@
 		882C8AD41FE7FAC400C6DB32 /* CJTabbarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJTabbarViewController.m; sourceTree = "<group>"; };
 		885186AC2005E75800E48BF8 /* CJDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJDownloader.h; sourceTree = "<group>"; };
 		885186AD2005E75800E48BF8 /* CJDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJDownloader.m; sourceTree = "<group>"; };
-		88724BFB20074AFB00C97F82 /* CJRouterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterViewController.h; sourceTree = "<group>"; };
-		88724BFC20074AFB00C97F82 /* CJRouterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterViewController.m; sourceTree = "<group>"; };
 		88724BFF20074EC900C97F82 /* CJRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouter.h; sourceTree = "<group>"; };
 		88724C0020074EC900C97F82 /* CJRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouter.m; sourceTree = "<group>"; };
 		88724C0220076CA800C97F82 /* CJRouterTabbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterTabbar.h; sourceTree = "<group>"; };
@@ -1475,6 +1474,10 @@
 		88C2DAA51FE9D0B9000BCAB4 /* IMManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMManager.h; sourceTree = "<group>"; };
 		88C2DAA61FE9D0B9000BCAB4 /* IMManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IMManager.m; sourceTree = "<group>"; };
 		88F056CE1FF6030700B4908D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		88F34F07201346040053266B /* CJRouterWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterWindow.h; sourceTree = "<group>"; };
+		88F34F08201346040053266B /* CJRouterWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterWindow.m; sourceTree = "<group>"; };
+		88F34F0A201346210053266B /* CJRouterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterViewController.h; sourceTree = "<group>"; };
+		88F34F0B201346210053266B /* CJRouterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouterViewController.m; sourceTree = "<group>"; };
 		95553F05A6A1F2ACBC394A3C /* libPods-Weex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Weex.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB6CC0E3562C4ED21645C172 /* Pods-Weex.ad-hoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weex.ad-hoc.xcconfig"; path = "Pods/Target Support Files/Pods-Weex/Pods-Weex.ad-hoc.xcconfig"; sourceTree = "<group>"; };
 		E6071F2B2F1933733A53F202 /* Pods-Weex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weex.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Weex/Pods-Weex.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1930,8 +1933,10 @@
 			children = (
 				887E30ED1FE79F1900D8627A /* CJWeexViewController.h */,
 				887E30EE1FE79F1900D8627A /* CJWeexViewController.m */,
-				88724BFB20074AFB00C97F82 /* CJRouterViewController.h */,
-				88724BFC20074AFB00C97F82 /* CJRouterViewController.m */,
+				88F34F07201346040053266B /* CJRouterWindow.h */,
+				88F34F08201346040053266B /* CJRouterWindow.m */,
+				88F34F0A201346210053266B /* CJRouterViewController.h */,
+				88F34F0B201346210053266B /* CJRouterViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3787,7 +3792,6 @@
 				88C2DA541FE9C16A000BCAB4 /* ContactPanelTableViewCell.m in Sources */,
 				88C2D9921FE9C16A000BCAB4 /* Reachability.m in Sources */,
 				88724C0720076D0800C97F82 /* CJRouterPage.m in Sources */,
-				88724BFD20074AFC00C97F82 /* CJRouterViewController.m in Sources */,
 				887E30A21FE6ADFD00D8627A /* CJKeyChain.m in Sources */,
 				88C2DA681FE9C16A000BCAB4 /* GroupMemberListViewController.m in Sources */,
 				88C2D9BE1FE9C16A000BCAB4 /* IMAConversationManager.m in Sources */,
@@ -3910,6 +3914,7 @@
 				887E31E91FE7BEE800D8627A /* DDRSAWrapper.m in Sources */,
 				88C2D9971FE9C16A000BCAB4 /* MBProgressHUD.m in Sources */,
 				88C2DA711FE9C16A000BCAB4 /* SearchResultViewController.m in Sources */,
+				88F34F0C201346210053266B /* CJRouterViewController.m in Sources */,
 				88C2DA651FE9C16A000BCAB4 /* ChatRoomProfileViewController.m in Sources */,
 				887E30EF1FE79F1900D8627A /* CJWeexViewController.m in Sources */,
 				88C2D97A1FE9C16A000BCAB4 /* CheckButton.m in Sources */,
@@ -4056,6 +4061,7 @@
 				88C2DA641FE9C16A000BCAB4 /* ChatRoomMemberListViewController.m in Sources */,
 				88C2D97F1FE9C16A000BCAB4 /* MenuTableViewController.m in Sources */,
 				88C2DA721FE9C16A000BCAB4 /* BlackListViewController.m in Sources */,
+				88F34F09201346040053266B /* CJRouterWindow.m in Sources */,
 				882C8A9D1FE7DE5F00C6DB32 /* SGQRCodeGenerateManager.m in Sources */,
 				88C2DA471FE9C16A000BCAB4 /* V8HorizontalPickerView.m in Sources */,
 				887E31F11FE7C08500D8627A /* CJNetworkManager.m in Sources */,

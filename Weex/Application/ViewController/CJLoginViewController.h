@@ -6,8 +6,9 @@
 //  Copyright © 2017年 rzico. All rights reserved.
 //
 
-#import <WeexSDK/WeexSDK.h>
+#import "CJRouterViewController.h"
 
-@interface CJLoginViewController : WXBaseViewController
+@interface CJLoginViewController : CJRouterViewController
+
 
 @end
