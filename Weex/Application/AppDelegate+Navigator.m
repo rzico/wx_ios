@@ -10,37 +10,67 @@
 #import "CJLoginViewController.h"
 #import "FriendshipManager.h"
 #import "IMManager.h"
+#import "CJRouterViewController.h"
+#import <WeexSDK/WeexSDK.h>
 
 @implementation AppDelegate (Navigator)
 
 
 - (void)presentLoginViewController{
-    static BOOL isLoading = false;
-    if (isLoading){
-        return;
+    if (self.router.rootViewController){
+        UINavigationController *nav = (UINavigationController *)self.router.rootViewController;
+        if ([nav.topViewController isKindOfClass:[CJLoginViewController class]]){
+            return;
+        }
     }
-    isLoading = true;
-    UIViewController *rootViewController = self.window.rootViewController;
-    void (^login)(void) = ^{
+    [self transToRouterWindowWithUIViewcontroller:[[CJLoginViewController alloc] init]];
+}
+
+- (void)transToRouterWindowWithUIViewcontroller:(UIViewController *)viewcontroller{
+    [self.window endEditing:YES];
+    if (![[UIApplication sharedApplication].keyWindow isKindOfClass:[CJRouterWindow class]]){
         WXPerformBlockOnMainThread(^{
-            NSString *loginJSPath = [DOCUMENT_PATH stringByAppendingPathComponent:@"resource/view/index.js"];
-            CJLoginViewController *loginViewController = [[CJLoginViewController alloc] initWithSourceURL:[NSURL fileURLWithPath:loginJSPath]];
-            [rootViewController presentViewController:[[WXRootViewController alloc] initWithRootViewController:loginViewController] animated:true completion:^{
-                isLoading = false;
+            self.window.windowLevel = UIWindowLevelNormal;
+            [self.window resignFirstResponder];
+            
+            
+            self.router.rootViewController = [[WXRootViewController alloc] initWithRootViewController:viewcontroller];
+            [viewcontroller.navigationController setNavigationBarHidden:true];
+            self.router.windowLevel = UIWindowLevelStatusBar - 1;
+            self.router.hidden = false;
+            
+            self.router.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 1);
+            
+            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                self.router.center = self.center;
+                self.router.frame = [UIScreen mainScreen].bounds;
+                [self.router makeKeyAndVisible];
+            } completion:^(BOOL finished) {
+                self.window.hidden = true;
             }];
         });
-    };
-    if (rootViewController.presentedViewController){
-        if (![rootViewController.presentedViewController isKindOfClass:[CJLoginViewController class]]){
-            [rootViewController.presentedViewController dismissViewControllerAnimated:NO completion:^{
-                login();
-            }];
-        }else{
-            isLoading = false;
-        }
-    }else{
-        login();
     }
+}
+
+- (void)transToMainWindow{
+    WXPerformBlockOnMainThread(^{
+        [self.router endEditing:YES];
+        [self.router resignFirstResponder];
+        
+        self.window.hidden = false;
+        
+        
+        [UIView animateWithDuration:0.3f delay:0.1f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            self.router.center = self.center;
+            self.router.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 1);
+            [self.window makeKeyAndVisible];
+        } completion:^(BOOL finished) {
+            self.router.rootViewController = nil;
+            self.window.windowLevel = UIWindowLevelStatusBar - 1;
+            self.router.windowLevel = UIWindowLevelNormal;
+            self.router.hidden = true;
+        }];
+    });
 }
 
 - (void)logOut:(CJLogOutComplete)complete{

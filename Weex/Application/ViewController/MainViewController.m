@@ -300,11 +300,16 @@
 }
 
 - (void)offlineState{
+    [CJUpdateManager sharedInstance].delegate = nil;
     if ([[NSFileManager defaultManager] fileExistsAtPath:[DOCUMENT_PATH stringByAppendingPathComponent:@"router.plist"]] && [CJUserManager getUid] > 0){
         //路由存在，且已登录允许离线模式
         [self offlineLoginIm];
     }else{
-        [self alertErrorMessage:@"未连接到互联网，请检查网络设置" title:[NSString stringWithFormat:@"“%@” 网络提示",DisplayName]];
+        if (![[AFNetworkReachabilityManager sharedManager] isReachable]){
+            [self alertErrorMessage:@"未连接到互联网，请检查网络设置" title:[NSString stringWithFormat:@"“%@” 网络提示",DisplayName]];
+        }else{
+            [self alertErrorMessage:@"网络繁忙，请稍后再试" title:[NSString stringWithFormat:@"“%@” 网络提示",DisplayName]];
+        }
     }
 }
 

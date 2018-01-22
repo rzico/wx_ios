@@ -14,6 +14,17 @@
 
 @implementation CJLoginViewController
 
+
+- (instancetype)init{
+    self = [super init];
+    if (self){
+        NSString *loginJSPath = [DOCUMENT_PATH stringByAppendingPathComponent:@"resource/view/index.js"];
+        self.url = [NSURL fileURLWithPath:loginJSPath];
+        [self render:nil];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

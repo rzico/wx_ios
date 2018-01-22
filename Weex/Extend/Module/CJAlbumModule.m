@@ -244,13 +244,11 @@ WX_EXPORT_METHOD(@selector(openVideo:))
     
     imagePickerVc.naviBgColor = [UIColor colorWithHex:UINavigationBarColor];
     
-    NSString *uuid = [NSString getUUID];
-    
-    
-    
     [imagePickerVc setDidFinishPickingGifImageHandle:^(UIImage *animatedImage, id sourceAssets) {
         
         [[TZImageManager manager] getPhotoWithAsset:sourceAssets completion:^(UIImage *photo, NSDictionary *info, BOOL isDegraded) {
+            NSString *uuid = [NSString getUUID];
+            
             NSString *thumbPath = [photo getJPGImagePathWithUuid:uuid compressionQuality:1.0];
             // 再显示gif动图
             [[TZImageManager manager] getOriginalPhotoDataWithAsset:sourceAssets completion:^(NSData *data, NSDictionary *info, BOOL isDegraded) {
@@ -275,6 +273,8 @@ WX_EXPORT_METHOD(@selector(openVideo:))
     [imagePickerVc setDidFinishPickingPhotosWithInfosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto, NSArray<NSDictionary *> *infos) {
         NSMutableArray *dataArray = [NSMutableArray new];
         for (int i = 0; i < photos.count; i++){
+            NSString *uuid = [NSString getUUID];
+            
             NSString *path = [[photos objectAtIndex:i] getJPGImagePathWithUuid:uuid compressionQuality:1.0];
             
             

@@ -29,4 +29,6 @@
 - (void)dismissViewController:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))completion;
 - (void)pushToChatViewControllerWith:(IMAUser *)user;
 
+- (void)transToRouterWindowWithUIViewcontroller:(UIViewController *)viewcontroller;
+- (void)transToMainWindow;
 @end

@@ -2,7 +2,7 @@
 //  CJRouterViewController.m
 //  Weex
 //
-//  Created by macOS on 2018/1/11.
+//  Created by macOS on 2018/1/20.
 //  Copyright © 2018年 rzico. All rights reserved.
 //
 
@@ -24,8 +24,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)loadChildViewControllers{
-    
-}
 
 @end
