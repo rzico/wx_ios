@@ -185,6 +185,7 @@
         [button setBackgroundColor:[UIColor whiteColor]];
         button.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [button setImage:[UIImage imageNamed:@"ico_add"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"ico_add"] forState:UIControlStateHighlighted];
         [self.tabBar addSubview:button];
         [self.tabBar bringSubviewToFront:button];
         [button addTarget:self action:@selector(selectImagePicker) forControlEvents:UIControlEventTouchUpInside];
