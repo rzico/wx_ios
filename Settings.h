@@ -42,8 +42,7 @@ static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.rzico.com/";
 
 //接口地址
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com/";
-
+static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/";
 
 //微信参数
 static NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
@@ -59,7 +58,7 @@ static NSString *aliOSSBucketName = @"rzico-weex";
 static int UINavigationBarColor = 0xEB4E40;
 
 //本地资源版本号
-static NSString *localResVersion = @"1.0.6";
+static NSString *localResVersion = @"1.0.7";
 
 //伪协议头
 static NSString *openURLScheme = @"yundian";
