@@ -10,5 +10,6 @@
 @interface UIDevice (SystemVersion)
 
 + (CGFloat)iosVersion;
++ (BOOL)isIphoneX;
 
 @end

@@ -6,6 +6,7 @@
 //
 
 #import "CLDrawTool.h"
+#import "UIDevice+SystemVersion.h"
 
 static NSString* const kCLDrawToolEraserIconName = @"eraserIconAssetsName";
 
@@ -241,6 +242,11 @@ static NSString* const kCLDrawToolEraserIconName = @"eraserIconAssetsName";
 {
     CGFloat W = 30;
     CGFloat H = _menuView.height;
+    if ([UIDevice isIphoneX]){
+        H = _menuView.height - 34;
+    }
+    
+    
     CGFloat x = 0;
     
     CGSize size = CGSizeMake(20, 20);
@@ -280,7 +286,10 @@ static NSString* const kCLDrawToolEraserIconName = @"eraserIconAssetsName";
         frame.size = size;
         view.iconView.frame = frame;
         view.iconView.backgroundColor = obj[@"color"];
-        view.iconView.center = CGPointMake(W/2, (H-20)/2);
+        
+        view.iconView.center = CGPointMake(W/2, (H - 20)/2);
+        
+        
         
         view.iconImage = obj[@"icon"];
         view.title = obj[@"title"];
@@ -297,7 +306,7 @@ static NSString* const kCLDrawToolEraserIconName = @"eraserIconAssetsName";
 //    [_menuView addSubview:_colorSlider];
 //
     _widthSlider = [self defaultSliderWithWidth:0];
-    _widthSlider.frame = CGRectMake(_menuView.width / 2.0 - 25, (_menuView.height - 30) / 2, _menuView.width / 2 - 20, 30);
+    _widthSlider.frame = CGRectMake(_menuView.width / 2.0 - 25, (H - 30) / 2, _menuView.width / 2 - 20, 30);
     [_widthSlider addTarget:self action:@selector(widthSliderDidChange:) forControlEvents:UIControlEventValueChanged];
     _widthSlider.value = 0.1;
     _widthSlider.backgroundColor = [UIColor colorWithPatternImage:[self widthSliderBackground]];
@@ -308,7 +317,7 @@ static NSString* const kCLDrawToolEraserIconName = @"eraserIconAssetsName";
     _strokePreview.layer.cornerRadius = _strokePreview.height/2;
     _strokePreview.layer.borderWidth = 1;
     _strokePreview.layer.borderColor = [[[CLImageEditorTheme theme] toolbarTextColor] CGColor];
-    _strokePreview.center = CGPointMake(_menuView.width-W/2 - 10, _menuView.height/2);
+    _strokePreview.center = CGPointMake(_menuView.width-W/2 - 10, H/2);
     [_menuView addSubview:_strokePreview];
 
     _strokePreviewBackground = [[UIView alloc] initWithFrame:_strokePreview.frame];

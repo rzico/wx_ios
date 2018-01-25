@@ -32,11 +32,60 @@ WX_EXPORT_METHOD(@selector(openCrop:callback:))
 WX_EXPORT_METHOD(@selector(openPuzzle:callback:))
 WX_EXPORT_METHOD(@selector(openVideo:))
 
-- (void)openAlbumSingle:(BOOL)isCrop callback:(WXModuleCallback)callback{
+- (void)openAlbumSingle:(NSDictionary *)option callback:(WXModuleCallback)callback{
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 delegate:nil];
+    BOOL isCrop = NO;
+    int width = 0;
+    int height = 0;
+    
+    CGRect viewFrame = weexInstance.viewController.view.frame;
+    
+    //定义裁剪Frame
+    CGRect cropframe;
+    
+    if ([option isKindOfClass:[NSDictionary class]]){
+        if ([option objectForKey:@"isCrop"]){
+            isCrop = [[option objectForKey:@"isCrop"] boolValue];
+            if (isCrop){
+                if ([option objectForKey:@"width"]){
+                    width = [[option objectForKey:@"width"] intValue];
+                }else{
+                    width = 1;
+                }
+                if ([option objectForKey:@"height"]){
+                    width = [[option objectForKey:@"height"] intValue];
+                }else{
+                    height = 1;
+                }
+                
+                if (width >= height){
+                    cropframe.size.width = viewFrame.size.width;
+                    cropframe.size.height = viewFrame.size.width / width * height;
+                    cropframe.origin.x = 0;
+                    cropframe.origin.y = (viewFrame.size.height - cropframe.size.height) / 2;
+                }else{
+                    cropframe.size.width = viewFrame.size.width / height * width;
+                    cropframe.size.height = viewFrame.size.width;
+                    cropframe.origin.x = (viewFrame.size.width - cropframe.size.width) / 2;
+                    cropframe.origin.y = (viewFrame.size.height - cropframe.size.height) / 2;
+                }
+                
+                imagePickerVc.cropRect = cropframe;
+            }
+        }
+    }else{
+        //兼容上个版本
+        isCrop = YES;
+        cropframe.size.width = viewFrame.size.width;
+        cropframe.size.height = viewFrame.size.width;
+        cropframe.origin.x = 0;
+        cropframe.origin.y = (viewFrame.size.height - cropframe.size.height) / 2;
+        
+        imagePickerVc.cropRect = cropframe;
+    }
     
     imagePickerVc.allowPickingImage = YES;
-    imagePickerVc.allowCrop = YES;
+    imagePickerVc.allowCrop = isCrop;
     imagePickerVc.allowPickingVideo = NO;
     imagePickerVc.allowPickingMultipleVideo = NO;
     imagePickerVc.allowPickingGif = NO;
@@ -49,21 +98,11 @@ WX_EXPORT_METHOD(@selector(openVideo:))
     
     imagePickerVc.allowPickingOriginalPhoto = NO;
     
-    imagePickerVc.isSelectOriginalPhoto = YES;
+    imagePickerVc.isSelectOriginalPhoto = NO;
 
     imagePickerVc.naviBgColor = [UIColor colorWithHex:UINavigationBarColor];
     
     imagePickerVc.naviTitleColor = [UIColor colorWithHex:UINavigationBarColor];
-    
-    
-    CGRect bound = weexInstance.viewController.view.frame;
-    CGRect frame;
-    frame.size.width = bound.size.width;
-    frame.size.height = bound.size.width;
-    frame.origin.x = 0;
-    frame.origin.y = bound.size.height / 2 - frame.size.height / 2;
-    
-    imagePickerVc.cropRect = frame;
     
     back = callback;
     
@@ -116,7 +155,7 @@ WX_EXPORT_METHOD(@selector(openVideo:))
     
     imagePickerVc.allowPickingOriginalPhoto = NO;
     
-    imagePickerVc.isSelectOriginalPhoto = YES;
+    imagePickerVc.isSelectOriginalPhoto = NO;
     
     imagePickerVc.naviBgColor = [UIColor colorWithHex:UINavigationBarColor];
     
