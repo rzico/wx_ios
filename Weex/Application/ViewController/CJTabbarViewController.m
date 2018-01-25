@@ -9,6 +9,7 @@
 #import "CJTabbarViewController.h"
 #import <WXRootViewController.h>
 #import "CJUserManager.h"
+#import "CJRouterViewController.h"
 
 @interface CJTabbarViewController ()<UITabBarControllerDelegate>
 
@@ -184,6 +185,7 @@
         [button setBackgroundColor:[UIColor whiteColor]];
         button.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [button setImage:[UIImage imageNamed:@"ico_add"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"ico_add"] forState:UIControlStateHighlighted];
         [self.tabBar addSubview:button];
         [self.tabBar bringSubviewToFront:button];
         [button addTarget:self action:@selector(selectImagePicker) forControlEvents:UIControlEventTouchUpInside];
@@ -230,9 +232,10 @@
 
 - (void)selectImagePicker {
     if ([CJUserManager getUid] > 0){
-        CJWeexViewController *editorVc = [[CJWeexViewController alloc] initWithUrl:_addJs];
+        CJRouterViewController *editorVc = [[CJRouterViewController alloc] initWithUrl:_addJs];
         [editorVc render:nil];
-        [[self navigationController] pushViewController:editorVc animated:YES];
+        [SharedAppDelegate transToRouterWindowWithUIViewcontroller:editorVc];
+//        [[self navigationController] pushViewController:editorVc animated:YES];
     }else{
         [SharedAppDelegate presentLoginViewController];
     }

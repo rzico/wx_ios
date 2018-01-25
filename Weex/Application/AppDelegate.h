@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <WXApi.h>
+#import "CJRouterWindow.h"
 
 typedef void(^WXAuthComplete)(SendAuthResp *resp);
 typedef void(^WXPayComplete)(PayResp *resp);
@@ -17,6 +18,11 @@ typedef void(^CJLogOutComplete)(BOOL success);
 @interface AppDelegate : UIResponder <UIApplicationDelegate, WXApiDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) CJRouterWindow *router;
+
+@property (assign, nonatomic) CGPoint center;
+
 
 @property (strong, nonatomic) WXAuthComplete wxAuthComplete;
 @property (strong, nonatomic) WXPayComplete wxPayComplete;

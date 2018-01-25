@@ -339,10 +339,11 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)finishEdit{
     if (self.callBack){
-        self.callBack(self.getHTML);
+        self.callBack(false, self.getHTML);
+        self.callBack = nil;
     }
-//    [self.navigationController popViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+//    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - View Will Appear Section
@@ -360,7 +361,10 @@ static CGFloat kDefaultScale = 0.5;
 
 #pragma mark - View Will Disappear Section
 - (void)viewWillDisappear:(BOOL)animated {
-    
+    if (self.callBack){
+        self.callBack(true, nil);
+        self.callBack = nil;
+    }
     [super viewWillDisappear:animated];
     
     //Remove observers for keyboard showing or hiding notifications
@@ -543,7 +547,6 @@ static CGFloat kDefaultScale = 0.5;
 //    [self.toolbarHolder addSubview:view];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    NSLog(@"tag=%zd",tag);
     button.tag = tag;
     button.clipsToBounds = YES;
     button.frame = CGRectMake(left + 2.5, top, width - 5, width - 5);
@@ -1212,11 +1215,10 @@ static CGFloat kDefaultScale = 0.5;
 - (void)setHTML:(NSString *)html {
     html = [html stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     self.internalHTML = html;
-    
+
     if (self.editorLoaded) {
         [self updateHTML];
     }
-    
 }
 
 - (void)updateHTML {

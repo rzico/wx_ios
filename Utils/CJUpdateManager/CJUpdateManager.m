@@ -173,22 +173,16 @@
 }
 
 - (BOOL)needUpdateResource:(NSString *)version{
-//#ifndef DEBUG
-//    NSDictionary *resInfo = [self getResourceInfo];
-//    if (!resInfo || ![resInfo objectForKey:@"resVersion"]){
-//        return YES;
-//    }else{
-//        return [self isNeedUpdateWithLocal:[resInfo objectForKey:@"resVersion"] remote:version];
-//    }
-//#else
-//    return YES;
-//#endif
-        NSDictionary *resInfo = [self getResourceInfo];
-        if (!resInfo || ![resInfo objectForKey:@"resVersion"]){
-            return YES;
-        }else{
-            return [self isNeedUpdateWithLocal:[resInfo objectForKey:@"resVersion"] remote:version];
-        }
+#ifndef DEBUG
+    NSDictionary *resInfo = [self getResourceInfo];
+    if (!resInfo || ![resInfo objectForKey:@"resVersion"]){
+        return YES;
+    }else{
+        return [self isNeedUpdateWithLocal:[resInfo objectForKey:@"resVersion"] remote:version];
+    }
+#else
+    return YES;
+#endif
 }
 
 - (BOOL)checkAppUpdate:(NSString *)version{

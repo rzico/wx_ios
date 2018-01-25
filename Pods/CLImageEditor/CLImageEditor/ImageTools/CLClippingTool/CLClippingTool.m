@@ -118,7 +118,13 @@ static NSString* const kCLClippingToolRatioTitleFormat = @"titleFormat";
     [_menuContainer addSubview:_menuScroll];
     
     if(!swapBtnHidden){
-        UIView *btnPanel = [[UIView alloc] initWithFrame:CGRectMake(_menuScroll.right, 0, buttonWidth, _menuContainer.height)];
+        CGFloat H = _menuContainer.height;
+        
+        if ([UIDevice isIphoneX]){
+            H = _menuContainer.height - 34;
+        }
+        
+        UIView *btnPanel = [[UIView alloc] initWithFrame:CGRectMake(_menuScroll.right, 0, buttonWidth, H)];
         btnPanel.backgroundColor = [_menuContainer.backgroundColor colorWithAlphaComponent:0.9];
         [_menuContainer addSubview:btnPanel];
         
@@ -188,6 +194,12 @@ static NSString* const kCLClippingToolRatioTitleFormat = @"titleFormat";
     CGFloat W = 60;
     CGFloat x = 0;
     
+    CGFloat H = _menuScroll.height;
+    
+    if ([UIDevice isIphoneX]){
+        H = _menuScroll.height - 34;
+    }
+    
     NSArray *ratios = self.toolInfo.optionalInfo[kCLClippingToolRatios];
     BOOL swapBtnHidden = [self.toolInfo.optionalInfo[kCLClippingToolSwapButtonHidden] boolValue];
     
@@ -216,7 +228,7 @@ static NSString* const kCLClippingToolRatioTitleFormat = @"titleFormat";
             padding = diff / (ratios.count + 1);
         }
         
-        CLRatioMenuItem *view = [[CLRatioMenuItem alloc] initWithFrame:CGRectMake(x + padding, 0, W, _menuScroll.height) target:self action:@selector(tappedMenu:) toolInfo:nil];
+        CLRatioMenuItem *view = [[CLRatioMenuItem alloc] initWithFrame:CGRectMake(x + padding, 0, W, H) target:self action:@selector(tappedMenu:) toolInfo:nil];
         view.iconImage = iconImage;
         view.ratio = ratio;
         

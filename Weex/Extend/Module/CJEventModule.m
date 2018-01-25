@@ -38,6 +38,8 @@
 #import "CJDatabaseManager.h"
 #import "TIMActionManager.h"
 
+#import "CJRouterViewController.h"
+
 @implementation CJEventModule
 
 @synthesize weexInstance;
@@ -77,22 +79,35 @@ WX_EXPORT_METHOD(@selector(logout:))
 WX_EXPORT_METHOD(@selector(setReadMessage:callback:))
 WX_EXPORT_METHOD(@selector(getUnReadMessage))
 WX_EXPORT_METHOD_SYNC(@selector(deviceInfo))
+WX_EXPORT_METHOD(@selector(router:))
+WX_EXPORT_METHOD(@selector(closeRouter))
+
 
 static NSMutableArray<NSDictionary *> *queueList;
 
-- (void)router:(NSString *)name parameters:(NSArray *)parameters{
-    UIViewController *viewController;
-    if ([SharedAppDelegate.window.rootViewController presentedViewController]){
-        
+- (void)router:(NSString *)url{
+    NSString *urlStr = [url rewriteURL];
+    NSURL *URL;
+    if ([urlStr hasPrefix:@"/"]){
+        URL = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@",urlStr]];
     }else{
-        
+        URL = [NSURL URLWithString:urlStr];
+    }
+    UIViewController *topVC = [UIViewController topViewController];
+    if ([topVC isKindOfClass:[CJRouterViewController class]]){
+        CJRouterViewController *routerVC = (CJRouterViewController *)topVC;
+        routerVC.url = URL;
+        [routerVC render:nil];
+    }else{
+        CJRouterViewController *routerVC = [[CJRouterViewController alloc] initWithUrl:URL];
+        [routerVC render:^(BOOL finished) {
+            [SharedAppDelegate transToRouterWindowWithUIViewcontroller:routerVC];
+        }];
     }
 }
 
 - (void)closeRouter{
-    [weexInstance.viewController.parentViewController dismissViewControllerAnimated:true completion:^{
-        
-    }];
+    [SharedAppDelegate transToMainWindow];
 }
 
 - (void)openURL:(NSString *)url callback:(nullable WXModuleCallback)callback animated:(BOOL)animated ompletion:(void(^)(BOOL finished))completion{
@@ -151,7 +166,11 @@ static NSMutableArray<NSDictionary *> *queueList;
     if (nav.viewControllers.count > 1){
         [nav popViewControllerAnimated:YES];
     }else{
-        [weexInstance.viewController dismissViewControllerAnimated:YES completion:nil];
+        if ([weexInstance.viewController isKindOfClass:[CJRouterViewController class]] || [weexInstance.viewController isKindOfClass:NSClassFromString(@"CJLoginViewController")]){
+            [SharedAppDelegate transToMainWindow];
+        }else{
+            [weexInstance.viewController dismissViewControllerAnimated:YES completion:nil];
+        }
     }
 }
 
@@ -474,18 +493,28 @@ static NSMutableArray<NSDictionary *> *queueList;
     editor.alwaysShowToolbar = YES;
     [editor setHTML:html];
     editor.formatHTML = YES;
-    editor.callBack = ^(NSString *content) {
-        CJCallbackMessage *message = [CJCallbackMessage new];
-        message.type = YES;
-        message.content = @"编辑完成";
-        message.data = (!content || content.length <= 0) ? @"" : content;
-        if (callback){
-            callback(message.getMessage);
+    editor.callBack = ^(BOOL isCancel, NSString *content) {
+        if (!isCancel){
+            CJCallbackMessage *message = [CJCallbackMessage new];
+            message.type = YES;
+            message.content = @"编辑完成";
+            message.data = (!content || content.length <= 0) ? @"" : content;
+            if (callback){
+                callback(message.getMessage);
+            }
+        }else{
+            CJCallbackMessage *message = [CJCallbackMessage new];
+            message.type = NO;
+            message.content = @"取消编辑";
+            message.data = @"";
+            if (callback){
+                callback(message.getMessage);
+            }
         }
     };
-//    [[weexInstance.viewController navigationController] pushViewController:editor animated:YES];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editor];
-    [weexInstance.viewController presentViewController:nav animated:YES completion:nil];
+    [[weexInstance.viewController navigationController] pushViewController:editor animated:YES];
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editor];
+//    [weexInstance.viewController presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)scan:(WXModuleCallback)callback{

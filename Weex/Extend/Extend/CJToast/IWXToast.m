@@ -30,7 +30,8 @@ static const CGFloat WXToastDefaultPadding = 30.0;
 - (void)toast:(id)message duration:(double)duration
 {
     
-    UIView *superView =  [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+//    UIView *superView =  [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+    UIView *superView = [UIApplication sharedApplication].keyWindow;
     if (!superView) {
         superView = self.instance.rootView;
     }
@@ -85,7 +86,8 @@ static const CGFloat WXToastDefaultPadding = 30.0;
                                     )];
     
     CGPoint point = CGPointZero;
-    UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+//    UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
     
     // adjust to screen orientation
     UIInterfaceOrientation orientation = (UIInterfaceOrientation)[[UIApplication sharedApplication] statusBarOrientation];
