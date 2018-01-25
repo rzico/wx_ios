@@ -18,7 +18,13 @@
 - (instancetype)init{
     self = [super init];
     if (self){
-        NSString *loginJSPath = [DOCUMENT_PATH stringByAppendingPathComponent:@"resource/view/index.js"];
+        BOOL isSupportLoginWithWechat = [WXApi isWXAppInstalled] && [WXApi isWXAppSupportApi];
+        NSString *loginJSPath;
+        if (isSupportLoginWithWechat){
+            loginJSPath = [DOCUMENT_PATH stringByAppendingPathComponent:@"resource/view/index.js"];
+        }else{
+            loginJSPath = [DOCUMENT_PATH stringByAppendingPathComponent:@"resource/view/login/index.js"];
+        }
         self.url = [NSURL fileURLWithPath:loginJSPath];
         [self render:nil];
     }
