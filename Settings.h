@@ -71,4 +71,19 @@ static NSString *openURLScheme = @"mopian";
 
 //应用名
 #define DisplayName [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleDisplayName"]
+
+//根视图配置
+typedef NS_ENUM(NSUInteger, RootViewType) {
+    RootViewTypeSingleView,//单视图模式
+    RootViewTypeTabbar,//Tabbar模式
+};
+static RootViewType CJRootViewType = RootViewTypeTabbar;
+static NSString *SingleViewRootPath = @"file://resource/view/index.js";
+
+//是否启用IM
+static BOOL CJTIMEnabled = true;
+
+//登录页面
+static NSString *UninstalledWechatLoginPath = @"file://resource/view/login/index.js";
+static NSString *InstalledWechatLoginPath = @"file://resource/view/index.js";
 #endif /* Settings_h */

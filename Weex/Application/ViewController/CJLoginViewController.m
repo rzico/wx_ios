@@ -21,9 +21,9 @@
         BOOL isSupportLoginWithWechat = [WXApi isWXAppInstalled] && [WXApi isWXAppSupportApi];
         NSString *loginJSPath;
         if (isSupportLoginWithWechat){
-            loginJSPath = [DOCUMENT_PATH stringByAppendingPathComponent:@"resource/view/index.js"];
+            loginJSPath = [DOCUMENT_PATH stringByAppendingPathComponent:InstalledWechatLoginPath];
         }else{
-            loginJSPath = [DOCUMENT_PATH stringByAppendingPathComponent:@"resource/view/login/index.js"];
+            loginJSPath = [DOCUMENT_PATH stringByAppendingPathComponent:UninstalledWechatLoginPath];
         }
         self.url = [NSURL fileURLWithPath:loginJSPath];
         [self render:nil];

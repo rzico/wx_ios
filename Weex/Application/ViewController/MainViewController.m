@@ -287,16 +287,26 @@
 
 - (void)loginIm:(NSDictionary *)data{
     [self setProgress:1.0];
-    [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:^(BOOL success) {
+    NSDictionary *loginUser = [CJUserManager getUser];
+    if (loginUser && [loginUser objectForKey:@"userSig"] && CJTIMEnabled){
+        [[IMManager sharedInstance] loginWithUser:loginUser loginOption:IMManagerLoginOptionForce andBlock:^(BOOL success) {
+            CJPostNotification(CJNOTIFICATION_INITIALIZED,data);
+        }];
+    }else{
         CJPostNotification(CJNOTIFICATION_INITIALIZED,data);
-    }];
+    }
 }
 
 - (void)offlineLoginIm{
     [self setProgress:1.0];
-    [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionOffline andBlock:^(BOOL success) {
+    NSDictionary *loginUser = [CJUserManager getUser];
+    if (loginUser && [loginUser objectForKey:@"userSig"] && CJTIMEnabled){
+        [[IMManager sharedInstance] loginWithUser:loginUser loginOption:IMManagerLoginOptionOffline andBlock:^(BOOL success) {
+            CJPostNotification(CJNOTIFICATION_INITIALIZED,nil);
+        }];
+    }else{
         CJPostNotification(CJNOTIFICATION_INITIALIZED,nil);
-    }];
+    }
 }
 
 - (void)offlineState{

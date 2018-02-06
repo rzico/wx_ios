@@ -53,7 +53,7 @@ WX_EXPORT_METHOD(@selector(openVideo:))
                     width = 1;
                 }
                 if ([option objectForKey:@"height"]){
-                    width = [[option objectForKey:@"height"] intValue];
+                    height = [[option objectForKey:@"height"] intValue];
                 }else{
                     height = 1;
                 }
