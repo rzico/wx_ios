@@ -56,6 +56,9 @@
     temp = [temp rewriteURL];
     _memberJs = [temp hasPrefix:@"/"] ? [NSURL fileURLWithPath:temp] : [NSURL URLWithString:temp];
     
+    
+//    _memberJs = _messageJs;
+    
     [self setUp];
     return self;
 }

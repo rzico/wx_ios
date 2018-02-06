@@ -169,7 +169,7 @@
     
     if (vc.navigationController == nil)
     {
-        NavigationViewController *nav = [[NavigationViewController alloc] initWithRootViewController:vc];
+        WXRootViewController *nav = [[WXRootViewController alloc] initWithRootViewController:vc];
         [top presentViewController:nav animated:animated completion:completion];
     }
     else
