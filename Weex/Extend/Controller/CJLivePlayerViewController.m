@@ -211,8 +211,7 @@
             if (_closedCallback){
                 _closedCallback();
             }
-//            [self dismissViewControllerAnimated:true completion:nil];
-            [SharedAppDelegate transToMainWindow];
+            [self dismissViewControllerAnimated:true completion:nil];
         }
     }else{
         NSLog(@"cancel=%@",navigationAction.request.URL);
