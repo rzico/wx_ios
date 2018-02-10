@@ -1,4 +1,6 @@
 /Utils/TIMChat/Framworks/
 .DS_Store
-.xcuserstate
+*.xcuserstate
+/.idea/
+*.iml
 *.xcuserstate
