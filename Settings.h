@@ -42,8 +42,7 @@ static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdn.rzico.com/";
 
 //接口地址
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/nihtan/";
-//static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://192.168.2.114:8080/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com/";
 
@@ -63,7 +62,7 @@ static NSString *aliOSSBucketName = @"rzico";
 static int UINavigationBarColor = 0xEB4E40;
 
 //本地资源版本号
-static NSString *localResVersion = @"0.0.0";
+static NSString *localResVersion = @"1.0.0";
 
 //伪协议头
 static NSString *openURLScheme = @"yundian";
