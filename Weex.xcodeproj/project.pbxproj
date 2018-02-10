@@ -4301,7 +4301,7 @@
 					"$(PROJECT_DIR)/Utils/TIMChat/CommonLibrary/BlocksKit",
 					"$(PROJECT_DIR)/Utils/TIMChat/TIMChat/AppUI/ChatUI/Chat/MicroVideo/PituMotionLibrary/Framework",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.nightan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.nihtan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4342,7 +4342,7 @@
 					"$(PROJECT_DIR)/Utils/TIMChat/CommonLibrary/BlocksKit",
 					"$(PROJECT_DIR)/Utils/TIMChat/TIMChat/AppUI/ChatUI/Chat/MicroVideo/PituMotionLibrary/Framework",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.nightan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.nihtan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4491,7 +4491,7 @@
 					"$(PROJECT_DIR)/Utils/TIMChat/CommonLibrary/BlocksKit",
 					"$(PROJECT_DIR)/Utils/TIMChat/TIMChat/AppUI/ChatUI/Chat/MicroVideo/PituMotionLibrary/Framework",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.nightan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.nihtan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
