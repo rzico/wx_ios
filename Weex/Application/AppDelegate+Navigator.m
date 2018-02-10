@@ -11,7 +11,7 @@
 #import "FriendshipManager.h"
 #import "IMManager.h"
 #import "CJRouterViewController.h"
-#import <WeexSDK/WeexSDK.h>
+#import "CJRootViewController.h"
 
 @implementation AppDelegate (Navigator)
 
@@ -34,7 +34,7 @@
             [self.window resignFirstResponder];
             
             
-            self.router.rootViewController = [[WXRootViewController alloc] initWithRootViewController:viewcontroller];
+            self.router.rootViewController = [[CJRootViewController alloc] initWithRootViewController:viewcontroller];
             [viewcontroller.navigationController setNavigationBarHidden:true];
             self.router.windowLevel = UIWindowLevelStatusBar - 1;
             self.router.hidden = false;
@@ -169,7 +169,7 @@
     
     if (vc.navigationController == nil)
     {
-        NavigationViewController *nav = [[NavigationViewController alloc] initWithRootViewController:vc];
+        CJRootViewController *nav = [[CJRootViewController alloc] initWithRootViewController:vc];
         [top presentViewController:nav animated:animated completion:completion];
     }
     else

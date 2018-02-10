@@ -7,7 +7,7 @@
 //
 
 #import "CJTabbarViewController.h"
-#import <WXRootViewController.h>
+#import "CJRootViewController.h"
 #import "CJUserManager.h"
 #import "CJRouterViewController.h"
 
@@ -26,6 +26,14 @@
 @end
 
 @implementation CJTabbarViewController
+
+- (BOOL)shouldAutorotate{
+    return false;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 - (instancetype)initWithJsDictionary:(NSDictionary *)dic{
     self = [self init];
@@ -55,6 +63,9 @@
     temp = [dic objectForKey:@"member"] ? [dic objectForKey:@"member"] : @"file://view/member/index.js";
     temp = [temp rewriteURL];
     _memberJs = [temp hasPrefix:@"/"] ? [NSURL fileURLWithPath:temp] : [NSURL URLWithString:temp];
+    
+    
+//    _memberJs = _messageJs;
     
     [self setUp];
     return self;
@@ -90,11 +101,11 @@
     
     _isLoaded = NO;
     
-    self.viewControllers = @[[[WXRootViewController alloc] initWithRootViewController:_homeVC],
-                             [[WXRootViewController alloc] initWithRootViewController:_friendVC],
-                             [[WXRootViewController alloc] initWithRootViewController:[UIViewController new]],
-                             [[WXRootViewController alloc] initWithRootViewController:_messageVC],
-                             [[WXRootViewController alloc] initWithRootViewController:_memberVC]
+    self.viewControllers = @[[[CJRootViewController alloc] initWithRootViewController:_homeVC],
+                             [[CJRootViewController alloc] initWithRootViewController:_friendVC],
+                             [[CJRootViewController alloc] initWithRootViewController:[UIViewController new]],
+                             [[CJRootViewController alloc] initWithRootViewController:_messageVC],
+                             [[CJRootViewController alloc] initWithRootViewController:_memberVC]
                              ];
     [self setupTabBar];
 }
@@ -120,7 +131,7 @@
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
-    WXRootViewController *rootVC = (WXRootViewController *)viewController;
+    CJRootViewController *rootVC = (CJRootViewController *)viewController;
     UIViewController *controller = [rootVC.viewControllers firstObject];
     if ([controller isKindOfClass:[CJWeexViewController class]]){
         CJWeexViewController *vc = (CJWeexViewController *)controller;
@@ -259,7 +270,7 @@
         _isLoaded = NO;
         self.selectedIndex = 0;
         for (int i = 0; i < self.viewControllers.count; i ++){
-            WXRootViewController *nav = (WXRootViewController *)[self.viewControllers objectAtIndex:i];
+            CJRootViewController *nav = (CJRootViewController *)[self.viewControllers objectAtIndex:i];
             if (nav){
                 while (nav.viewControllers.count > 1) {
                     [nav popViewControllerAnimated:NO];

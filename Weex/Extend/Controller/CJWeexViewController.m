@@ -51,6 +51,8 @@
     [self.view setClipsToBounds:true];
     isRendered = false;
     
+    self.view.frame = [UIScreen mainScreen].bounds;
+    
     CJRegisterNotification(@selector(notificationImOnNewMessage:), CJNOTIFICATION_IM_ON_NEWMESSAGE);
     CJRegisterNotification(@selector(notificationImUnreadCount:), CJNOTIFICATION_IM_UNREAD_COUNT);
     CJRegisterNotification(@selector(notificationWXSendGlobalEvent:), CJNOTIFICATION_WX_SEND_Global_EVENT);

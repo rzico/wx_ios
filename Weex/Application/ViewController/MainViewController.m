@@ -34,8 +34,6 @@
     [self setUpProcessView];
 }
 
-
-
 - (void)setBackgroundImage{
     //获取启动图
     CGSize viewSize = [UIScreen mainScreen].bounds.size;
@@ -135,6 +133,7 @@
                        @{@"class":@"CJModalModule",     @"name":@"modal"},
                        @{@"class":@"CJWebviewModule",   @"name":@"webview"},
                        @{@"class":@"CJStreamModule",    @"name":@"stream"},
+                       @{@"class":@"CJLivePlayerModule",@"name":@"livePlayer"},
                        nil];
 }
 
@@ -287,16 +286,26 @@
 
 - (void)loginIm:(NSDictionary *)data{
     [self setProgress:1.0];
-    [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:^(BOOL success) {
+    NSDictionary *loginUser = [CJUserManager getUser];
+    if (loginUser && [loginUser objectForKey:@"userSig"] && CJTIMEnabled){
+        [[IMManager sharedInstance] loginWithUser:loginUser loginOption:IMManagerLoginOptionForce andBlock:^(BOOL success) {
+            CJPostNotification(CJNOTIFICATION_INITIALIZED,data);
+        }];
+    }else{
         CJPostNotification(CJNOTIFICATION_INITIALIZED,data);
-    }];
+    }
 }
 
 - (void)offlineLoginIm{
     [self setProgress:1.0];
-    [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionOffline andBlock:^(BOOL success) {
+    NSDictionary *loginUser = [CJUserManager getUser];
+    if (loginUser && [loginUser objectForKey:@"userSig"] && CJTIMEnabled){
+        [[IMManager sharedInstance] loginWithUser:loginUser loginOption:IMManagerLoginOptionOffline andBlock:^(BOOL success) {
+            CJPostNotification(CJNOTIFICATION_INITIALIZED,nil);
+        }];
+    }else{
         CJPostNotification(CJNOTIFICATION_INITIALIZED,nil);
-    }];
+    }
 }
 
 - (void)offlineState{

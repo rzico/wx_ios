@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "CJTabbarViewController.h"
-#import <WXRootViewController.h>
+#import "CJRootViewController.h"
 #import "IMManager.h"
 #import "TIMActionManager.h"
 
@@ -28,13 +28,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-//    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://139.199.171.149:808/json.json"]];
-//    NSDictionary *dic = [NSDictionary dictionaryWithJsonData:data];
-//
-//    CJRouter *router = [[CJRouter shareInstance] initWithDictionary:[dic objectForKey:@"router"] error:nil];
-//    NSLog(@"%@",[CJRouter shareInstance].tabbar.tab2.name);
-//    exit(0);
-//    
     if (launchOptions && [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"]){
         NSDictionary *userInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
         if ([userInfo objectForKey:@"ext"]){
@@ -65,7 +58,7 @@
             status == AFNetworkReachabilityStatusReachableViaWWAN){
             //网络连通后处理
             NSLog(@"on connected");
-            if (_isLoaded){
+            if (_isLoaded && CJTIMEnabled){
                 [[IMManager sharedInstance] loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:nil];
             }
         }else{
@@ -78,14 +71,25 @@
 
 - (void)onInitialized:(NSNotification *)notification{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CJTabbarViewController *tabBar = [[CJTabbarViewController alloc] initWithJsDictionary:notification.userInfo];
-        self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabBar];
-        self.window.rootViewController.view.alpha = 0.0f;
-        [UIView animateWithDuration:0.8f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            self.window.rootViewController.view.alpha = 1.0f;
-        } completion:^(BOOL finished) {
-            _isLoaded = true;
-        }];
+        if (CJRootViewType == RootViewTypeTabbar){
+            CJTabbarViewController *tabBar = [[CJTabbarViewController alloc] initWithJsDictionary:notification.userInfo];
+            self.window.rootViewController = [[CJRootViewController alloc] initWithRootViewController:tabBar];
+            self.window.rootViewController.view.alpha = 0.0f;
+            [UIView animateWithDuration:0.8f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                self.window.rootViewController.view.alpha = 1.0f;
+            } completion:^(BOOL finished) {
+                _isLoaded = true;
+            }];
+        }else{
+            CJWeexViewController *rootView = [[CJWeexViewController alloc] initWithUrl:[NSURL URLWithString:[SingleViewRootPath rewriteURL]]];
+            [rootView render:nil];
+            self.window.rootViewController = [[CJRootViewController alloc] initWithRootViewController:rootView];
+            [UIView animateWithDuration:0.8f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                self.window.rootViewController.view.alpha = 1.0f;
+            } completion:^(BOOL finished) {
+                _isLoaded = true;
+            }];
+        }
     });
 }
 
@@ -135,7 +139,7 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         CJWeexViewController *viewController = [[CJWeexViewController alloc] initWithUrl:[NSURL URLWithString:articleUrlStr]];
                         [viewController render:^(BOOL finished) {
-                            [(WXRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
+                            [(CJRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
                         }];
                     });
                     return YES;
@@ -146,7 +150,7 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         CJWeexViewController *viewController = [[CJWeexViewController alloc] initWithUrl:[NSURL URLWithString:topicUrlStr]];
                         [viewController render:^(BOOL finished) {
-                            [(WXRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
+                            [(CJRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
                         }];
                     });
                     return YES;

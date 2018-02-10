@@ -65,5 +65,19 @@ static NSString *openURLScheme = @"yundian";
 
 //应用名
 #define DisplayName [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleDisplayName"]
-#endif /* Settings_h */
 
+//根视图配置
+typedef NS_ENUM(NSUInteger, RootViewType) {
+    RootViewTypeSingleView,//单视图模式
+    RootViewTypeTabbar,//Tabbar模式
+};
+static RootViewType CJRootViewType = RootViewTypeTabbar;
+static NSString *SingleViewRootPath = @"file://view/index.js";
+
+//是否启用IM
+static BOOL CJTIMEnabled = true;
+
+//登录页面
+static NSString *UninstalledWechatLoginPath = @"file://view/login/index.js";
+static NSString *InstalledWechatLoginPath = @"file://view/index.js";
+#endif /* Settings_h */

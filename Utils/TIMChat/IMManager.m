@@ -23,9 +23,12 @@
     return shareInstance;
 }
 
-- (void)loginWithUser:(NSDictionary *)user loginOption:(IMManagerLoginOption)option andBlock:(void (^)(BOOL success))finish{
+- (void) loginWithUser:(NSDictionary *)user loginOption:(IMManagerLoginOption)option andBlock:(void (^)(BOOL success))finish{
     static NSTimeInterval lastLogin = 0;
     if ([[TIMManager sharedInstance] getLoginStatus] == TIM_STATUS_LOGINING){
+        if (finish){
+            finish(NO);
+        }
         return;
     }
     if (!user){
