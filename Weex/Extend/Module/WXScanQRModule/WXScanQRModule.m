@@ -30,7 +30,7 @@
                        nav.navigationBar.barStyle=UIBarStyleBlack;
                         vc.callBack = self.callBack;
                         vc.navigationItem.title = @"扫一扫";
-                        [weexInstance.viewController presentViewController:nav animated:YES completion:nil];
+                        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
                     });
                     // 用户第一次同意了访问相机权限
                     NSLog(@"用户第一次同意了访问相机权限 - - %@", [NSThread currentThread]);
@@ -48,7 +48,7 @@
             
             vc.callBack = self.callBack;
             vc.navigationItem.title = @"扫一扫";
-            [weexInstance.viewController presentViewController:nav animated:YES completion:nil];
+            [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
         } else if (status == AVAuthorizationStatusDenied) { // 用户拒绝当前应用访问相机
             NSString *message = [NSString stringWithFormat:@"请去-> [设置 - 隐私 - 相机 - %@] 打开访问开关",DisplayName];
             UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"温馨提示" message:message preferredStyle:(UIAlertControllerStyleAlert)];
@@ -57,7 +57,7 @@
             }];
             
             [alertC addAction:alertA];
-            [weexInstance.viewController presentViewController:alertC animated:YES completion:nil];
+            [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertC animated:YES completion:nil];
             self.callBack(@{@"status":@"error",@"msg":@"用户拒绝当前应用访问相机"});
             
         } else if (status == AVAuthorizationStatusRestricted) {
@@ -71,7 +71,7 @@
         }];
         
         [alertC addAction:alertA];
-        [weexInstance.viewController presentViewController:alertC animated:YES completion:nil];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertC animated:YES completion:nil];
        self.callBack(@{@"status":@"error",@"msg":@"未检测到您的摄像头"});
     }
 }
