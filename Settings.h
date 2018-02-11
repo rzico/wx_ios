@@ -12,8 +12,8 @@
 #define IsIPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
 //本地KeyChain参数
-#define ApplicationID @"com.rzico.weex"
-#define SERVICE @"com.rsico.mopian"
+#define ApplicationID @"com.nihtan.game"
+#define SERVICE @"com.nihtan.game"
 #define ACCOUNT @"accountUDID"
 #define ACCOUNTMD5 @"ACCOUNTMD5"
 
@@ -52,7 +52,7 @@ static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/nihtan/";
 static NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
 static NSString *kAuthOpenID = @"0c806938e2413ce73eef92cc3";
 static NSString *kAuthState = @"xxx";
-static NSString *WECHAT_APPID = @"wx490857e2baff7cfd";
+static NSString *WECHAT_APPID = @"wx490857e2baff7cfd-1";
 
 //阿里云参数
 static NSString *aliOSSEndPoint = @"http://oss-cn-shenzhen.aliyuncs.com";
@@ -65,7 +65,7 @@ static int UINavigationBarColor = 0xEB4E40;
 static NSString *localResVersion = @"0.0.0";
 
 //伪协议头
-static NSString *openURLScheme = @"yundian";
+static NSString *openURLScheme = @"nihtan";
 
 //应用名
 #define DisplayName [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleDisplayName"]
