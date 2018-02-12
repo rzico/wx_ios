@@ -62,7 +62,7 @@ static NSString *aliOSSBucketName = @"rzico";
 static int UINavigationBarColor = 0xEB4E40;
 
 //本地资源版本号
-static NSString *localResVersion = @"1.0.0";
+static NSString *localResVersion = @"0.0.0";
 
 //伪协议头
 static NSString *openURLScheme = @"yundian";

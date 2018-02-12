@@ -162,14 +162,18 @@ static NSMutableArray<NSDictionary *> *queueList;
 
 
 - (void)closeURL{
-    UINavigationController *nav = [weexInstance.viewController navigationController];
-    if (nav.viewControllers.count > 1){
-        [nav popViewControllerAnimated:YES];
+    if ([[UIApplication sharedApplication].keyWindow isKindOfClass:[CJRouterWindow class]]){
+        [SharedAppDelegate transToMainWindow];
     }else{
-        if ([weexInstance.viewController isKindOfClass:[CJRouterViewController class]] || [weexInstance.viewController isKindOfClass:NSClassFromString(@"CJLoginViewController")]){
-            [SharedAppDelegate transToMainWindow];
+        UINavigationController *nav = [weexInstance.viewController navigationController];
+        if (nav.viewControllers.count > 1){
+            [nav popViewControllerAnimated:YES];
         }else{
-            [weexInstance.viewController dismissViewControllerAnimated:YES completion:nil];
+            if ([weexInstance.viewController isKindOfClass:[CJRouterViewController class]] || [weexInstance.viewController isKindOfClass:NSClassFromString(@"CJLoginViewController")]){
+                [SharedAppDelegate transToMainWindow];
+            }else{
+                [weexInstance.viewController dismissViewControllerAnimated:YES completion:nil];
+            }
         }
     }
 }
