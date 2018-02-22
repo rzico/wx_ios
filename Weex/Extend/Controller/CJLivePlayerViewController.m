@@ -206,7 +206,7 @@
     if ([[request.URL scheme] isEqualToString:@"http"] || [[request.URL scheme] isEqualToString:@"https"]){
         NSLog(@"allow=%@",navigationAction.request.URL);
         decisionHandler(WKNavigationActionPolicyAllow);
-        if ([request.URL.absoluteString hasSuffix:@"game=true"]){
+        if ([request.URL.absoluteString hasSuffix:@"home=true"]){
             [self stop];
             if (_closedCallback){
                 _closedCallback();

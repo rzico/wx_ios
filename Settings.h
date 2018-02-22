@@ -21,9 +21,9 @@
 static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 
 //腾讯IM参数
-#define kTLSAppid       @"1400043914"//TLS_APPID
-#define kSdkAppId       @"1400043914"//SDK_APPID
-#define kSdkAccountType @"18325"//用户类型
+#define kTLSAppid       @"1400060267"//TLS_APPID
+#define kSdkAppId       @"1400060267"//SDK_APPID
+#define kSdkAccountType @"21224"//用户类型
 
 //#define kbusiId         6264
 #define kbusiId         6263
@@ -39,12 +39,10 @@ static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 
 //资源地址
-static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdn.rzico.com/";
+static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.udzyw.com/";
 
 //接口地址
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/nihtan/";
-//static NSString *WXCONFIG_INTERFACE_PATH = @"http://192.168.2.114:8080/";
-//static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.udzyw.com/";
 
 
 
@@ -52,7 +50,7 @@ static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/nihtan/";
 static NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
 static NSString *kAuthOpenID = @"0c806938e2413ce73eef92cc3";
 static NSString *kAuthState = @"xxx";
-static NSString *WECHAT_APPID = @"wx490857e2baff7cfd-1";
+static NSString *WECHAT_APPID = @"wxxxx-1";
 
 //阿里云参数
 static NSString *aliOSSEndPoint = @"http://oss-cn-shenzhen.aliyuncs.com";
