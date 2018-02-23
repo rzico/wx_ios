@@ -64,7 +64,7 @@ static NSString *aliOSSBucketName = @"mopian";
 static int UINavigationBarColor = 0x99CCFF;
 
 //本地资源版本号
-static NSString *localResVersion = @"1.0.5";
+static NSString *localResVersion = @"1.0.6";
 
 //伪协议头
 static NSString *openURLScheme = @"mopian";
