@@ -91,6 +91,9 @@
                 [self loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:nil];
             }else{
                 [self failedInitTIM:@"连接聊天服务器失败" title:DisplayName];
+                if (finish){
+                    finish(NO);
+                }
             }
         }];
     }
