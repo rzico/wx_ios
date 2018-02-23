@@ -35,6 +35,9 @@
 		882C8AD21FE7FA3300C6DB32 /* CJDatabaseOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C8AD11FE7FA3300C6DB32 /* CJDatabaseOption.m */; };
 		882C8AD51FE7FAC400C6DB32 /* CJTabbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C8AD41FE7FAC400C6DB32 /* CJTabbarViewController.m */; };
 		885186AE2005E75800E48BF8 /* CJDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 885186AD2005E75800E48BF8 /* CJDownloader.m */; };
+		886C6584202ECBD000ACF7CF /* CJLivePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886C6582202ECBD000ACF7CF /* CJLivePlayerViewController.m */; };
+		886C6587202ECC2E00ACF7CF /* CJLivePlayerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 886C6586202ECC2E00ACF7CF /* CJLivePlayerModule.m */; };
+		886C658A202F3D2100ACF7CF /* CJRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 886C6589202F3D2100ACF7CF /* CJRootViewController.m */; };
 		88724C0120074EC900C97F82 /* CJRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0020074EC900C97F82 /* CJRouter.m */; };
 		88724C0420076CA800C97F82 /* CJRouterTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0320076CA800C97F82 /* CJRouterTabbar.m */; };
 		88724C0720076D0800C97F82 /* CJRouterPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 88724C0620076D0800C97F82 /* CJRouterPage.m */; };
@@ -587,6 +590,12 @@
 		882C8AD41FE7FAC400C6DB32 /* CJTabbarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJTabbarViewController.m; sourceTree = "<group>"; };
 		885186AC2005E75800E48BF8 /* CJDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJDownloader.h; sourceTree = "<group>"; };
 		885186AD2005E75800E48BF8 /* CJDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJDownloader.m; sourceTree = "<group>"; };
+		886C6582202ECBD000ACF7CF /* CJLivePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJLivePlayerViewController.m; sourceTree = "<group>"; };
+		886C6583202ECBD000ACF7CF /* CJLivePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJLivePlayerViewController.h; sourceTree = "<group>"; };
+		886C6585202ECC2E00ACF7CF /* CJLivePlayerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJLivePlayerModule.h; sourceTree = "<group>"; };
+		886C6586202ECC2E00ACF7CF /* CJLivePlayerModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJLivePlayerModule.m; sourceTree = "<group>"; };
+		886C6588202F3D2100ACF7CF /* CJRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRootViewController.h; sourceTree = "<group>"; };
+		886C6589202F3D2100ACF7CF /* CJRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRootViewController.m; sourceTree = "<group>"; };
 		88724BFF20074EC900C97F82 /* CJRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouter.h; sourceTree = "<group>"; };
 		88724C0020074EC900C97F82 /* CJRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJRouter.m; sourceTree = "<group>"; };
 		88724C0220076CA800C97F82 /* CJRouterTabbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJRouterTabbar.h; sourceTree = "<group>"; };
@@ -1923,6 +1932,8 @@
 				882C8A981FE7DE5F00C6DB32 /* CJPhoneModule.m */,
 				882C8A991FE7DE5F00C6DB32 /* CJWebviewModule.h */,
 				882C8A941FE7DE5F00C6DB32 /* CJWebviewModule.m */,
+				886C6585202ECC2E00ACF7CF /* CJLivePlayerModule.h */,
+				886C6586202ECC2E00ACF7CF /* CJLivePlayerModule.m */,
 				882C8A771FE7DE5E00C6DB32 /* WXScanQRModule */,
 			);
 			path = Module;
@@ -1937,6 +1948,10 @@
 				88F34F08201346040053266B /* CJRouterWindow.m */,
 				88F34F0A201346210053266B /* CJRouterViewController.h */,
 				88F34F0B201346210053266B /* CJRouterViewController.m */,
+				886C6583202ECBD000ACF7CF /* CJLivePlayerViewController.h */,
+				886C6582202ECBD000ACF7CF /* CJLivePlayerViewController.m */,
+				886C6588202F3D2100ACF7CF /* CJRootViewController.h */,
+				886C6589202F3D2100ACF7CF /* CJRootViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3851,6 +3866,7 @@
 				88C2DA201FE9C16A000BCAB4 /* MyEmojBoardView.m in Sources */,
 				887E31F91FE7CE6100D8627A /* CJDatabaseData.m in Sources */,
 				88C2D9C11FE9C16A000BCAB4 /* IMAPlatform+Friend.m in Sources */,
+				886C6584202ECBD000ACF7CF /* CJLivePlayerViewController.m in Sources */,
 				88C2D9EA1FE9C16A000BCAB4 /* ChatBaseTableViewCell.m in Sources */,
 				88C2D9721FE9C16A000BCAB4 /* UIView+CaptureImage.m in Sources */,
 				88C2D9811FE9C16A000BCAB4 /* FBKVOController.m in Sources */,
@@ -3864,6 +3880,7 @@
 				888F01001FE838A1004B8320 /* CJLoginViewController.m in Sources */,
 				88C2D9771FE9C16A000BCAB4 /* UIView+RelativeCoordinate.m in Sources */,
 				88C2D9621FE9C16A000BCAB4 /* GTMBase64.m in Sources */,
+				886C6587202ECC2E00ACF7CF /* CJLivePlayerModule.m in Sources */,
 				88C2DA5B1FE9C16A000BCAB4 /* PublicGroupViewController.m in Sources */,
 				882C8AA51FE7DE5F00C6DB32 /* CJAlbumModule.m in Sources */,
 				88C2D9AE1FE9C16A000BCAB4 /* UIViewController+Layout.m in Sources */,
@@ -3926,6 +3943,7 @@
 				88C2D98F1FE9C16A000BCAB4 /* MKNetworkEngine.m in Sources */,
 				88C2DA191FE9C16A000BCAB4 /* ChatViewController.m in Sources */,
 				88C2DA7E1FE9C16A000BCAB4 /* PopupMenuItem.m in Sources */,
+				886C658A202F3D2100ACF7CF /* CJRootViewController.m in Sources */,
 				887E31041FE7B33E00D8627A /* CJAmap.m in Sources */,
 				887E30F71FE7B1A300D8627A /* CJShareManager.m in Sources */,
 				88C2DA4F1FE9C16A000BCAB4 /* ChatGroupViewController.m in Sources */,
@@ -4264,7 +4282,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Weex/Weex.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
 				ENABLE_BITCODE = NO;
@@ -4285,7 +4302,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9e4849c6-dd66-4e4d-86ee-9759392c59e4";
+				PROVISIONING_PROFILE = "f976d282-8e7b-4bb2-b023-0b8ba14866f0";
 				PROVISIONING_PROFILE_SPECIFIER = "mopian Development Provisioning Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
@@ -4475,7 +4492,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d98b2cbb-867e-4a81-b08c-fde3299690e9";
+				PROVISIONING_PROFILE = "bf78e8aa-af64-4393-8113-3cb90af18cc9";
 				PROVISIONING_PROFILE_SPECIFIER = "mopian Ad Hoc Provisioning Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (

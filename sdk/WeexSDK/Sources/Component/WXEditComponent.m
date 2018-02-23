@@ -786,7 +786,8 @@ WX_EXPORT_METHOD(@selector(getSelectionRange:))
     };
     CGRect inputFrame = [self.view.superview convertRect:self.view.frame toView:rootView];
     if (keyboardRect.origin.y - inputFrame.size.height <= inputFrame.origin.y) {
-        [self setViewMovedUp:YES];
+        //by cj
+//        [self setViewMovedUp:YES];
         self.weexInstance.isRootViewFrozen = YES;
     }
     
@@ -802,7 +803,8 @@ WX_EXPORT_METHOD(@selector(getSelectionRange:))
     }
     UIView * rootView = self.weexInstance.rootView;
     if (!CGRectEqualToRect(self.weexInstance.frame, rootView.frame)) {
-        [self setViewMovedUp:NO];
+        //by cj
+//        [self setViewMovedUp:NO];
         self.weexInstance.isRootViewFrozen = NO;
     }
     if (_keyboardEvent) {

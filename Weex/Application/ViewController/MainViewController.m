@@ -34,8 +34,6 @@
     [self setUpProcessView];
 }
 
-
-
 - (void)setBackgroundImage{
     //获取启动图
     CGSize viewSize = [UIScreen mainScreen].bounds.size;
@@ -135,6 +133,7 @@
                        @{@"class":@"CJModalModule",     @"name":@"modal"},
                        @{@"class":@"CJWebviewModule",   @"name":@"webview"},
                        @{@"class":@"CJStreamModule",    @"name":@"stream"},
+                       @{@"class":@"CJLivePlayerModule",@"name":@"livePlayer"},
                        nil];
 }
 

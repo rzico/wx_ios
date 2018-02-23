@@ -679,18 +679,20 @@ CGFloat WXFloorPixelValue(CGFloat value)
 
 + (CGSize)portraitScreenSize
 {
-    if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
-        return [UIScreen mainScreen].bounds.size;
-    }
-    static CGSize portraitScreenSize;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        CGSize screenSize = [UIScreen mainScreen].bounds.size;
-        portraitScreenSize = CGSizeMake(MIN(screenSize.width, screenSize.height),
-                                        MAX(screenSize.width, screenSize.height));
-    });
-    
-    return portraitScreenSize;
+//    by cj
+//    if ([[UIDevice currentDevice].model isEqualToString:@"iPad"]) {
+//        return [UIScreen mainScreen].bounds.size;
+//    }
+//    static CGSize portraitScreenSize;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        CGSize screenSize = [UIScreen mainScreen].bounds.size;
+//        portraitScreenSize = CGSizeMake(MIN(screenSize.width, screenSize.height),
+//                                        MAX(screenSize.width, screenSize.height));
+//    });
+//
+//    return portraitScreenSize;
+    return [UIScreen mainScreen].bounds.size;
 }
 
 + (CGFloat)defaultPixelScaleFactor
