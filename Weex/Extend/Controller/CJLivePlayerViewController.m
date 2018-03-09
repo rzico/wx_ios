@@ -80,15 +80,32 @@
 }
 
 - (void)initWebUI{
+    
+    //进行配置控制器
+    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+    //实例化对象
+    WKUserContentController* userContentController = [WKUserContentController new];
+    //调用JS方法
+    configuration.userContentController = userContentController;
+    configuration.preferences.javaScriptEnabled = YES;
+    
+    WKPreferences *preferences = [WKPreferences new];
+    preferences.javaScriptCanOpenWindowsAutomatically = YES;
+    preferences.minimumFontSize = 0.0;
+    preferences.javaScriptEnabled = YES;
+    configuration.preferences = preferences;
+    
     //    _webview = [[WKWebView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    _webview = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
+    _webview = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight) configuration:configuration];
     _webview.navigationDelegate = self;
     _webview.opaque = false;
     _webview.backgroundColor = [UIColor clearColor];
+    _webview.UIDelegate = self;
     
     _webview.scrollView.alwaysBounceVertical = false;
     _webview.scrollView.alwaysBounceHorizontal = false;
     [self.view addSubview:_webview];
+
 }
 
 - (void)viewDidLoad {
@@ -109,25 +126,31 @@
 
 - (void)loadWithUrl:(NSString *)url video:(NSString *)video method:(NSString *)method callback:(void (^)(void))callback{
     _closedCallback = callback;
+    NSLog(@"loadWithUrl=%@",url);
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:url delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+//    [alert show];
     [self loadUrl:url method:method];
-    [self play:video];
+    if (video.length > 0 ) {
+       [self play:video];
+    }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [backgroundImage removeFromSuperview];
     });
 }
 
 - (void)loadUrl:(NSString *)url method:(NSString *)method{
-    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"loadWithUrl=%@",url);
+        dispatch_async(dispatch_get_main_queue(), ^{
         NSURL *URL = [NSURL URLWithString:url];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
         [request setHTTPMethod:method];
-        NSDictionary *headDic = [HttpHead_Utils getHttpHead];
-        if (headDic){
-            for (NSString *key in headDic.allKeys){
-                NSString *value = headDic[key];
-                [request setValue:value forHTTPHeaderField:key];
-            }
-        }
+//        NSDictionary *headDic = [HttpHead_Utils getHttpHead];
+//        if (headDic){
+//            for (NSString *key in headDic.allKeys){
+//                NSString *value = headDic[key];
+//                [request setValue:value forHTTPHeaderField:key];
+//            }
+//        }
         [self.webview loadRequest:request];
     });
 }
@@ -206,7 +229,7 @@
     if ([[request.URL scheme] isEqualToString:@"http"] || [[request.URL scheme] isEqualToString:@"https"]){
         NSLog(@"allow=%@",navigationAction.request.URL);
         decisionHandler(WKNavigationActionPolicyAllow);
-        if ([request.URL.absoluteString hasSuffix:@"home=true"]){
+        if ([request.URL.absoluteString startsWith:@"http://weex.udzyw.com/home"]){
             [self stop];
             if (_closedCallback){
                 _closedCallback();
@@ -221,5 +244,13 @@
         }
     }
 }
+//
+//- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler{
+//    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+//        NSURLCredential *card = [[NSURLCredential alloc]initWithTrust:challenge.protectionSpace.serverTrust];
+//        completionHandler(NSURLSessionAuthChallengeUseCredential,card);
+//    }
+//}
+//
 @end
 
