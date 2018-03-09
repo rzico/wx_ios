@@ -33,6 +33,8 @@ typedef void(^CJLogOutComplete)(BOOL success);
 
 @property (strong, nonatomic) NSString *sender;
 
+@property (strong, nonatomic) NSString *userAgent;
+
 - (void)registNotification;
 
 - (void)actionLocalNotificationWithSender:(NSString *)sender body:(NSString *)body;
