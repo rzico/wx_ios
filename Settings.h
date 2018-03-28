@@ -48,13 +48,15 @@ static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.1xx.me/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.1xx.me/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://192.168.2.110:8088/";
 static NSString *WXCONFIG_INTERFACE_PATH = @"http://mopian.1xx.me/";
+//static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.1xx.me/";
+//static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/";
 
 
 //微信参数
 static NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
-static NSString *kAuthOpenID = @"e1a6bffb5ad1eb7ffa2f442032df2d78";
+static NSString *kAuthOpenID = @"1cdb76cfb393d5a1c391985e833a451d";
 static NSString *kAuthState = @"xxx";
-static NSString *WECHAT_APPID = @"wxe9044e4a3a478046";
+static NSString *WECHAT_APPID = @"wxa3851ebdcfc050e1";
 
 //阿里云参数
 static NSString *aliOSSEndPoint = @"http://oss-cn-hangzhou.aliyuncs.com";
@@ -64,7 +66,7 @@ static NSString *aliOSSBucketName = @"mopian";
 static int UINavigationBarColor = 0x99CCFF;
 
 //本地资源版本号
-static NSString *localResVersion = @"1.0.0";
+static NSString *localResVersion = @"1.0.6";
 
 //伪协议头
 static NSString *openURLScheme = @"mopian";

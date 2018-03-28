@@ -3784,7 +3784,10 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/CLImageEditor.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TZImagePickerController.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/native-bundle-main.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/wx_load_error@3x.png",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4282,6 +4285,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Weex/Weex.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
 				ENABLE_BITCODE = NO;
@@ -4302,7 +4306,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f976d282-8e7b-4bb2-b023-0b8ba14866f0";
+				PROVISIONING_PROFILE = "aa9ad9d7-b387-4c86-86d1-d545a40d2c4e";
 				PROVISIONING_PROFILE_SPECIFIER = "mopian Development Provisioning Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
@@ -4343,7 +4347,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ce0f4900-8397-43f2-995f-8a6677ad04cb";
+				PROVISIONING_PROFILE = "ffbdede6-734e-4eec-b0e7-6fc75aa09b0f";
 				PROVISIONING_PROFILE_SPECIFIER = "mopian Distribution Provisioning Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
@@ -4492,7 +4496,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "bf78e8aa-af64-4393-8113-3cb90af18cc9";
+				PROVISIONING_PROFILE = "27340d0a-9855-460a-9f07-1800d05603d6";
 				PROVISIONING_PROFILE_SPECIFIER = "mopian Ad Hoc Provisioning Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
