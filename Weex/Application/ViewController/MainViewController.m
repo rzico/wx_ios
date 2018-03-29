@@ -32,6 +32,11 @@
     [super viewDidLoad];
     [self setBackgroundImage];
     [self setUpProcessView];
+    
+    
+    
+    
+    
 }
 
 - (void)setBackgroundImage{
@@ -74,6 +79,23 @@
     progressView.layer.cornerRadius = (borderView.height - (KProgressBorderWidth + KProgressPadding) * 2) * 0.5;
     progressView.layer.masksToBounds = true;
     [borderView addSubview:progressView];
+    
+    //提示文字
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(([UIScreen getWidth] - 200)*0.5, borderView.y - 25, 200, 20)];
+    label.text = @"正在更新数据，请稍后...";
+    label.font = [UIFont systemFontOfSize:15.0];
+    label.textColor = [UIColor colorWithHex:0xffd705];
+    label.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:label];
+    
+    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen getWidth], 80)];
+    text.center = self.view.center;
+    text.text = @"泥炭娱乐是亚洲著名的娱乐品牌\r\n这里是一个公平公正\r\n丰富多彩的娱乐世界\r\n请尽情享受这紧张刺激的时光";
+    text.font = [UIFont systemFontOfSize:15.0];
+    text.textColor = [UIColor colorWithHex:0xffd705];
+    text.textAlignment = NSTextAlignmentCenter;
+    text.numberOfLines = 0;
+    [self.view addSubview:text];
 }
 
 - (void)setProgress:(CGFloat)progress{
