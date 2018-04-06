@@ -39,16 +39,16 @@ static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 
 //资源地址
-static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.udzyw.com/";
+static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.yzwap.com/";
 
 //接口地址
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.udzyw.com/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.yzwap.com/";
 
 
 
 //微信参数
 static NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
-static NSString *kAuthOpenID = @"0c806938e2413ce73eef92cc3";
+static NSString *kAuthOpenID = @"1111";
 static NSString *kAuthState = @"xxx";
 static NSString *WECHAT_APPID = @"wxxxx-1";
 

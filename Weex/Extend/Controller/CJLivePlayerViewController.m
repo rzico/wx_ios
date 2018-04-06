@@ -229,7 +229,7 @@
     if ([[request.URL scheme] isEqualToString:@"http"] || [[request.URL scheme] isEqualToString:@"https"]){
         NSLog(@"allow=%@",navigationAction.request.URL);
         decisionHandler(WKNavigationActionPolicyAllow);
-        if ([request.URL.absoluteString startsWith:@"http://weex.udzyw.com/home"]){
+        if ([request.URL.absoluteString startsWith:@"https://weex.yzwap.com/home"]){
             [self stop];
             if (_closedCallback){
                 _closedCallback();
