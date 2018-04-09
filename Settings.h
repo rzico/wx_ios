@@ -12,8 +12,8 @@
 #define IsIPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
 //本地KeyChain参数
-#define ApplicationID @"com.nihtan.game"
-#define SERVICE @"com.nihtan.game"
+#define ApplicationID @"com.nihtan.yzgame"
+#define SERVICE @"com.nihtan.yzgame"
 #define ACCOUNT @"accountUDID"
 #define ACCOUNTMD5 @"ACCOUNTMD5"
 
@@ -42,7 +42,7 @@ static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.yzwap.com/";
 
 //接口地址
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.yzwap.com/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"https://weex.yzwap.com/";
 
 
 
