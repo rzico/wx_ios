@@ -72,27 +72,31 @@
 }
 
 - (void)onInitialized:(NSNotification *)notification{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (CJRootViewType == RootViewTypeTabbar){
-            CJTabbarViewController *tabBar = [[CJTabbarViewController alloc] initWithJsDictionary:notification.userInfo];
-            self.window.rootViewController = [[CJRootViewController alloc] initWithRootViewController:tabBar];
-            self.window.rootViewController.view.alpha = 0.0f;
-            [UIView animateWithDuration:0.8f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                self.window.rootViewController.view.alpha = 1.0f;
-            } completion:^(BOOL finished) {
-                _isLoaded = true;
-            }];
-        }else{
-            CJWeexViewController *rootView = [[CJWeexViewController alloc] initWithUrl:[NSURL URLWithString:[SingleViewRootPath rewriteURL]]];
-            [rootView render:nil];
-            self.window.rootViewController = [[CJRootViewController alloc] initWithRootViewController:rootView];
-            [UIView animateWithDuration:0.8f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                self.window.rootViewController.view.alpha = 1.0f;
-            } completion:^(BOOL finished) {
-                _isLoaded = true;
-            }];
-        }
-    });
+    static BOOL isInitialized = false;
+    if (!isInitialized){
+        isInitialized = true;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (CJRootViewType == RootViewTypeTabbar){
+                CJTabbarViewController *tabBar = [[CJTabbarViewController alloc] initWithJsDictionary:notification.userInfo];
+                self.window.rootViewController = [[CJRootViewController alloc] initWithRootViewController:tabBar];
+                self.window.rootViewController.view.alpha = 0.0f;
+                [UIView animateWithDuration:0.8f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                    self.window.rootViewController.view.alpha = 1.0f;
+                } completion:^(BOOL finished) {
+                    _isLoaded = true;
+                }];
+            }else{
+                CJWeexViewController *rootView = [[CJWeexViewController alloc] initWithUrl:[NSURL URLWithString:[SingleViewRootPath rewriteURL]]];
+                [rootView render:nil];
+                self.window.rootViewController = [[CJRootViewController alloc] initWithRootViewController:rootView];
+                [UIView animateWithDuration:0.8f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                    self.window.rootViewController.view.alpha = 1.0f;
+                } completion:^(BOOL finished) {
+                    _isLoaded = true;
+                }];
+            }
+        });
+    }
 }
 
 - (void) onReq:(BaseReq *)req{

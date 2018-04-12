@@ -83,7 +83,11 @@
     
     [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         progressView.frame = CGRectMake(margin, margin, maxWidth * progress, height);
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            CJPostNotification(CJNOTIFICATION_INITIALIZED,nil);
+        });
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
