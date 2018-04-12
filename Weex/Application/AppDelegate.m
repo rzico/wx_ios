@@ -35,6 +35,8 @@
         }
     }
     
+    UIWebView* webView = [[UIWebView alloc] init];
+    _userAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
     
     CJRegisterNotification(@selector(onInitialized:),CJNOTIFICATION_INITIALIZED);
     _isLoaded = false;

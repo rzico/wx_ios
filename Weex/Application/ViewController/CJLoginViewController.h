@@ -8,7 +8,7 @@
 
 #import "CJRouterViewController.h"
 
-@interface CJLoginViewController : CJRouterViewController
+@interface CJLoginViewController : CJWeexViewController
 
 
 @end

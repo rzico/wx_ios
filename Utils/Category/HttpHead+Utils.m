@@ -20,11 +20,16 @@
     NSString *Md5key;
     static NSString *appKey = nil;
     
-    NSString *userAgent = [NSString stringWithFormat:@"%@/%@ (%@; iOS %@; Screen/%.0f*%.0f; Scale/%0.2f)", [[NSBundle mainBundle] infoDictionary][(__bridge NSString *)kCFBundleExecutableKey] ?: [[NSBundle mainBundle] infoDictionary][(__bridge NSString *)kCFBundleIdentifierKey], [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"] ?: [[NSBundle mainBundle] infoDictionary][(__bridge NSString *)kCFBundleVersionKey], [UIDevice currentDeviceModel], [[UIDevice currentDevice] systemVersion], [UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height,[[UIScreen mainScreen] scale]];
+    static NSString *userAgent = nil;
     
     if (!uid){
         uid = [CJUUID getUUID];
     }
+    
+    if (!userAgent){
+        userAgent = [SharedAppDelegate.userAgent stringByAppendingString:@"weex"];
+    }
+    
     if (!appKey){
         NSDictionary *resourceInfo = [[CJUpdateManager sharedInstance] resourceInfo];
         if (resourceInfo){
