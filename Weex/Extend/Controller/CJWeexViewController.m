@@ -427,11 +427,12 @@
 }
 
 - (void)notificationImUnreadCount:(NSNotification *)notification{
+    NSString *badgeValue = [NSString string];
+    NSInteger unReadCount = 0;
     if ([self.label isEqualToString:@"message"]){
         if ([[TIMManager sharedInstance] getLoginUser]){
-            NSInteger unReadCount = [IMManager getUnReadCount];
+            unReadCount = [IMManager getUnReadCount];
             NSNumber *number = [NSNumber numberWithInteger:unReadCount];
-            NSString *badgeValue = [NSString string];
             if ([number integerValue] > 99){
                 badgeValue = @"···";
             }else if ([number integerValue] > 0){
@@ -439,12 +440,12 @@
             }else{
                 badgeValue = nil;
             }
-            WXPerformBlockOnMainThread(^{
-                [self.tabBarController.tabBar.items objectAtIndex:3].badgeValue = badgeValue;
-                [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unReadCount];
-            });
         }
     }
+    WXPerformBlockOnMainThread(^{
+        [self.tabBarController.tabBar.items objectAtIndex:3].badgeValue = badgeValue;
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unReadCount];
+    });
 }
 
 - (void)notificationWXSendGlobalEvent:(NSNotification *)notification{

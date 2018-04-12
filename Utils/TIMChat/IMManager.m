@@ -113,7 +113,7 @@
     NSArray *conversationList = [[TIMManager sharedInstance] getConversationList];
     NSInteger count = 0;
     for (TIMConversation *conversation in conversationList){
-        if ([conversation getReceiver].length > 0){
+        if ([conversation getReceiver].length > 0 && [conversation getType] == TIM_C2C){
             count += [conversation getUnReadMessageNum];
         }
     }
