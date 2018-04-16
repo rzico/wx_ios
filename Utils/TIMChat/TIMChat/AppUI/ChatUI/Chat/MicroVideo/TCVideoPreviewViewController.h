@@ -1,6 +1,8 @@
 //#import "TCLiveListModel.h"
 #import <UIKit/UIKit.h>
-#import <TXRTMPSDK/TXUGCRecordTypeDef.h>
+//Change TXRTMP SDK To TXLive SDK
+#import <TXLiveRecordTypeDef.h>
+//#import <TXRTMPSDK/TXUGCRecordTypeDef.h>
 
 #define kRecordType_Camera 0
 #define kRecordType_Play 1

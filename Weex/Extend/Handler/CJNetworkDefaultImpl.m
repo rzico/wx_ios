@@ -15,7 +15,7 @@
 #import "CJDatabaseManager.h"
 #import "CJUserManager.h"
 #import "CJNetworkQueueData.h"
-//#import "IMManager.h"
+#import "IMManager.h"
 
 static NSMutableArray<CJNetworkQueueData *> *queueList;
 
@@ -151,11 +151,11 @@ static NSMutableArray<CJNetworkQueueData *> *queueList;
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
                 if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
                     [CJUserManager setUser:[responseObject objectForKey:@"data"]];
-//                    [[IMManager sharedInstance] loginWithUser:[responseObject objectForKey:@"data"] loginOption:IMManagerLoginOptionForce andBlock:^(BOOL success) {
-//                        if (!success){
-//                            [SharedAppDelegate logOut:nil];
-//                        }
-//                    }];
+                    [[IMManager sharedInstance] loginWithUser:[responseObject objectForKey:@"data"] loginOption:IMManagerLoginOptionForce andBlock:^(BOOL success) {
+                        if (!success){
+                            [SharedAppDelegate logOut:nil];
+                        }
+                    }];
                 }
             }
         } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {

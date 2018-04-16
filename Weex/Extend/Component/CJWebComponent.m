@@ -222,6 +222,9 @@ WX_EXPORT_METHOD(@selector(goForward))
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    if ([request.URL.absoluteString isEqualToString:WXCONFIG_INTERFACE_PATH]){
+        return NO;
+    }
     if (_startLoadEvent) {
         NSMutableDictionary<NSString *, id> *data = [NSMutableDictionary new];
         [data setObject:request.URL.absoluteString ?:@"" forKey:@"url"];

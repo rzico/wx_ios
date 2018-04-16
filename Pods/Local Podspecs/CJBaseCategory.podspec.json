@@ -1,0 +1,25 @@
+{
+  "name": "CJBaseCategory",
+  "version": "0.1.0",
+  "summary": "CJBaseCategory.",
+  "description": "A framework for category.",
+  "homepage": "https://github.com/rzrcj/CJBaseCategory",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "CJ": "admin@rzrcj.com.cn"
+  },
+  "source": {
+    "path": "."
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "CJBaseCategory/**/*.{h,m}",
+  "frameworks": [
+    "UIKit",
+    "Foundation"
+  ]
+}

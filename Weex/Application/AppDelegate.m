@@ -17,9 +17,16 @@
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
 #endif
+
+
+#import "CJLivePushViewController.h"
+
+
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 @property (nonatomic, assign) BOOL isLoaded;
+
+@property (nonatomic, strong) CJLivePushViewController *live;
 
 @end
 
@@ -34,10 +41,10 @@
             self.sender = [userInfo objectForKey:@"ext"];
         }
     }
-    
+
     UIWebView* webView = [[UIWebView alloc] init];
     _userAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-    
+
     CJRegisterNotification(@selector(onInitialized:),CJNOTIFICATION_INITIALIZED);
     _isLoaded = false;
     [self checkNetwork];
@@ -45,11 +52,20 @@
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = [NSClassFromString(@"MainViewController") new];
     [self.window makeKeyAndVisible];
-    
+
     self.router = [[CJRouterWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.center = self.window.center;
-    
+
     [self registLocalNotification];
+    
+    [SVProgressHUD setMaximumDismissTimeInterval:0.5];
+//    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//    _live = [[CJLivePushViewController alloc] init];
+//    self.window.rootViewController = _live;
+//    [self.window makeKeyAndVisible];
+    
+    
+    
     return YES;
 }
 

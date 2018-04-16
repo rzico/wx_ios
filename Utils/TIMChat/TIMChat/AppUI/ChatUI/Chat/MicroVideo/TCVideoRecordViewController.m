@@ -1,7 +1,9 @@
 
 #import <Foundation/Foundation.h>
 #import "TCVideoRecordViewController.h"
-#import "TXRTMPSDK/TXUGCRecord.h"
+//#import "TXRTMPSDK/TXUGCRecord.h"
+#import <TXLivePush.h>
+//Change TXRTMP SDK To TXLive SDK
 #import "TCVideoPreviewViewController.h"
 #import "V8HorizontalPickerView.h"
 #import <AVFoundation/AVFoundation.h>
@@ -34,7 +36,9 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
 @end
 #endif
 
-@interface TCVideoRecordViewController()<TXVideoRecordListener,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,MicroVideoPreviewDelegate>
+//Change TXRTMP SDK To TXLive SDK
+@interface TCVideoRecordViewController()<TXLiveRecordListener,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,MicroVideoPreviewDelegate>
+//@interface TCVideoRecordViewController()<TXVideoRecordListener,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,MicroVideoPreviewDelegate>
 {
     BOOL                            _cameraFront;
     BOOL                            _lampOpened;
@@ -205,7 +209,9 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
         })];
 
         
-        [TXUGCRecord shareInstance].recordDelegate = self;
+//        [TXUGCRecord shareInstance].recordDelegate = self;
+        //Change TXRTMP SDK To TXLive SDK
+        
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackGround:) name:UIApplicationDidEnterBackgroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
@@ -409,21 +415,21 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
         //        param.videoQuality = VIDEO_QUALITY_MEDIUM;
         //        [[TXUGCRecord shareInstance] startCameraSimple:param preview:_videoRecordView];
         //自定义设置
-        TXUGCCustomConfig * param = [[TXUGCCustomConfig alloc] init];
-        param.videoResolution =  VIDEO_RESOLUTION_540_960;
-        param.videoFPS = 20;
-        param.videoBitratePIN = 1200;
-        [[TXUGCRecord shareInstance] startCameraCustom:param preview:_videoRecordView];
-        [[TXUGCRecord shareInstance] setBeautyDepth:_beautyDepth WhiteningDepth:_whitenDepth];
- 
-        if (_greenIndex >=0 || _greenIndex < _greenArray.count) {
-            V8LabelNode *v = [_greenArray objectAtIndex:_greenIndex];
-            [[TXUGCRecord shareInstance] setGreenScreenFile:v.file];
-        }
-        
-        [[TXUGCRecord shareInstance] setEyeScaleLevel:_eye_level];
-        
-        [[TXUGCRecord shareInstance] setFaceScaleLevel:_face_level];
+//        TXUGCCustomConfig * param = [[TXUGCCustomConfig alloc] init];
+//        param.videoResolution =  VIDEO_RESOLUTION_540_960;
+//        param.videoFPS = 20;
+//        param.videoBitratePIN = 1200;
+//        [[TXUGCRecord shareInstance] startCameraCustom:param preview:_videoRecordView];
+//        [[TXUGCRecord shareInstance] setBeautyDepth:_beautyDepth WhiteningDepth:_whitenDepth];
+//
+//        if (_greenIndex >=0 || _greenIndex < _greenArray.count) {
+//            V8LabelNode *v = [_greenArray objectAtIndex:_greenIndex];
+//            [[TXUGCRecord shareInstance] setGreenScreenFile:v.file];
+//        }
+//
+//        [[TXUGCRecord shareInstance] setEyeScaleLevel:_eye_level];
+//
+//        [[TXUGCRecord shareInstance] setFaceScaleLevel:_face_level];
         
         [self setFilter:_filterIndex];
         
@@ -438,7 +444,7 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
 {
     if (_cameraPreviewing == YES)
     {
-        [[TXUGCRecord shareInstance] stopCameraPreview];
+//        [[TXUGCRecord shareInstance] stopCameraPreview];
         _cameraPreviewing = NO;
     }
 }
@@ -447,7 +453,7 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
 {
     [self refreshRecordTime:0];
     [self startCameraPreview];
-    [[TXUGCRecord shareInstance] startRecord];
+//    [[TXUGCRecord shareInstance] startRecord];
     
     [_btnStartRecord setImage:[UIImage imageNamed:@"stoprecord"] forState:UIControlStateNormal];
     [_btnStartRecord setImage:[UIImage imageNamed:@"stoprecord_press"] forState:UIControlStateSelected];
@@ -456,7 +462,7 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
 
 -(void)stopVideoRecord
 {
-    [[TXUGCRecord shareInstance] stopRecord];
+//    [[TXUGCRecord shareInstance] stopRecord];
     
     [_btnStartRecord setImage:[UIImage imageNamed:@"startrecord"] forState:UIControlStateNormal];
     [_btnStartRecord setImage:[UIImage imageNamed:@"startrecord_press"] forState:UIControlStateSelected];
@@ -464,7 +470,7 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
 
 -(void)onBtnCloseClicked
 {
-    [TXUGCRecord shareInstance].recordDelegate = nil;
+//    [TXUGCRecord shareInstance].recordDelegate = nil;
     
     [self stopCameraPreview];
     [self stopVideoRecord];
@@ -487,14 +493,16 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
         [_btnCamera setImage:[UIImage imageNamed:@"cameraex_press"] forState:UIControlStateNormal];
     }
     
-    [[TXUGCRecord shareInstance] switchCamera:_cameraFront];
+//    [[TXUGCRecord shareInstance] switchCamera:_cameraFront];
 }
 
 -(void)onBtnLampClicked
 {
     _lampOpened = !_lampOpened;
     
-    BOOL result = [[TXUGCRecord shareInstance] toggleTorch:_lampOpened];
+//    BOOL result = [[TXUGCRecord shareInstance] toggleTorch:_lampOpened];
+    bool result = true;
+    //Change TXRTMP SDK To TXLive SDK
     if (result == NO)
     {
         _lampOpened = !_lampOpened;
@@ -841,20 +849,20 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
     switch (tag) {
         case 0:
             _beautyDepth = value;
-            [[TXUGCRecord shareInstance] setBeautyDepth:_beautyDepth WhiteningDepth:_whitenDepth];
+//            [[TXUGCRecord shareInstance] setBeautyDepth:_beautyDepth WhiteningDepth:_whitenDepth];
             break;
             
         case 1:
             _whitenDepth = value;
-            [[TXUGCRecord shareInstance] setBeautyDepth:_beautyDepth WhiteningDepth:_whitenDepth];
+//            [[TXUGCRecord shareInstance] setBeautyDepth:_beautyDepth WhiteningDepth:_whitenDepth];
             break;
         case 2: //大眼
             _eye_level = value;
-            [[TXUGCRecord shareInstance] setEyeScaleLevel:_eye_level];
+//            [[TXUGCRecord shareInstance] setEyeScaleLevel:_eye_level];
             break;
          case 3:  //瘦脸
             _face_level = value;
-            [[TXUGCRecord shareInstance] setFaceScaleLevel:_face_level];
+//            [[TXUGCRecord shareInstance] setFaceScaleLevel:_face_level];
             break;
         default:
             break;
@@ -965,7 +973,7 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
     if (picker == _greenPickerView) {
         _greenIndex = [[NSNumber numberWithInteger:index] intValue];
         V8LabelNode *v = [_greenArray objectAtIndex:index];
-        [[TXUGCRecord shareInstance] setGreenScreenFile:v.file];
+//        [[TXUGCRecord shareInstance] setGreenScreenFile:v.file];
         return;
     }
     if (picker == _filterPickerView) {
@@ -1012,7 +1020,7 @@ typedef NS_ENUM(NSInteger,TCLVFilterType) {
         default:
             break;
     }
-    [[TXUGCRecord shareInstance] setFilter:[UIImage imageNamed:lookupFileName]];
+//    [[TXUGCRecord shareInstance] setFilter:[UIImage imageNamed:lookupFileName]];
 }
 
 #pragma mark - Misc Methods

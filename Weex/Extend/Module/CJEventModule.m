@@ -712,7 +712,7 @@ static NSMutableArray<NSDictionary *> *queueList;
         unsigned long long wxstorageSize = [NSFileManager countFileSizeWithPath:[DOCUMENT_PATH stringByAppendingPathComponent:@"wxstorage"]];
         
         CJDatabaseOption *option = [CJDatabaseOption new];
-        option.type = @"DataCache";
+        option.type = @"httpCache";
         option.current = 0;
         option.pageSize = 0;
         option.keyword = @"";
@@ -754,6 +754,23 @@ static NSMutableArray<NSDictionary *> *queueList;
                     [NSFileManager cleanFileWithPath:[DOCUMENT_PATH stringByAppendingPathComponent:@"wxstorage"]];
                 }
             }
+            [[CJDatabaseManager defaultManager] deleteDataList:[CJUserManager getUid] AndType:@"httpCache"];
+//            
+//            CJDatabaseOption *toption = [CJDatabaseOption new];
+//            toption.type = @"DataCache";
+//            toption.current = 0;
+//            toption.pageSize = 0;
+//            toption.keyword = @"";
+//            toption.orderBy = @"";
+//            NSArray *tarray = [[CJDatabaseManager defaultManager] findListWithUserId:[CJUserManager getUid] AndOption:toption];
+//            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:tarray];
+//            
+//            unsigned long long dataSize = data.length;
+//            
+//            NSLog(@"size=%llu",dataSize);
+//            exit(0);
+//            
+//            
             [NSFileManager cleanCacheAndCookie];
             inProcess = NO;
             if (callback){

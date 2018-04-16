@@ -353,13 +353,13 @@
     [self moreVideVideoAction];
 }
 
-//- (void)viewWillAppear:(BOOL)animated{
-//    [self.navigationController setNavigationBarHidden:NO animated:YES];
-//    [super viewWillAppear:YES];
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated{
-//    [self.navigationController setNavigationBarHidden:YES animated:animated];
-//    [super viewWillAppear:animated];
-//}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
 @end

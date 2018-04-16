@@ -25,6 +25,9 @@
 #import "CJNotificationCenter.h"
 
 //Category
+
+#import <CJCategoryHeader.h>
+
 #import "NSDictionary+CJUtil.h"
 #import "HttpHead+Utils.h"
 #import "MD5+Util.h"
@@ -42,7 +45,8 @@
 
 //第三方框架
 #import <AFNetworkReachabilityManager.h>
-
+#import <SVProgressHUD.h>
+#import <CWStatusBarNotification.h>
 
 //管理
 #import "CJUserManager.h"

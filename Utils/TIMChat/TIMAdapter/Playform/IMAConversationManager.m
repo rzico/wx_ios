@@ -499,7 +499,12 @@
         }
         
         
-        if ([conv getType] == TIM_C2C){
+        //群组消息处理  By CJ 2018年04月11日22:04:28
+        if ([conv getType] == TIM_GROUP){
+            NSString *receiver = [conv getReceiver];
+            NSDictionary *message = @{@"receiver":receiver,@"msg":msg};
+            CJPostNotification(CJNOTIFICATION_GROUP_MESSAGE, message);
+        }else if([conv getType] == TIM_GROUP){
             __block NSMutableDictionary *message = [NSMutableDictionary new];
             [message setObject:@"receive" forKey:@"type"];
             [message setObject:msg forKey:@"msg"];
@@ -516,6 +521,8 @@
                     CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
                 });
             }
+        }else{
+            
         }
     }
 }

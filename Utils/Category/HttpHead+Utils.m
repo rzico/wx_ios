@@ -22,14 +22,13 @@
     
     static NSString *userAgent = nil;
     
-    if (!uid){
-        uid = [CJUUID getUUID];
-    }
-    
     if (!userAgent){
         userAgent = [SharedAppDelegate.userAgent stringByAppendingString:@"weex"];
     }
     
+    if (!uid){
+        uid = [CJUUID getUUID];
+    }
     if (!appKey){
         NSDictionary *resourceInfo = [[CJUpdateManager sharedInstance] resourceInfo];
         if (resourceInfo){
