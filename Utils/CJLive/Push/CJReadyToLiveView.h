@@ -24,6 +24,8 @@
 
 @property (nonatomic, strong) UITextField *titleLabel;
 
+@property (nonatomic, assign) BOOL isRecord;
+
 @property (nonatomic, assign) BOOL isAgreen;
 
 @property (nonatomic, assign) BOOL isChoosedImage;

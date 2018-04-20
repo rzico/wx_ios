@@ -82,9 +82,16 @@
         NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] init];
         NSString *nickName = [[data.nickName replaceUnicode] stringByAppendingString:@":  "];
         NSString *message = [data.message replaceUnicode];
+        CGFloat width = 0;
+        if (data.VIP){
+            NSString *VIP = [data.VIP stringByAppendingString:@"  "];
+            NSAttributedString *VIPAttributeStr = [CJLiveMessageViewCell getTextAttribute:VIP color:[UIColor colorWithHex:0xf4d29a] headIndent:0];
+            [attributeStr appendAttributedString:VIPAttributeStr];
+            width = [CJLiveMessageViewCell getWidthWithAttributedString:VIPAttributeStr];
+        }
         NSAttributedString *nickNameAttributedString = [CJLiveMessageViewCell getTextAttribute:nickName color:[UIColor colorWithHex:CJLiveMessageNickNameColor] headIndent:0];
         [attributeStr appendAttributedString:nickNameAttributedString];
-        CGFloat width = [CJLiveMessageViewCell getWidthWithAttributedString:nickNameAttributedString];
+        width += [CJLiveMessageViewCell getWidthWithAttributedString:nickNameAttributedString];
         [attributeStr appendAttributedString:[CJLiveMessageViewCell getTextAttribute:message color:[UIColor colorWithHex:0xffd705] headIndent:width + 5]];
         return attributeStr;
     }else if (data.messageType == CJLiveMessageTypeGift){

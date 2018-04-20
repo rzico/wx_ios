@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CJLivePlayModel.h"
+#import "CJLivePlayUserModel.h"
 
 /**
  播放模块主控制器
@@ -21,17 +22,9 @@
 
 
 /**
- 自己的昵称
+ 自己信息
  */
-@property NSString *            nickName;
-
-
-/**
- 自己的头像
- */
-@property NSString *            faceUrl;
-
-
+@property (nonatomic, strong)   CJLivePlayUserModel *user;
 
 /**
  主播信息

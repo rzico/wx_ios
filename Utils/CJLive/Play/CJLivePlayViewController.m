@@ -29,7 +29,9 @@
 #import "OLImage.h"
 #import "PresentView.h"
 #import "CustonCell.h"
-@interface CJLivePlayViewController ()<CJAudienceViewDelegate, UITableViewDelegate, UITableViewDataSource, CJLivePlayBottomViewDelegate, RCTKInputBarControlDelegate, LiveGiftViewDelegate, PresentViewDelegate, CJLivePlayHeadDelegate>
+
+#import <OCBarrage.h>
+@interface CJLivePlayViewController ()<CJAudienceViewDelegate, UITableViewDelegate, UITableViewDataSource, CJLivePlayBottomViewDelegate, RCTKInputBarControlDelegate, LiveGiftViewDelegate, PresentViewDelegate, CJLivePlayHeadDelegate, TXLivePlayListener>
 
 @property (nonatomic, strong) TXLivePlayer *txLivePlayer;
 
@@ -53,6 +55,8 @@
 @property (nonatomic, weak)   NSTimer                   *audienceTimer;
 @property (nonatomic, weak)   NSTimer                   *timeLabelTimer;
 @property (nonatomic, assign) int                       timeCount;
+
+@property (nonatomic, strong) OCBarrageManager          *barrageManager;
 @end
 
 @implementation CJLivePlayViewController{
@@ -107,13 +111,19 @@
     [super touchesEnded:touches withEvent:event];
     if (_giftView){
         for (UITouch *touch in touches){
+            NSLog(@"touch=%@",[touch.view class]);
             CGPoint location = [touch locationInView:nil];
             if (location.y < _giftView.y){
                 [self hideGiftView];
             }
         }
-    }else{
-        [self.view endEditing:true];
+    }else if (!_inputBar.isHidden){
+        for (UITouch *touch in touches){
+            CGPoint location = [touch locationInView:nil];
+            if (location.y < _inputBar.y){
+                [self.view endEditing:true];
+            }
+        }
     }
 }
 
@@ -129,6 +139,7 @@
     [self.view insertSubview:_mVideoContainer atIndex:0];
     
     _txLivePlayer = [[TXLivePlayer alloc] init];
+    _txLivePlayer.delegate = self;
     [_txLivePlayer setupVideoWidget:CGRectZero containView:_mVideoContainer insertIndex:0];
     
     _config = [[TXLivePlayConfig alloc] init];
@@ -188,11 +199,7 @@
     [self.messageView layoutAbove:self.bottomView margin:10];
     
     
-    _inputBar = [[RCDLiveInputBar alloc] initWithFrame:CGRectMake(0, [UIScreen getHeight] - 50, [UIScreen getWidth], 50)];
-    _inputBar.delegate = self;
-    _inputBar.backgroundColor = [UIColor clearColor];
-    _inputBar.hidden = true;
-    [self.view addSubview:_inputBar];
+    
     
     
     self.presentView = [[PresentView alloc]init];
@@ -202,6 +209,21 @@
     [self.presentView sizeWith:CGSizeMake(200, 200)];
     [self.presentView layoutAbove:self.messageView];
     [self.presentView alignParentLeft];
+    
+    self.barrageManager = [[OCBarrageManager alloc] init];
+    [self.view addSubview:self.barrageManager.renderView];
+    [self.barrageManager.renderView sizeWith:CGSizeMake([UIScreen getWidth], self.messageView.y - 40 - self.headView.y - self.headView.height)];
+    [self.barrageManager.renderView layoutAbove:self.messageView margin:20];
+    
+    _inputBar = [[RCDLiveInputBar alloc] initWithFrame:CGRectMake(0, [UIScreen getHeight] - 50, [UIScreen getWidth], 50)];
+    _inputBar.delegate = self;
+    _inputBar.backgroundColor = [UIColor clearColor];
+    _inputBar.hidden = true;
+    [self.view addSubview:_inputBar];
+    
+    //启动弹幕
+    [self.barrageManager start];
+    
 }
 
 - (void)enterLiveRoom{
@@ -214,58 +236,102 @@
 
 - (void)onNewMessage:(NSNotification *)notification{
     NSLog(@"%@",notification.userInfo);
-    TIMMessage *msg = [notification.userInfo objectForKey:@"msg"];
-    
-    if ([[[msg getConversation] getReceiver] equalsString:self.groupId]){
-        CJLiveMessageModel *data = [[CJLiveMessageModel alloc] init];
-        
-        for (int i = 0; i < msg.elemCount; i ++){
-            TIMElem *elem = [msg getElem:i];
-            if ([elem isKindOfClass:[TIMCustomElem class]]){
-                //自定义消息
-                TIMCustomElem *customElem = (TIMCustomElem *)elem;
-                NSDictionary *dic = [NSDictionary dictionaryWithJsonData:[customElem data]];
-                NSLog(@"custom=%@",dic);
-                if ([dic objectForKey:@"data"]){
-                    NSDictionary *elemData = [dic objectForKey:@"data"];
-                    data.nickName = [elemData objectForKey:@"nickName"];
-                    data.icon = [elemData objectForKey:@"headPic"];
-                    data.userId = [elemData objectForKey:@"id"];
-                    
-                    if ([[dic objectForKey:@"cmd"] equalsString:@"CustomGifMsg"]){
-                        //礼物消息
-                        if (i+1 < msg.elemCount){
-                            TIMElem *next = [msg getElem:i+1];
-                            if ([next isKindOfClass:[TIMTextElem class]]){
-                                data.messageType = CJLiveMessageTypeGift;
-                                data.message = [(TIMTextElem *)next text];
-                                [self onreceiveGift:data];
+    NSString *type = [notification.userInfo objectForKey:@"type"];
+    if ([type equalsString:@"gag"]){//禁言
+        [self sendMsg:CJLiveMessageTypeGag message:[notification.userInfo objectForKey:@"info"]];
+    }else if ([type equalsString:@"kick"]){
+        [self sendMsg:CJLiveMessageTypeGag message:[notification.userInfo objectForKey:@"info"]];
+    }else if ([type equalsString:@"SYSTEM_DELETE"]){
+        [SVProgressHUD showInfoWithStatus:@"直播已结束"];
+        [self dismissViewControllerAnimated:true completion:nil];
+    }else if ([type equalsString:@"SYSTEM_KICK"]){
+        [SVProgressHUD showInfoWithStatus:@"您已被请离直播间"];
+        [self dismissViewControllerAnimated:true completion:nil];
+    }else if ([type equalsString:@"message"]){
+        TIMMessage *msg = [notification.userInfo objectForKey:@"msg"];
+        if ([[[msg getConversation] getReceiver] equalsString:self.groupId]){
+            CJLiveMessageModel *data = [[CJLiveMessageModel alloc] init];
+            for (int i = 0; i < msg.elemCount; i ++){
+                TIMElem *elem = [msg getElem:i];
+                if ([elem isKindOfClass:[TIMCustomElem class]]){
+                    //自定义消息
+                    TIMCustomElem *customElem = (TIMCustomElem *)elem;
+                    NSDictionary *dic = [NSDictionary dictionaryWithJsonData:[customElem data]];
+                    NSLog(@"custom=%@",dic);
+                    if ([dic objectForKey:@"data"]){
+                        NSDictionary *elemData = [dic objectForKey:@"data"];
+                        data.nickName = [elemData objectForKey:@"nickName"];
+                        data.icon = [elemData objectForKey:@"headPic"];
+                        data.Id = [elemData objectForKey:@"id"];
+                        data.userId = [elemData objectForKey:@"imid"];
+                        if ([elemData objectForKey:@"vip"] && [[elemData objectForKey:@"vip"] length] > 0){
+                            data.VIP = [elemData objectForKey:@"vip"];
+                        }
+                        if ([[dic objectForKey:@"cmd"] equalsString:@"CustomGifMsg"]){
+                            //礼物消息
+                            if (i+1 < msg.elemCount){
+                                TIMElem *next = [msg getElem:i+1];
+                                if ([next isKindOfClass:[TIMTextElem class]]){
+                                    data.messageType = CJLiveMessageTypeGift;
+                                    data.message = [(TIMTextElem *)next text];
+                                    [self onreceiveGift:data];
+                                    break;
+                                }
+                            }
+                        }else if ([[dic objectForKey:@"cmd"] equalsString:@"CustomTextMsg"]){
+                            if (i+1 < msg.elemCount){
+                                TIMElem *next = [msg getElem:i+1];
+                                if ([next isKindOfClass:[TIMTextElem class]]){
+                                    NSString *text = [(TIMTextElem *)next text];
+                                    data.message = text;
+                                    if ([text equalsString:@"加入房间"]){
+                                        data.messageType = CJLiveMessageTypeEnter;
+                                        [self.audienceView setAudience:++self.anchor.viewerCount];
+                                    }else{
+                                        data.messageType = CJLiveMessageTypeText;
+                                    }
+                                    [self appendMessage:data];
+                                    break;
+                                }
+                            }
+                        }else if ([[dic objectForKey:@"cmd"] equalsString:@"CustomGagMsg"]){
+                            if (i+1 < msg.elemCount){
+                                NSString *time = [elemData objectForKey:@"time"];
+                                data.messageType = CJLiveMessageTypeTip;
+                                if ([time intValue] > 1){
+                                    data.message = CJLiveMessageGagString;
+                                }else{
+                                    data.message = CJLiveMessageUnGagString;
+                                }
+                                [self appendMessage:data];
                                 break;
                             }
-                        }
-                    }else if ([[dic objectForKey:@"cmd"] equalsString:@"CustomTextMsg"]){
-                        if (i+1 < msg.elemCount){
-                            TIMElem *next = [msg getElem:i+1];
-                            if ([next isKindOfClass:[TIMTextElem class]]){
-                                NSString *text = [(TIMTextElem *)next text];
-                                data.message = text;
-                                if ([text equalsString:@"加入房间"]){
-                                    data.messageType = CJLiveMessageTypeEnter;
-                                    [self.audienceView setAudience:++self.anchor.viewerCount];
-                                }else{
-                                    data.messageType = CJLiveMessageTypeText;
+                        }else if ([[dic objectForKey:@"cmd"] equalsString:@"CustomKickMsg"]){
+                            if (i+1 < msg.elemCount){
+                                data.messageType = CJLiveMessageTypeTip;
+                                data.message = CJLiveMessageKickString;
+                                [self appendMessage:data];
+                                if ([data.userId equalsString:[CJUserManager getUserId]]){
+                                    [SVProgressHUD showInfoWithStatus:@"您已被请离直播间"];
+                                    [self dismissViewControllerAnimated:true completion:nil];
                                 }
+                                break;
+                            }
+                        }else if ([[dic objectForKey:@"cmd"] equalsString:@"CustomFollowMsg"]){
+                            if (i+1 < msg.elemCount){
+                                data.messageType = CJLiveMessageTypeTip;
+                                data.message = [elemData objectForKey:@"text"];
                                 [self appendMessage:data];
                                 break;
                             }
                         }
                     }
+                }else if ([elem isKindOfClass:[TIMTextElem class]]){
+                    data.message = [(TIMTextElem *)elem text];;
+                    data.messageType = CJLiveMessageTypeTip;
+                    [self appendMessage:data];
+                    break;
                 }
-            }else if ([elem isKindOfClass:[TIMTextElem class]]){
-                data.message = [(TIMTextElem *)elem text];;
-                data.messageType = CJLiveMessageTypeTip;
-                [self appendMessage:data];
-                break;
             }
         }
     }
@@ -340,14 +406,53 @@
     NSString *Id = [NSString stringWithFormat:@"%zu",[CJUserManager getUid]];
     if (type == CJLiveMessageTypeGift){
         data = [NSJSONSerialization dataWithJSONObject:@{@"cmd":@"CustomGifMsg",
-                                                         @"data":@{@"cmd":@"CustomGifMsg",@"nickName":self.nickName,@"headPic":self.faceUrl,@"id":Id}}
+                                                         @"data":@{@"cmd":@"CustomGifMsg",@"nickName":self.user.nickName,@"headPic":self.user.logo,@"id":Id}}
                                                options:NSJSONWritingPrettyPrinted
                                                  error:&error];
         [custElem setData:data];
         [msg addElem:custElem];
     }else if(type == CJLiveMessageTypeText || type == CJLiveMessageTypeTip || type == CJLiveMessageTypeEnter){
         data = [NSJSONSerialization dataWithJSONObject:@{@"cmd":@"CustomTextMsg",
-                                                         @"data":@{@"cmd":@"CustomTextMsg",@"nickName":self.nickName,@"headPic":self.faceUrl,@"id":Id}}
+                                                         @"data":@{@"cmd":@"CustomTextMsg",@"nickName":self.user.nickName,@"headPic":self.user.logo,@"id":Id,@"vip":!self.user.VIP ? @"" : self.user.VIP}}
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:&error];
+        [custElem setData:data];
+        [msg addElem:custElem];
+    }else if (type == CJLiveMessageTypeGag){
+        NSArray *arr = [message componentsSeparatedByString:@"|"];
+        data = [NSJSONSerialization dataWithJSONObject:@{@"cmd":@"CustomGagMsg",
+                                                         @"data":@{@"cmd":@"CustomGagMsg",@"nickName":arr[1],@"headPic":self.user.logo,@"id":[NSNumber numberWithInteger:0],@"imid":arr[0],@"text":CJLiveMessageGagString,@"time":arr[2]}}
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:&error];
+        [custElem setData:data];
+        [msg addElem:custElem];
+    }else if (type == CJLiveMessageTypeKick){
+        NSArray *arr = [message componentsSeparatedByString:@"|"];
+        data = [NSJSONSerialization dataWithJSONObject:@{@"cmd":@"CustomKickMsg",
+                                                         @"data":@{@"cmd":@"CustomKickMsg",@"nickName":arr[1],@"headPic":self.user.logo,@"id":[NSNumber numberWithInteger:0],@"imid":arr[0],@"text":CJLiveMessageKickString,@"time":@""}}
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:&error];
+        [custElem setData:data];
+        [msg addElem:custElem];
+    }else if (type == CJLiveMessageTypeFollow){
+        NSArray *arr = [message componentsSeparatedByString:@"|"];
+        data = [NSJSONSerialization dataWithJSONObject:@{@"cmd":@"CustomFollowMsg",
+                                                         @"data":@{@"cmd":@"CustomFollowMsg",@"nickName":arr[1],@"headPic":self.user.logo,@"id":@"0",@"imid":arr[0],@"text":CJLiveMessageFollowString,@"time":@""}}
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:&error];
+        [custElem setData:data];
+        [msg addElem:custElem];
+    }else if (type == CJLiveMessageTypeUnFollow){
+        NSArray *arr = [message componentsSeparatedByString:@"|"];
+        data = [NSJSONSerialization dataWithJSONObject:@{@"cmd":@"CustomFollowMsg",
+                                                         @"data":@{@"cmd":@"CustomFollowMsg",@"nickName":arr[1],@"headPic":self.user.logo,@"id":@"0",@"imid":arr[0],@"text":CJLiveMessageUnFollowString,@"time":@""}}
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:&error];
+        [custElem setData:data];
+        [msg addElem:custElem];
+    }else if (type == CJLiveMessageTypeBarrage){
+        data = [NSJSONSerialization dataWithJSONObject:@{@"cmd":@"CustomBarrageMsg",
+                                                         @"data":@{@"cmd":@"CustomBarrageMsg",@"nickName":self.user.nickName,@"headPic":self.user.logo,@"id":Id,@"imid":@"",@"text":message,@"time":@""}}
                                                options:NSJSONWritingPrettyPrinted
                                                  error:&error];
         [custElem setData:data];
@@ -357,33 +462,72 @@
     
     
     TIMTextElem *textElem = [[TIMTextElem alloc] init];
-    textElem.text = message;
+    switch (type) {
+        case CJLiveMessageTypeGag:
+            textElem.text = CJLiveMessageGagString;
+            break;
+        case CJLiveMessageTypeKick:
+            textElem.text = CJLiveMessageKickString;
+            break;
+        case CJLiveMessageTypeFollow:
+            textElem.text = CJLiveMessageFollowString;
+            break;
+        case CJLiveMessageTypeUnFollow:
+            textElem.text = CJLiveMessageUnFollowString;
+            break;
+        default:
+            textElem.text = message;
+            break;
+    }
+    
     
     
     [msg addElem:textElem];
     
     TIMConversation *conv = [[TIMManager sharedInstance] getConversation:TIM_GROUP receiver:self.groupId];
     [conv sendMessage:msg succ:^{
-        if (type == CJLiveMessageTypeText){
+        if (type == CJLiveMessageTypeText || type == CJLiveMessageTypeBarrage){
             CJLiveMessageModel *model = [[CJLiveMessageModel alloc] init];
-            model.nickName = @"我";
+            model.nickName = self.user.nickName;
             model.messageType = CJLiveMessageTypeText;
             model.message = message;
             model.userId = [NSString stringWithFormat:@"%zu",[CJUserManager getUid]];
+            model.VIP = self.user.VIP;
             [self appendMessage:model];
         }else if (type == CJLiveMessageTypeGift){
             CJLiveMessageModel *model = [[CJLiveMessageModel alloc] init];
-            model.nickName = self.nickName;
+            model.nickName = self.user.nickName;
             model.messageType = CJLiveMessageTypeGift;
             model.message = message;
             model.userId = [NSString stringWithFormat:@"%zu",[CJUserManager getUid]];
             [self appendMessage:model];
-            [self showGiftGif:message giftID:nil senderName:self.nickName senderHeadUrl:self.anchor.headpic isSelf:true];
+            [self showGiftGif:message giftID:nil senderName:self.user.nickName senderHeadUrl:self.anchor.headpic isSelf:true];
         }else if (type == CJLiveMessageTypeEnter){
             CJLiveMessageModel *model = [[CJLiveMessageModel alloc] init];
-            model.nickName = self.nickName;
+            model.nickName = self.user.nickName;
             model.messageType = CJLiveMessageTypeEnter;
             model.userId = [NSString stringWithFormat:@"%zu",[CJUserManager getUid]];
+            [self appendMessage:model];
+        }else if (type == CJLiveMessageTypeGag){
+            NSArray *arr = [message componentsSeparatedByString:@"|"];
+            CJLiveMessageModel *model = [[CJLiveMessageModel alloc] init];
+            model.nickName = arr[1];
+            model.messageType = CJLiveMessageTypeTip;
+            model.message = textElem.text;
+            [self appendMessage:model];
+        }else if (type == CJLiveMessageTypeKick){
+            NSArray *arr = [message componentsSeparatedByString:@"|"];
+            CJLiveMessageModel *model = [[CJLiveMessageModel alloc] init];
+            model.nickName = arr[1];
+            model.messageType = CJLiveMessageTypeTip;
+            model.message = textElem.text;
+            [self appendMessage:model];
+        }else if (type == CJLiveMessageTypeFollow || type == CJLiveMessageTypeUnFollow){
+            NSArray *arr = [message componentsSeparatedByString:@"|"];
+            CJLiveMessageModel *model = [[CJLiveMessageModel alloc] init];
+            model.nickName = arr[1];
+            model.messageType = CJLiveMessageTypeTip;
+            model.message = textElem.text;
             [self appendMessage:model];
         }
     } fail:^(int code, NSString *msg) {
@@ -437,14 +581,16 @@
     //获取账户信息
     NSString *url = [NSString stringWithFormat:@"%@?id=%ld",HTTPAPI(@"user/view"),[CJUserManager getUid]];
     [CJNetworkManager GetHttp:url Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]] && [responseObject objectForKey:@"data"]){
+        if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
+            CJLivePlayUserModel *user = [CJLivePlayUserModel modelWithDictionary:[responseObject objectForKey:@"data"]];
+            self.user = user;
             [LiveGiftView getGiftList:^(NSArray *giftList) {
                 self.giftView = [[NSBundle mainBundle] loadNibNamed:@"LiveGiftView" owner:self options:0][0];
                 [self.giftView resetViews];
                 self.giftView.delegate = self;
                 self.giftView.hidden = NO;
-                currentInterl = [[[responseObject objectForKey:@"data"] objectForKey:@"balance"] doubleValue];
-                self.giftView.currentInterl.text = [NSString stringWithFormat:@"%.2lf",currentInterl];
+                self->currentInterl = self.user.balance;
+                self.giftView.currentInterl.text = [NSString stringWithFormat:@"%.2lf",self.user.balance];
                 [self.view addSubview:self.giftView];
                 
                 [self.giftView sizeWith:CGSizeMake([UIScreen getWidth], 230)];
@@ -479,6 +625,7 @@
 
 - (void)exitLivePlay{
     [self stop];
+    [self.barrageManager stop];
     NSString *url = [NSString stringWithFormat:@"%@?id=%@",HTTPAPI(@"live/quit"),self.groupId];
     [CJNetworkManager PostHttp:url Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         NSLog(@"quit=%@",responseObject);
@@ -491,7 +638,23 @@
 }
 
 - (void)quit{
-    [self dismissViewControllerAnimated:true completion:nil];
+    [[TIMGroupManager sharedInstance] quitGroup:self.groupId succ:^{
+        [self dismissViewControllerAnimated:true completion:nil];
+    } fail:^(int code, NSString *msg) {
+        [self dismissViewControllerAnimated:true completion:nil];
+    }];
+}
+
+#pragma mark TXLivePlayListener
+- (void)onPlayEvent:(int)EvtID withParam:(NSDictionary *)param{
+    if (EvtID == PLAY_ERR_NET_DISCONNECT){
+        [SVProgressHUD showErrorWithStatus:@"获取视频流失败"];
+        [self exitLivePlay];
+    }
+}
+
+- (void)onNetStatus:(NSDictionary *)param{
+    NSLog(@"CJonNetStatus=%@",param);
 }
 
 #pragma mark - HeadView Delegate
@@ -505,6 +668,7 @@
         if ([responseObject isKindOfClass:[NSDictionary class]] && ([[responseObject objectForKey:@"content"] equalsString:@"关注成功"] || [[responseObject objectForKey:@"content"] equalsString:@"取消成功"])){
             self.anchor.follow = isAttention;
             [self.headView setAttention:isAttention];
+            [self sendMsg:isAttention ? CJLiveMessageTypeFollow : CJLiveMessageTypeUnFollow message:[NSString stringWithFormat:@"%@|%@",[CJUserManager getUserId],self.user.nickName]];
         }else{
             [SVProgressHUD showErrorWithStatus:@"网络不稳定，请稍后再试"];
         }
@@ -522,9 +686,9 @@
             [self.giftView.sendBtn setEnabled:true];
             if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
                 [self sendGiftMsg:title];
-                currentInterl -= [[responseObject objectForKey:@"data"] floatValue];
+                self->currentInterl -= [[responseObject objectForKey:@"data"] floatValue];
                 
-                self.giftView.currentInterl.text = [NSString stringWithFormat:@"%.2lf",currentInterl];
+                self.giftView.currentInterl.text = [NSString stringWithFormat:@"%.2lf",self->currentInterl];
                 NSLog(@"sendgift=%@",responseObject);
             }else{
                 [SVProgressHUD showErrorWithStatus:@"赠送失败"];
@@ -549,10 +713,46 @@
 - (void)onTouchSendButton:(NSString *)text{
     [_inputBar setInputBarStatus:RCDLiveBottomBarDefaultStatus];
     [_inputBar clearInputView];
-    [self sendMsg:CJLiveMessageTypeText message:text];
+    if (self.bottomView.bulletSwitch.isOn){
+        NSString *url = [NSString stringWithFormat:@"%@?liveId=%ld",HTTPAPI(@"live/gift/barrage"),self.anchor.liveId];
+        [CJNetworkManager PostHttp:url Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
+                [self sendMsg:CJLiveMessageTypeBarrage message:text];
+                [self appendBarrageMessage:self.user.nickName message:text];
+            }else{
+                [SVProgressHUD showErrorWithStatus:@"发送弹幕失败，请检查余额或稍后再试"];
+            }
+        } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            [SVProgressHUD showErrorWithStatus:@"网络繁忙，请稍后再试"];
+        }];
+    }else{
+        [self sendMsg:CJLiveMessageTypeText message:text];
+    }
 }
 
+- (void)appendBarrageMessage:(NSString *)nickName message:(NSString *)message{
+    OCBarrageTextDescriptor *textDescriptor = [[OCBarrageTextDescriptor alloc] init];
 
+    NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] init];
+    nickName = [[nickName replaceUnicode] stringByAppendingString:@": "];
+    message = [message replaceUnicode];
+    
+    NSDictionary *nickNameDic = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:17], NSForegroundColorAttributeName:[UIColor colorWithHex:0x00ffff]};
+    NSAttributedString *nickNameAttributedString = [[NSAttributedString alloc] initWithString:nickName attributes:nickNameDic];
+    [attributeStr appendAttributedString:nickNameAttributedString];
+    
+    NSDictionary *messageDic = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:17], NSForegroundColorAttributeName:[UIColor colorWithHex:0xffd705]};
+    NSAttributedString *messageAttributedString = [[NSAttributedString alloc] initWithString:message attributes:messageDic];
+    [attributeStr appendAttributedString:messageAttributedString];
+    
+    textDescriptor.attributedText = attributeStr;
+    textDescriptor.strokeColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+    textDescriptor.strokeWidth = -1;
+    textDescriptor.animationDuration = arc4random()%5 + 5;
+    textDescriptor.barrageCellClass = [OCBarrageTextCell class];
+    
+    [self.barrageManager renderBarrageDescriptor:textDescriptor];
+}
 
 #pragma mark - MessageView Delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -567,6 +767,7 @@
     if (indexPath.row % 2 == 0){
         NSInteger index = indexPath.row / 2;
         NSString *userId = _messageList[index].userId;
+        NSString *nickName = _messageList[index].nickName;
         if (userId){
             long uId = [userId longLongValue];
             userId = [NSString stringWithFormat:@"u%ld",uId + 10200];
@@ -574,7 +775,7 @@
                 if (members.count > 0){
                     TIMGroupMemberInfo *info = [members firstObject];
                     CJWeexViewController *weex = [[CJWeexViewController alloc] init];
-                    NSString *url = [NSString stringWithFormat:@"file://view/live/host.js?id=%ld&showJinYan=%@&groupId=%@",uId, info.silentUntil > 0 ? @"true" : @"false", self.groupId];
+                    NSString *url = [NSString stringWithFormat:@"file://view/live/host.js?id=%ld&groupId=%@&nickName=%@&isUser=true&hasGag=%@",uId, self.groupId, [nickName URLEncodedString], info.silentUntil > 0 ? @"true" : @"false"];
                     url = [url rewriteURL];
                     weex.url = [NSURL URLWithString:url];
                     [weex render:nil];

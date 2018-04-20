@@ -22,6 +22,8 @@
 
 @property (strong, nonatomic) UIButton     *ruleBtn;
 
+@property (strong, nonatomic) UIButton     *recordBtn;
+
 @end
 
 @implementation CJReadyToLiveView
@@ -78,6 +80,19 @@
     [self.beginToLiveBtn addTarget:self action:@selector(beginToLiveBtnOnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.beginToLiveBtn];
     
+    self.recordBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.recordBtn setTitle:@"是否录制" forState:UIControlStateNormal];
+    [self.recordBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
+    [self.recordBtn setImage:[UIImage imageNamed:@"unChoose"] forState:UIControlStateNormal];
+    [self.recordBtn setImage:[UIImage imageNamed:@"didChoose"] forState:UIControlStateSelected];
+    [self.recordBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+    [self.recordBtn setTitleColor:[UIColor colorWithRed:76/255.0 green:74/255.0 blue:75/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.recordBtn setBackgroundColor:[UIColor clearColor]];
+    [self.recordBtn addTarget:self action:@selector(recordBtnOnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.recordBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [self.recordBtn setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
+    [self addSubview:self.recordBtn];
+    
     self.agreenBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.agreenBtn setTitle:@"同意" forState:UIControlStateNormal];
     [self.agreenBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
@@ -87,6 +102,8 @@
     [self.agreenBtn setTitleColor:[UIColor colorWithRed:76/255.0 green:74/255.0 blue:75/255.0 alpha:1.0] forState:UIControlStateNormal];
     [self.agreenBtn setBackgroundColor:[UIColor clearColor]];
     [self.agreenBtn addTarget:self action:@selector(agreenBtnOnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.agreenBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [self.agreenBtn setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
     [self addSubview:self.agreenBtn];
     
     self.ruleBtn = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -126,9 +143,13 @@
     [self.beginToLiveBtn alignBottom:self.line margin:-70];
     [self.beginToLiveBtn layoutParentHorizontalCenter];
     
+    [self.recordBtn sizeWith:CGSizeMake(100, 26)];
+    [self.recordBtn alignLeft:self.imageView margin:10.0];
+    [self.recordBtn alignBottom:self.beginToLiveBtn margin:-40];
+    
     [self.agreenBtn sizeWith:CGSizeMake(50, 26)];
     [self.agreenBtn alignLeft:self.imageView margin:10.0];
-    [self.agreenBtn alignBottom:self.beginToLiveBtn margin:-40];
+    [self.agreenBtn alignBottom:self.recordBtn margin:-40];
     
     [self.ruleBtn sizeWith:CGSizeMake(125, 26)];
     [self.ruleBtn alignTop:self.agreenBtn];
@@ -147,6 +168,11 @@
     if ([_delegate respondsToSelector:@selector(CJReadyToLiveOnClickBeginLiveButton)]){
         [_delegate CJReadyToLiveOnClickBeginLiveButton];
     }
+}
+
+- (void)recordBtnOnClick:(id)sender{
+    [sender setSelected:![sender isSelected]];
+    self.isRecord = [sender isSelected];
 }
 
 - (void)agreenBtnOnClick:(id)sender{

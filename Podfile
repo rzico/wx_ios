@@ -19,9 +19,10 @@ def common
     pod 'OpenSSL', '~> 1.0.208'
     pod 'FMDB', '~> 2.7.2'
     pod 'LJContactManager'
-    pod 'TXLiteAVSDK_Smart', :podspec => 'http://pod-1252463788.cosgz.myqcloud.com/liteavsdkspec/TXLiteAVSDK_Smart.podspec'
+    pod 'TXLiteAVSDK_Professional', :podspec => 'http://pod-1252463788.cosgz.myqcloud.com/liteavsdkspec/TXLiteAVSDK_Professional.podspec'
     pod 'SVProgressHUD'
     pod 'CWStatusBarNotification'
+    pod 'OCBarrage'
 end
 
 target 'Weex' do

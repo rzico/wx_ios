@@ -8,7 +8,9 @@
 
 #import "CJLivePlayBottomView.h"
 
-@implementation CJLivePlayBottomView
+@implementation CJLivePlayBottomView{
+    UILabel *bulletLbl;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
@@ -20,6 +22,15 @@
 }
 
 - (void)createSubViews{
+    _bulletSwitch = [[UISwitch alloc] init];
+    [self addSubview:_bulletSwitch];
+    
+    bulletLbl = [[UILabel alloc] init];
+    bulletLbl.text = @"弹幕";
+    [bulletLbl setFont:[UIFont systemFontOfSize:13]];
+    [bulletLbl setTextColor:[UIColor whiteColor]];
+    [self addSubview:bulletLbl];
+    
     _msgPlaceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_msgPlaceBtn setBackgroundColor:[UIColor darkGrayColor]];
     [_msgPlaceBtn setTitle:@"聊点什么吧" forState:UIControlStateNormal];
@@ -46,18 +57,20 @@
     [_praiseBtn.layer setCornerRadius:self.height * 0.5];
     
     [_giftBtn sizeWith:CGSizeMake(self.height, self.height)];
-    [_giftBtn layoutToLeftOf:_praiseBtn margin:30];
+    [_giftBtn layoutToLeftOf:_praiseBtn margin:20];
     [_giftBtn.layer setCornerRadius:self.height * 0.5];
     
-    [_msgPlaceBtn sizeWith:CGSizeMake(0, self.height)];
-    [_msgPlaceBtn alignParentLeftWithMargin:30];
-    [_msgPlaceBtn.layer setCornerRadius:self.height * 0.5];
+    [_bulletSwitch alignParentLeftWithMargin:10];
+    [_bulletSwitch layoutParentVerticalCenter];
     
+    [bulletLbl sizeWith:CGSizeMake(30, self.height * 0.7)];
+    [bulletLbl layoutToRightOf:_bulletSwitch margin:10];
+    [bulletLbl layoutParentVerticalCenter];
     
-    _msgPlaceBtn.width = _giftBtn.x - 30 - 30;
-    
-    
-    
+    [_msgPlaceBtn sizeWith:CGSizeMake(_giftBtn.x - bulletLbl.width - bulletLbl.x - 30, self.height * 0.7)];
+    [_msgPlaceBtn layoutToRightOf:bulletLbl margin:10];
+    [_msgPlaceBtn layoutParentVerticalCenter];
+    [_msgPlaceBtn.layer setCornerRadius:self.height * 0.7 * 0.5];
 }
 
 - (void)onClickMsgPlaceBtn:(id)sender{

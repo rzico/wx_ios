@@ -29,4 +29,6 @@
 @property (nonatomic, strong) UIButton *praiseBtn;
 
 @property (nonatomic, weak) id<CJLivePlayBottomViewDelegate> delegate;
+
+@property (nonatomic, strong) UISwitch *bulletSwitch;
 @end

@@ -45,6 +45,7 @@
 		228FD40520736FDA009C39D5 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 228FD40420736FDA009C39D5 /* libiconv.tbd */; };
 		228FD40B2073789A009C39D5 /* CJLivePushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 228FD40A2073789A009C39D5 /* CJLivePushViewController.m */; };
 		228FD40E20737946009C39D5 /* CJReadyToLiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 228FD40D20737946009C39D5 /* CJReadyToLiveView.m */; };
+		22A35CCC20898046000EEC44 /* CJLivePlayUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A35CCB20898046000EEC44 /* CJLivePlayUserModel.m */; };
 		22AE2775207E92090082D462 /* RCDLiveEmojiPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22AE2771207E92080082D462 /* RCDLiveEmojiPageControl.m */; };
 		22AE2776207E92090082D462 /* RCDLiveEmojiBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22AE2772207E92090082D462 /* RCDLiveEmojiBoardView.m */; };
 		22AE277B207E92160082D462 /* RCDLiveInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22AE2777207E92150082D462 /* RCDLiveInputView.m */; };
@@ -638,6 +639,8 @@
 		228FD40A2073789A009C39D5 /* CJLivePushViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJLivePushViewController.m; sourceTree = "<group>"; };
 		228FD40C20737946009C39D5 /* CJReadyToLiveView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJReadyToLiveView.h; sourceTree = "<group>"; };
 		228FD40D20737946009C39D5 /* CJReadyToLiveView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJReadyToLiveView.m; sourceTree = "<group>"; };
+		22A35CCA20898046000EEC44 /* CJLivePlayUserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJLivePlayUserModel.h; sourceTree = "<group>"; };
+		22A35CCB20898046000EEC44 /* CJLivePlayUserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJLivePlayUserModel.m; sourceTree = "<group>"; };
 		22AE2771207E92080082D462 /* RCDLiveEmojiPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDLiveEmojiPageControl.m; sourceTree = "<group>"; };
 		22AE2772207E92090082D462 /* RCDLiveEmojiBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDLiveEmojiBoardView.m; sourceTree = "<group>"; };
 		22AE2773207E92090082D462 /* RCDLiveEmojiBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDLiveEmojiBoardView.h; sourceTree = "<group>"; };
@@ -1696,6 +1699,7 @@
 		220700DE2074796500DB3BA6 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				22A35CC920897FE5000EEC44 /* Model */,
 				22AE277F207EA1580082D462 /* LiveGiftView */,
 				22AE277D207E999A0082D462 /* Emoji.plist */,
 				22AE2770207E91F20082D462 /* InputBar */,
@@ -1820,6 +1824,15 @@
 				22C7BEC22073B329009DE2C5 /* CJLivePushHeadView.m */,
 			);
 			path = Push;
+			sourceTree = "<group>";
+		};
+		22A35CC920897FE5000EEC44 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				22A35CCA20898046000EEC44 /* CJLivePlayUserModel.h */,
+				22A35CCB20898046000EEC44 /* CJLivePlayUserModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		22AE276F207E91E80082D462 /* EmojiView */ = {
@@ -3858,6 +3871,9 @@
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
 								enabled = 0;
 							};
@@ -4289,6 +4305,7 @@
 				887E30BE1FE7900F00D8627A /* NSString+RewriteURL.m in Sources */,
 				88C2D9AD1FE9C16A000BCAB4 /* UIView+TIMLayout.m in Sources */,
 				887E30361FE6622000D8627A /* AppDelegate.m in Sources */,
+				22A35CCC20898046000EEC44 /* CJLivePlayUserModel.m in Sources */,
 				882C8AC01FE7E01300C6DB32 /* IWXToast.m in Sources */,
 				88C2D9CF1FE9C16A000BCAB4 /* IMAMsg+Draft.m in Sources */,
 				88C2D98F1FE9C16A000BCAB4 /* MKNetworkEngine.m in Sources */,
