@@ -23,7 +23,8 @@
 
 WX_EXPORT_METHOD(@selector(loadUrl:video:method:callback:))
 WX_EXPORT_METHOD(@selector(test))
-WX_EXPORT_METHOD(@selector(toPlayLiveRoom:play:record:callback:))
+WX_EXPORT_METHOD(@selector(toPlayLiveRoom:play:record:title:frontcover:callback:))
+//WX_EXPORT_METHOD(@selector(toPlayLiveRoom:play:record:callback:))
 WX_EXPORT_METHOD(@selector(toLookLiveRoom:title:fm:callback:))
 WX_EXPORT_METHOD(@selector(toGag:nickName:groupId:time:callback:))
 WX_EXPORT_METHOD(@selector(getGag:gourpId:callback:))
@@ -44,17 +45,38 @@ WX_EXPORT_METHOD(@selector(toKick:nickName:callback:))
     NSLog(@"ttttttt");
 }
 
-- (void)toPlayLiveRoom:(int)Id play:(BOOL)play record:(BOOL)record callback:(WXModuleCallback)callback{
-    CJLivePushViewController *pushVC = [[CJLivePushViewController alloc] init];
-    [FriendshipManager getUserProfile:[CJUserManager getUserId] succ:^(TIMUserProfile *profile) {
-        if (profile){
-            pushVC.headIcon = profile.faceURL;
+- (void)toPlayLiveRoom:(int)Id play:(BOOL)play record:(BOOL)record title:(NSString *)title frontcover:(NSString *)frontCover callback:(WXModuleCallback)callback{
+    NSString *url = [NSString stringWithFormat:@"%@?id=%zu",HTTPAPI(@"user/view"),[CJUserManager getUid]];
+    [CJNetworkManager GetHttp:url Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
+            CJLivePlayUserModel *user = [CJLivePlayUserModel modelWithDictionary:[responseObject objectForKey:@"data"]];
+            CJLivePushViewController *pushVC = [[CJLivePushViewController alloc] init];
+            pushVC.anchor = user;
+            pushVC.headIcon = user.logo;
+            pushVC.isRecord = record;
+            pushVC.liveTitle = title;
+            pushVC.frontCover = frontCover;
+//            pushVC.isNativeConfig = !play;
             [self->weexInstance.viewController presentViewController:pushVC animated:true completion:nil];
         }else{
             [SVProgressHUD showErrorWithStatus:@"获取用户信息失败"];
         }
+    } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:@"网络繁忙，请稍后再试"];
     }];
 }
+
+//- (void)toPlayLiveRoom:(int)Id play:(BOOL)play record:(BOOL)record callback:(WXModuleCallback)callback{
+//    CJLivePushViewController *pushVC = [[CJLivePushViewController alloc] init];
+//    [FriendshipManager getUserProfile:[CJUserManager getUserId] succ:^(TIMUserProfile *profile) {
+//        if (profile){
+//            pushVC.headIcon = profile.faceURL;
+//            [self->weexInstance.viewController presentViewController:pushVC animated:true completion:nil];
+//        }else{
+//            [SVProgressHUD showErrorWithStatus:@"获取用户信息失败"];
+//        }
+//    }];
+//}
 
 //- (void)toPlayLiveRoom{
 //    CJLivePlayViewController *playVC = [[CJLivePlayViewController alloc] init];

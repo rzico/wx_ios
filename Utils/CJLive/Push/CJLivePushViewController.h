@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <TXLivePush.h>
-
+#import "CJLivePlayUserModel.h"
 /**
  推流模块主控制器,承载了渲染view,逻辑view,以及相关逻辑,同时也是SDK层事件通知的接收者
  */
@@ -42,17 +42,41 @@
 /**
  群聊ID
  */
-@property (nonatomic, copy) NSString *            groupId;
+@property (nonatomic, copy) NSString *              groupId;
 
 
 /**
  标题
  */
-@property (nonatomic, copy) NSString *            liveTitle;
+@property (nonatomic, copy) NSString *              liveTitle;
+
+
+/**
+ 封面
+ */
+@property (nonatomic, copy) NSString *              frontCover;
 
 
 /**
  头像
  */
-@property (nonatomic, copy) NSString *            headIcon;
+@property (nonatomic, copy) NSString *              headIcon;
+
+
+/**
+ 主播信息
+ */
+@property (nonatomic, strong) CJLivePlayUserModel * anchor;
+
+
+/**
+ 是否需要自定义设置
+ */
+@property (nonatomic, assign) BOOL                  isNativeConfig;
+
+
+/**
+ 是否录制
+ */
+@property (nonatomic, assign) BOOL                  isRecord;
 @end

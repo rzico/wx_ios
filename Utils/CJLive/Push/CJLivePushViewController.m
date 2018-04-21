@@ -93,8 +93,6 @@
     long likeCount;
     long follow;
     long viewerCount;
-    
-    BOOL isRecord;
 }
 
 - (void)viewDidLoad {
@@ -456,16 +454,22 @@
     _videoParentView = [[UIView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:_videoParentView];
     
+    if (self.isNativeConfig){
+        self.readyToLiveView = [[CJReadyToLiveView alloc] initWithFrame:CGRectMake(0, 0, 280, 400)];
+        self.readyToLiveView.backgroundColor = [UIColor whiteColor];
+        self.readyToLiveView.center = self.view.center;
+        self.readyToLiveView.layer.cornerRadius = 10.0;
+        self.readyToLiveView.clipsToBounds = true;
+        self.readyToLiveView.delegate = self;
+        [self.view addSubview:_readyToLiveView];
+        
+        self.readyToLiveView.kbHideFrame = self.readyToLiveView.frame;
+    }else{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self setBeginToLive];
+        });
+    }
     
-    self.readyToLiveView = [[CJReadyToLiveView alloc] initWithFrame:CGRectMake(0, 0, 280, 400)];
-    self.readyToLiveView.backgroundColor = [UIColor whiteColor];
-    self.readyToLiveView.center = self.view.center;
-    self.readyToLiveView.layer.cornerRadius = 10.0;
-    self.readyToLiveView.clipsToBounds = true;
-    self.readyToLiveView.delegate = self;
-    [self.view addSubview:_readyToLiveView];
-    
-    self.readyToLiveView.kbHideFrame = self.readyToLiveView.frame;
     
     
     UIButton *closeBtn = [[UIButton alloc] init];
@@ -751,7 +755,7 @@
 }
 
 - (void)readyToBeginLive{
-    isRecord = self.readyToLiveView.isRecord;
+    self.isRecord = self.readyToLiveView.isRecord;
     
     [UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.readyToLiveView.frame = CGRectMake(self.readyToLiveView.left, self.readyToLiveView.bottom, self.readyToLiveView.width, 0);
@@ -760,8 +764,18 @@
         self.readyToLiveView = nil;
     }];
     
+    [self setBeginToLive];
+}
+
+
+- (void)setBeginToLive{
     UIButton *beginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    beginButton.frame = CGRectMake(self.readyToLiveView.left, self.readyToLiveView.bottom, self.readyToLiveView.width, 50);
+    if (self.readyToLiveView){
+        beginButton.frame = CGRectMake(self.readyToLiveView.left, self.readyToLiveView.bottom, self.readyToLiveView.width, 50);
+    }else{
+        [beginButton sizeWith:CGSizeMake(280, 50)];
+        [beginButton setCenter:self.view.center];
+    }
     beginButton.layer.cornerRadius = 25;
     beginButton.layer.masksToBounds = YES;
     beginButton.backgroundColor = [UIColor colorWithHex:0xdd4242];
@@ -778,14 +792,14 @@
     [sender removeFromSuperview];
     [self createAVChatRoom:^(BOOL success, int code, NSString *msg) {
         if (success){
-            [self getLivePlayInfo:^(BOOL success, NSString *error) {
+            [self createLiveRoomWithTitle:self.liveTitle frontCover:self.frontCover complete:^(BOOL success, NSString *error) {
                 if (success){
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.bottomView setUserInteractionEnabled:true];
                         
                         //@"rtmp://10714.livepush.myqcloud.com/live/10714_test?bizid=10714&txSecret=c5efc53ffef6a2ce9a56e0dcf2d7c267&txTime=5AE73D7F"
                         
-                        NSString *pushUrl = [NSString stringWithFormat:@"%@%@",self.rtmpUrl,isRecord ? @"&record=hls" : @""];
+                        NSString *pushUrl = [NSString stringWithFormat:@"%@%@",self.rtmpUrl,self.isRecord ? @"&record=hls" : @""];
                         
                         [self.txLivePublisher startPush:pushUrl];
                         
@@ -867,38 +881,45 @@
 - (void)getLiveInfo:(void(^)(BOOL success, NSString *error))complete{
     [self uploadCoverImage:^(BOOL success, NSString *imgUrl) {
         if (success){
-            NSString *api = HTTPAPI(@"live/create");
-            NSString *title = self.readyToLiveView.titleLabel.text;
-            NSString *coverImage = imgUrl;
-            NSString *location = @"";
-            
-            NSString *url = [NSString stringWithFormat:@"%@?title=%@&frontcover=%@&location=%@",api,[title URLEncodedString],coverImage,location];
-            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-            [CJNetworkManager PostWithRequest:request Success:^(NSURLResponse * _Nonnull response, id  _Nonnull responseObject) {
-                if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
-                    NSLog(@"服务器返回:%@",responseObject);
-                    NSDictionary *data = [responseObject objectForKey:@"data"];
-                    if (data && [data objectForKey:@"liveId"] && [data objectForKey:@"headpic"] && [data objectForKey:@"title"]){
-                        self.groupId = [NSString stringWithFormat:@"%@",[data objectForKey:@"liveId"]];
-                        [self.headView.iconView sd_setImageWithURL:[NSURL URLWithString:[data objectForKey:@"headpic"]]];
-                        self.liveTitle = [data objectForKey:@"title"];
-                        complete(true, nil);
-                    }else{
-                        //未找到Key
-                        complete(false, @"未找到Key");
-                    }
-                }else{
-                    //接口数据返回错误
-                    complete(false, @"接口数据返回错误");
-                }
-            } andFalse:^(NSURLResponse * _Nonnull response, NSError * _Nonnull error) {
-                //请求接口错误
-                complete(false, @"请求接口错误");
-            }];
+            self.liveTitle = self.readyToLiveView.titleLabel.text;
+            self.frontCover = imgUrl;
+            complete(success, nil);
         }else{
             //上传封面失败
             complete(false, @"上传封面失败");
         }
+    }];
+}
+
+- (void)createLiveRoomWithTitle:(NSString *)title frontCover:(NSString *)frontCover complete:(void(^)(BOOL success, NSString *error))complete{
+    NSString *api = HTTPAPI(@"live/create");
+    NSString *location = @"";
+    
+    NSString *url = [NSString stringWithFormat:@"%@?title=%@&frontcover=%@&location=%@",api,[title URLEncodedString],frontCover,location];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    [CJNetworkManager PostWithRequest:request Success:^(NSURLResponse * _Nonnull response, id  _Nonnull responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
+            NSLog(@"服务器返回:%@",responseObject);
+            NSDictionary *data = [responseObject objectForKey:@"data"];
+            if (data && [data objectForKey:@"liveId"] && [data objectForKey:@"headpic"] && [data objectForKey:@"title"]){
+                self.groupId = [NSString stringWithFormat:@"%@",[data objectForKey:@"liveId"]];
+                [self.headView.iconView sd_setImageWithURL:[NSURL URLWithString:[data objectForKey:@"headpic"]]];
+                self.liveTitle = [data objectForKey:@"title"];
+                [self.audienceView setAudience:[[data objectForKey:@"viewerCount"] integerValue]];
+                [self.headView setFansCount:self.anchor.fans];
+                [self.headView setAttentionCount:self.anchor.favorite];
+                complete(true, nil);
+            }else{
+                //未找到Key
+                complete(false, @"未找到Key");
+            }
+        }else{
+            //接口数据返回错误
+            complete(false, @"接口数据返回错误");
+        }
+    } andFalse:^(NSURLResponse * _Nonnull response, NSError * _Nonnull error) {
+        //请求接口错误
+        complete(false, @"请求接口错误");
     }];
 }
 
