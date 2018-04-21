@@ -1,0 +1,72 @@
+PODS:
+  - AFNetworking (3.0.4):
+    - AFNetworking/NSURLSession (= 3.0.4)
+    - AFNetworking/Reachability (= 3.0.4)
+    - AFNetworking/Security (= 3.0.4)
+    - AFNetworking/Serialization (= 3.0.4)
+    - AFNetworking/UIKit (= 3.0.4)
+  - AFNetworking/NSURLSession (3.0.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.0.4)
+  - AFNetworking/Security (3.0.4)
+  - AFNetworking/Serialization (3.0.4)
+  - AFNetworking/UIKit (3.0.4):
+    - AFNetworking/NSURLSession
+  - AliyunOSSiOS (2.7.1)
+  - CLImageEditor (0.2.2):
+    - CLImageEditor/Core (= 0.2.2)
+  - CLImageEditor/Core (0.2.2)
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
+  - JSONModel (1.7.0)
+  - LJContactManager (0.0.5)
+  - OpenSSL (1.0.210)
+  - SDWebImage (3.7.5):
+    - SDWebImage/Core (= 3.7.5)
+  - SDWebImage/Core (3.7.5)
+  - SocketRocket (0.4.2)
+  - TZImagePickerController (1.9.7)
+  - WechatOpenSDK (1.8.1)
+  - WeexSDK (0.16.1)
+  - ZipArchive (1.4.0)
+
+DEPENDENCIES:
+  - AFNetworking (~> 3.0.4)
+  - AliyunOSSiOS
+  - CLImageEditor
+  - FMDB (~> 2.7.2)
+  - JSONModel
+  - LJContactManager
+  - OpenSSL (~> 1.0.208)
+  - SDWebImage (= 3.7.5)
+  - SocketRocket (= 0.4.2)
+  - TZImagePickerController
+  - WechatOpenSDK
+  - WeexSDK (from `./sdk/`)
+  - ZipArchive
+
+EXTERNAL SOURCES:
+  WeexSDK:
+    :path: ./sdk/
+
+SPEC CHECKSUMS:
+  AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
+  AliyunOSSiOS: bc161047b15b04eb69ffd2481b73ab4a2275322c
+  CLImageEditor: 34199b39c994af44f3f3aae6f6dcccb7ef8b75aa
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
+  LJContactManager: d4af72e8cfc92728143d073fdb3c49eea722cb8d
+  OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
+  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  SocketRocket: ffe08119b00ef982f6c37052a4705a057c8494ad
+  TZImagePickerController: 8244efd41ec81e6ab65e41963b265ff6a8e46702
+  WechatOpenSDK: 491d965d79335070328571d3e79f714549e79a5e
+  WeexSDK: 35798f3342f89a730c64679d5897fc957e93fa1a
+  ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
+
+PODFILE CHECKSUM: 3cec997d16ca501085479fddaf61575f813eaf51
+
+COCOAPODS: 1.4.0.beta.1
