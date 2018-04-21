@@ -1,0 +1,67 @@
+//
+//  PrefixHeader.pch
+//  Weex
+//
+//  Created by macOS on 2017/12/17.
+//  Copyright © 2017年 rzico. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+#import "AppDelegate+Navigator.h"
+
+//基本配置
+#import "Settings.h"
+#import "Constants.h"
+
+//通知中心
+#import "CJNotificationCenter.h"
+
+//Category
+
+#import <CJCategoryHeader.h>
+
+#import "NSDictionary+CJUtil.h"
+#import "HttpHead+Utils.h"
+#import "MD5+Util.h"
+#import "NSDate+Util.h"
+#import "NSFileManager+Util.h"
+#import "NSString+Util.h"
+#import "NSURL+Util.h"
+#import "UIColor+Util.h"
+#import "UIDevice+Info.h"
+#import "UIImage+Util.h"
+#import "UIView+Layout.h"
+#import "UIViewController+Util.h"
+#import "UIScreen+CJUtil.h"
+#import "NSString+RewriteURL.h"
+
+//第三方框架
+#import <AFNetworkReachabilityManager.h>
+#import <SVProgressHUD.h>
+#import <CWStatusBarNotification.h>
+
+//管理
+#import "CJUserManager.h"
+#import "CJNetworkManager.h"
+
+
+//腾讯IM
+// 是否支持富文本显示
+#define kTestChatAttachment 1
+
+#import "CommonLibrary.h"
+#import "TIMAdapter.h"
+#import "ConstHeader.h"
+#import "ImageHeader.h"
+#import "CustomUIHeader.h"
+#import "AppUIHeaders.h"
+
+#endif /* PrefixHeader_pch */
