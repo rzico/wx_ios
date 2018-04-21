@@ -1,1 +1,0 @@
-../../../../../../CLImageEditor/CLImageEditor/ImageTools/CLEffectTool/CLEffect/CLHueEffect.h
