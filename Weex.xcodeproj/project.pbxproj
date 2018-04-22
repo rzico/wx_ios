@@ -4672,7 +4672,7 @@
 				CODE_SIGN_ENTITLEMENTS = Weex/Weex.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
+				DEVELOPMENT_TEAM = RZM923L6RM;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4689,7 +4689,7 @@
 					"$(PROJECT_DIR)/Utils/TIMChat/CommonLibrary/BlocksKit",
 					"$(PROJECT_DIR)/Utils/TIMChat/TIMChat/AppUI/ChatUI/Chat/MicroVideo/PituMotionLibrary/Framework",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.assistant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4713,7 +4713,7 @@
 				CODE_SIGN_ENTITLEMENTS = Weex/Weex.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
+				DEVELOPMENT_TEAM = RZM923L6RM;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4730,7 +4730,7 @@
 					"$(PROJECT_DIR)/Utils/TIMChat/CommonLibrary/BlocksKit",
 					"$(PROJECT_DIR)/Utils/TIMChat/TIMChat/AppUI/ChatUI/Chat/MicroVideo/PituMotionLibrary/Framework",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.assistant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4864,7 +4864,7 @@
 				CODE_SIGN_ENTITLEMENTS = Weex/Weex.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
+				DEVELOPMENT_TEAM = RZM923L6RM;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4881,7 +4881,7 @@
 					"$(PROJECT_DIR)/Utils/TIMChat/CommonLibrary/BlocksKit",
 					"$(PROJECT_DIR)/Utils/TIMChat/TIMChat/AppUI/ChatUI/Chat/MicroVideo/PituMotionLibrary/Framework",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.assistant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
