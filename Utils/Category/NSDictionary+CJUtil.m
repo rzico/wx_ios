@@ -81,7 +81,6 @@
     }else{
         jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
     }
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"null" withString:@"\"\""];
     NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
     NSRange range = {0,jsonString.length};
     //去掉字符串中的空格
@@ -89,6 +88,8 @@
     NSRange range2 = {0,mutStr.length};
     //去掉字符串中的换行符
     [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
+    NSRange range3 = {0,mutStr.length};
+    [mutStr replaceOccurrencesOfString:@":null" withString:@":\"\"" options:NSLiteralSearch range:range3];
     return mutStr;
 }
 

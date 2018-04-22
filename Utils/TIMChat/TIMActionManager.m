@@ -11,7 +11,7 @@
 @implementation TIMActionManager
 
 + (void)PostConversationWithLastMessage:(TIMConversation *)conversation{
-    if ([conversation getUnReadMessageNum] > 0){
+    if ([conversation getUnReadMessageNum] > 0 && [conversation getType] == TIM_C2C){
         TIMMessage *msg = [[conversation getLastMsgs:1] lastObject];
         
         if (msg){

@@ -17,13 +17,45 @@
 
 
 - (void)presentLoginViewController{
-    if (self.router.rootViewController){
-        UINavigationController *nav = (UINavigationController *)self.router.rootViewController;
-        if ([nav.topViewController isKindOfClass:[CJLoginViewController class]]){
-            return;
-        }
+    static BOOL isLoading = false;
+    if (isLoading){
+        return;
     }
-    [self transToRouterWindowWithUIViewcontroller:[[CJLoginViewController alloc] init]];
+    isLoading = true;
+    UIViewController *rootViewController = self.window.rootViewController;
+    UIViewController *topViewController = [UIViewController topViewController];
+    void (^login)(void) = ^{
+        WXPerformBlockOnMainThread(^{
+            CJLoginViewController *loginViewController = [[CJLoginViewController alloc] init];
+            [rootViewController presentViewController:[[WXRootViewController alloc] initWithRootViewController:loginViewController] animated:true completion:^{
+                isLoading = false;
+            }];
+        });
+    };
+    
+    if (rootViewController.presentedViewController){
+        if (topViewController.navigationController && [[topViewController.navigationController topViewController] isKindOfClass:[CJLoginViewController class]]){
+            isLoading = false;
+        }else{
+            [topViewController dismissViewControllerAnimated:false completion:^{
+                login();
+            }];
+        }
+    }else{
+        login();
+    }
+    
+    
+    
+    
+    
+//    if (self.router.rootViewController){
+//        UINavigationController *nav = (UINavigationController *)self.router.rootViewController;
+//        if ([nav.topViewController isKindOfClass:[CJLoginViewController class]]){
+//            return;
+//        }
+//    }
+//    [self transToRouterWindowWithUIViewcontroller:[[CJLoginViewController alloc] init]];
 }
 
 - (void)transToRouterWindowWithUIViewcontroller:(UIViewController *)viewcontroller{
@@ -32,7 +64,7 @@
         WXPerformBlockOnMainThread(^{
             self.window.windowLevel = UIWindowLevelNormal;
             [self.window resignFirstResponder];
-            
+            [self.window resignKeyWindow];
             
             self.router.rootViewController = [[CJRootViewController alloc] initWithRootViewController:viewcontroller];
             [viewcontroller.navigationController setNavigationBarHidden:true];
@@ -56,6 +88,7 @@
     WXPerformBlockOnMainThread(^{
         [self.router endEditing:YES];
         [self.router resignFirstResponder];
+        [self.router resignKeyWindow];
         
         self.window.hidden = false;
         
@@ -118,7 +151,14 @@
 }
 
 - (UINavigationController *)navigationViewController{
-    if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
+//    if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
+//        return (UINavigationController *)self.window.rootViewController;
+//    }else{
+//        return nil;
+//    }
+    if ([UIViewController topViewController].navigationController){
+        return [UIViewController topViewController].navigationController;
+    }else if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
         return (UINavigationController *)self.window.rootViewController;
     }else{
         return nil;
@@ -210,7 +250,7 @@
         }
         
         vc.hidesBottomBarWhenPushed = true;
-        
+        [vc.navigationController setNavigationBarHidden:false];
         [[self navigationViewController] pushViewController:vc withBackTitle:@"返回" animated:true];
     }];
 }

@@ -91,6 +91,9 @@
                 [self loginWithUser:[CJUserManager getUser] loginOption:IMManagerLoginOptionForce andBlock:nil];
             }else{
                 [self failedInitTIM:@"连接聊天服务器失败" title:DisplayName];
+                if (finish){
+                    finish(NO);
+                }
             }
         }];
     }
@@ -113,7 +116,7 @@
     NSArray *conversationList = [[TIMManager sharedInstance] getConversationList];
     NSInteger count = 0;
     for (TIMConversation *conversation in conversationList){
-        if ([conversation getReceiver].length > 0){
+        if ([conversation getReceiver].length > 0 && [conversation getType] == TIM_C2C){
             count += [conversation getUnReadMessageNum];
         }
     }

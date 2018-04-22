@@ -370,6 +370,18 @@
                         isContinue = NO;
                         isAddGroupReq = YES;
                     }
+                    //群系统消息
+                    else if (gse.type == TIM_GROUP_SYSTEM_DELETE_GROUP_TYPE){
+                        //群被解散
+                        NSString *receiver = [conv getReceiver];
+                        NSDictionary *message = @{@"receiver":receiver,@"msg":msg,@"type":@"SYSTEM_DELETE"};
+                        CJPostNotification(CJNOTIFICATION_GROUP_MESSAGE, message);
+                    }else if (gse.type == TIM_GROUP_SYSTEM_KICK_OFF_FROM_GROUP_TYPE){
+                        //被踢
+                        NSString *receiver = [conv getReceiver];
+                        NSDictionary *message = @{@"receiver":receiver,@"msg":msg,@"type":@"SYSTEM_KICK"};
+                        CJPostNotification(CJNOTIFICATION_GROUP_MESSAGE, message);
+                    }
                 }
                 else if ([elem isKindOfClass:[TIMSNSSystemElem class]])
                 {
@@ -498,21 +510,32 @@
             }
         }
         
-        __block NSMutableDictionary *message = [NSMutableDictionary new];
-        [message setObject:@"receive" forKey:@"type"];
-        [message setObject:msg forKey:@"msg"];
-        [message setObject:@"success" forKey:@"result"];
-        [message setObject:[conv getReceiver] forKey:@"receiver"];
         
-        
-        if ([[SharedAppDelegate topViewController] isKindOfClass:[ChatViewController class]]){
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
-            });
+        //群组消息处理  By CJ 2018年04月11日22:04:28
+        if ([conv getType] == TIM_GROUP){
+            NSString *receiver = [conv getReceiver];
+            //添加消息类型 By CJ 2018年04月17日10:32:55
+            NSDictionary *message = @{@"receiver":receiver,@"msg":msg,@"type":@"message"};
+            CJPostNotification(CJNOTIFICATION_GROUP_MESSAGE, message);
+        }else if([conv getType] == TIM_GROUP){
+            __block NSMutableDictionary *message = [NSMutableDictionary new];
+            [message setObject:@"receive" forKey:@"type"];
+            [message setObject:msg forKey:@"msg"];
+            [message setObject:@"success" forKey:@"result"];
+            [message setObject:[conv getReceiver] forKey:@"receiver"];
+            
+            
+            if ([[SharedAppDelegate topViewController] isKindOfClass:[ChatViewController class]]){
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
+                });
+            }else{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
+                });
+            }
         }else{
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                CJPostNotification(CJNOTIFICATION_IM_ON_NEWMESSAGE, message);
-            });
+            
         }
     }
 }
