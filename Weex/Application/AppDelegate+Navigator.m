@@ -151,7 +151,14 @@
 }
 
 - (UINavigationController *)navigationViewController{
-    if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
+//    if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
+//        return (UINavigationController *)self.window.rootViewController;
+//    }else{
+//        return nil;
+//    }
+    if ([UIViewController topViewController].navigationController){
+        return [UIViewController topViewController].navigationController;
+    }else if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]){
         return (UINavigationController *)self.window.rootViewController;
     }else{
         return nil;
@@ -243,7 +250,7 @@
         }
         
         vc.hidesBottomBarWhenPushed = true;
-        
+        [vc.navigationController setNavigationBarHidden:false];
         [[self navigationViewController] pushViewController:vc withBackTitle:@"返回" animated:true];
     }];
 }

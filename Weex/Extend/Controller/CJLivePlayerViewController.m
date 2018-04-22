@@ -9,8 +9,11 @@
 #import "CJLivePlayerViewController.h"
 #import <WebKit/WebKit.h>
 
-#import <TXRTMPSDK/TXLivePlayer.h>
-#import <TXRTMPSDK/TXLivePlayConfig.h>
+//#import <TXRTMPSDK/TXLivePlayer.h>
+#import <TXLivePlayer.h>
+#import <TXLivePlayConfig.h>
+//Change TXRTMP SDK To TXLive SDK
+//#import <TXRTMPSDK/TXLivePlayConfig.h>
 #import "HttpHead+Utils.h"
 @interface CJLivePlayerViewController () <WKNavigationDelegate>
 

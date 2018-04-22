@@ -90,6 +90,54 @@ typedef void(^GetOSSDataBlock)(BOOL success);
     client = [[OSSClient alloc] initWithEndpoint:aliOSSEndPoint credentialProvider:credential clientConfiguration:config];
 }
 
+- (void)uploadObjectAsyncWithData:(NSData *)data progress:(CJAliOSSProgressBlock)progress complete:(CJAliOSSCompleteBlock)complete{
+    [self getOSSData:^(BOOL success) {
+        if (success){
+            OSSPutObjectRequest * put = [OSSPutObjectRequest new];
+            
+            // required fields
+            
+            NSString *date = [NSDate DateWithFormat:@"yyyy/MM/dd"];
+            
+            NSString *md5 = [OSSUtil dataMD5String:data];
+            
+            put.bucketName = aliOSSBucketName;
+            put.objectKey = [NSString stringWithFormat:@"upload/images/%@/%@.jpg",date,md5];
+            put.uploadingData = data;
+            
+            // optional fields
+            put.uploadProgress = ^(int64_t bytesSent, int64_t totalByteSent, int64_t totalBytesExpectedToSend) {
+                progress([NSString stringWithFormat:@"%.2lf",((double_t)totalByteSent / (double_t)totalBytesExpectedToSend) * 100]);
+            };
+            put.contentType = @"";
+            put.contentMd5 = @"";
+            put.contentEncoding = @"";
+            put.contentDisposition = @"";
+            
+            OSSTask * putTask = [client putObject:put];
+            
+            [putTask continueWithBlock:^id(OSSTask *task) {
+                if (!task.error) {
+                    NSLog(@"upload object success!");
+                    if (complete){
+                        complete(CJAliOSSUploadResultSuccess , [WXCONFIG_RESOURCE_PATH stringByAppendingString:put.objectKey]);
+                    }
+                } else {
+                    NSLog(@"upload object failed, error: %@" , task.error);
+                    if (complete){
+                        complete(CJAliOSSUploadResultUploadError ,nil);
+                    }
+                }
+                return nil;
+            }];
+        }else{
+            if (complete){
+                complete(CJAliOSSUploadResultSTSError ,nil);
+            }
+        }
+    }];
+}
+
 - (void)uploadObjectAsyncWithPath:(NSString *)path progress:(CJAliOSSProgressBlock)progress complete:(CJAliOSSCompleteBlock)complete{
     [self getOSSData:^(BOOL success) {
         if (success){

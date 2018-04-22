@@ -180,7 +180,7 @@ static FMDatabase *_db;
 
 - (BOOL)deleteDataList:(NSUInteger)userId AndType:(NSString *)type{
     [_db open];
-    BOOL success = [_db executeUpdate:@"DELETE FROM redis WHERE USERID=? AND    TYPE=?",[NSNumber numberWithUnsignedInteger:userId],type];
+    BOOL success = [_db executeUpdate:@"DELETE FROM redis WHERE USERID=? AND TYPE=?",[NSNumber numberWithUnsignedInteger:userId],type];
     [_db close];
     return success;
 }

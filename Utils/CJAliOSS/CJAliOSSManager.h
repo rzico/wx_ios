@@ -22,4 +22,5 @@ typedef void(^CJAliOSSCompleteBlock)(CJAliOSSUploadResult result,  NSString * ur
 
 + (CJAliOSSManager *)defautManager;
 - (void)uploadObjectWithPath:(NSString *)path progress:(CJAliOSSProgressBlock)progress complete:(CJAliOSSCompleteBlock)complete;
+- (void)uploadObjectAsyncWithData:(NSData *)data progress:(CJAliOSSProgressBlock)progress complete:(CJAliOSSCompleteBlock)complete;
 @end

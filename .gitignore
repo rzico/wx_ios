@@ -1,6 +1,7 @@
-/Utils/TIMChat/Framworks/
+/Utils/TIMChat/Framworks/QALSDK.framework
 .DS_Store
 *.xcuserstate
 /.idea/
 *.iml
 *.xcuserstate
+Pods/TXLiteAVSDK_Professional/TXLiteAVSDK_Professional/SDK/TXLiteAVSDK_Professional.framework

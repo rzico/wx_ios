@@ -85,18 +85,21 @@ EOM
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "${PODS_ROOT}/CLImageEditor/CLImageEditor/CLImageEditor.bundle"
+  install_resource "${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
   install_resource "${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle"
   install_resource "${PODS_ROOT}/../sdk/WeexSDK/Resources/native-bundle-main.js"
   install_resource "${PODS_ROOT}/../sdk/WeexSDK/Resources/wx_load_error@3x.png"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "${PODS_ROOT}/CLImageEditor/CLImageEditor/CLImageEditor.bundle"
+  install_resource "${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
   install_resource "${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle"
   install_resource "${PODS_ROOT}/../sdk/WeexSDK/Resources/native-bundle-main.js"
   install_resource "${PODS_ROOT}/../sdk/WeexSDK/Resources/wx_load_error@3x.png"
 fi
 if [[ "$CONFIGURATION" == "AD-HOC" ]]; then
   install_resource "${PODS_ROOT}/CLImageEditor/CLImageEditor/CLImageEditor.bundle"
+  install_resource "${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
   install_resource "${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle"
   install_resource "${PODS_ROOT}/../sdk/WeexSDK/Resources/native-bundle-main.js"
   install_resource "${PODS_ROOT}/../sdk/WeexSDK/Resources/wx_load_error@3x.png"
