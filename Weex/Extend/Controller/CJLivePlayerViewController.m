@@ -209,12 +209,12 @@
     if ([[request.URL scheme] isEqualToString:@"http"] || [[request.URL scheme] isEqualToString:@"https"]){
         NSLog(@"allow=%@",navigationAction.request.URL);
         decisionHandler(WKNavigationActionPolicyAllow);
-        if ([request.URL.absoluteString hasSuffix:@"game=true"]){
+        if ([request.URL.absoluteString hasSuffix:@"/home"]){
             [self stop];
             if (_closedCallback){
                 _closedCallback();
             }
-//            [self dismissViewControllerAnimated:true completion:nil];
+//          [self dismissViewControllerAnimated:true completion:nil];
             [SharedAppDelegate transToMainWindow];
         }
     }else{
