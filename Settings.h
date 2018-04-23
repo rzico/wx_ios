@@ -12,8 +12,8 @@
 #define IsIPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
 //本地KeyChain参数
-#define ApplicationID @"com.nihtan.yzgame"
-#define SERVICE @"com.nihtan.yzgame"
+#define ApplicationID @"me.1xx.mopian"
+#define SERVICE @"me.1xx.mopian"
 #define ACCOUNT @"accountUDID"
 #define ACCOUNTMD5 @"ACCOUNTMD5"
 
@@ -21,12 +21,15 @@
 static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 
 //腾讯IM参数
-#define kTLSAppid       @"1400060267"//TLS_APPID
-#define kSdkAppId       @"1400060267"//SDK_APPID
-#define kSdkAccountType @"21224"//用户类型
+#define kTLSAppid       @"1400043914"//TLS_APPID
+#define kSdkAppId       @"1400043914"//SDK_APPID
+#define kSdkAccountType @"18325"//用户类型
 
-//#define kbusiId         6264
-#define kbusiId         6263
+//开发环境
+//#define kbusiId         6684
+
+//生产环境
+#define kbusiId         6683
 
 //服务器参数
 #define HTTPAPI(url) [NSString stringWithFormat:@"%@weex/%@.jhtml",WXCONFIG_INTERFACE_PATH,url]
@@ -39,31 +42,34 @@ static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 
 //资源地址
-static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.yzwap.com/";
+static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdn.rzico.com/";
 
 //接口地址
-static NSString *WXCONFIG_INTERFACE_PATH = @"https://weex.yzwap.com/";
-
+//static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.1xx.me/";
+//static NSString *WXCONFIG_INTERFACE_PATH = @"http://192.168.2.110:8088/";
+//static NSString *WXCONFIG_INTERFACE_PATH = @"http://mopian.1xx.me/";
+//static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.1xx.me/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/";
 
 
 //微信参数
 static NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
-static NSString *kAuthOpenID = @"1111";
+static NSString *kAuthOpenID = @"0c806938e2413ce73eef92cc3";
 static NSString *kAuthState = @"xxx";
-static NSString *WECHAT_APPID = @"wxxxx-1";
+static NSString *WECHAT_APPID = @"wx490857e2baff7cfd";
 
 //阿里云参数
-static NSString *aliOSSEndPoint = @"http://oss-cn-hongkong.aliyuncs.com";
-static NSString *aliOSSBucketName = @"newgameoss";
+static NSString *aliOSSEndPoint = @"http://oss-cn-shenzhen.aliyuncs.com";
+static NSString *aliOSSBucketName = @"rzico";
 
 //主题颜色
-static int UINavigationBarColor = 0xEB4E40;
+static int UINavigationBarColor = 0x99CCFF;
 
 //本地资源版本号
-static NSString *localResVersion = @"0.0.0";
+static NSString *localResVersion = @"1.0.6";
 
 //伪协议头
-static NSString *openURLScheme = @"nihtan";
+static NSString *openURLScheme = @"yundian";
 
 //应用名
 #define DisplayName [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleDisplayName"]
