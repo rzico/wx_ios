@@ -211,7 +211,7 @@
     NSMutableURLRequest *request = (NSMutableURLRequest *)navigationAction.request;
     if ([[request.URL scheme] isEqualToString:@"http"] || [[request.URL scheme] isEqualToString:@"https"]){
         decisionHandler(WKNavigationActionPolicyAllow);
-        if ([request.URL.path startsWith:@"https://weex.yzwap.com/home"]){
+        if ([request.URL.path hasPrefix:@"/home"]){
             [self stop];
             if (_closedCallback){
                 _closedCallback();
