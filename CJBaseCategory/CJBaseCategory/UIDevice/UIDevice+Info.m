@@ -107,6 +107,7 @@
     if (!userAgent){
         UIWebView* webView = [[UIWebView alloc] init];
         NSString *userAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+        userAgent = [userAgent stringByAppendingString:@"weex"];
         NSDictionary *dictionary = @{@"UserAgent":userAgent};
         [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
     }
