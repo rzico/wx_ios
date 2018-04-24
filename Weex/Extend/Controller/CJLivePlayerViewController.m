@@ -15,7 +15,7 @@
 //Change TXRTMP SDK To TXLive SDK
 //#import <TXRTMPSDK/TXLivePlayConfig.h>
 #import "HttpHead+Utils.h"
-@interface CJLivePlayerViewController () <WKNavigationDelegate>
+@interface CJLivePlayerViewController () <WKNavigationDelegate, TXLivePlayListener>
 
 @property (nonatomic, strong) WKWebView *webview;
 
@@ -63,6 +63,7 @@
     //    _mVideoContainer.center = self.view.center;
     
     _txLivePlayer = [[TXLivePlayer alloc] init];
+    _txLivePlayer.delegate = self;
     [_txLivePlayer setupVideoWidget:CGRectMake(0, 0, 0, 0) containView:_mVideoContainer insertIndex:0];
     
     _config = [[TXLivePlayConfig alloc] init];
@@ -115,7 +116,9 @@
     [self loadUrl:url method:method];
     [self play:video];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [backgroundImage removeFromSuperview];
+        if (backgroundImage){
+            [backgroundImage removeFromSuperview];
+        }
     });
 }
 
@@ -207,23 +210,39 @@
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler{
     NSMutableURLRequest *request = (NSMutableURLRequest *)navigationAction.request;
     if ([[request.URL scheme] isEqualToString:@"http"] || [[request.URL scheme] isEqualToString:@"https"]){
-        NSLog(@"allow=%@",navigationAction.request.URL);
         decisionHandler(WKNavigationActionPolicyAllow);
-        if ([request.URL.absoluteString startsWith:@"https://weex.yzwap.com/home"]){
+        if ([request.URL.path hasPrefix:@"/home"]){
             [self stop];
             if (_closedCallback){
                 _closedCallback();
             }
-//          [self dismissViewControllerAnimated:true completion:nil];
-            [SharedAppDelegate transToMainWindow];
+            [self dismissViewControllerAnimated:true completion:nil];
         }
     }else{
         NSLog(@"cancel=%@",navigationAction.request.URL);
         decisionHandler(WKNavigationActionPolicyCancel);
         if ([navigationAction.request.URL isContains:@"volume"]){
-            [backgroundImage removeFromSuperview];
+            if (backgroundImage){
+                [backgroundImage removeFromSuperview];
+            }
         }
     }
 }
+
+#pragma mark TXLivePlayListener
+- (void)onPlayEvent:(int)EvtID withParam:(NSDictionary *)param{
+    NSLog(@"EvtId=%d",EvtID);
+    if (EvtID == PLAY_ERR_NET_DISCONNECT){
+        [SVProgressHUD showErrorWithStatus:@"获取视频流失败"];
+        [self stop];
+    }else if (EvtID == PLAY_EVT_RCV_FIRST_I_FRAME){
+        [backgroundImage removeFromSuperview];
+    }
+}
+
+- (void)onNetStatus:(NSDictionary *)param{
+    
+}
 @end
+
 
