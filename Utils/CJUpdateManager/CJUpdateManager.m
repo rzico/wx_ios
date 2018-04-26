@@ -59,12 +59,21 @@
 }
 
 - (BOOL)checkUpdateOfLocalResource{
-    if (![self getResourceInfo] || [self needUpdateResource:localResVersion]){
-        return [self releaseLocalResource];
+    NSDictionary *resInfo = [self getResourceInfo];
+    if (resInfo){
+        NSString *localVer = [resInfo objectForKey:@"resVersion"];
+        if (localVer){
+            if ([self isNeedUpdateWithLocal:localVer remote:localResVersion]){
+                return [self releaseLocalResource];
+            }else{
+                return true;
+            }
+        }else{
+            return [self releaseLocalResource];
+        }
     }else{
-        return true;
+        return [self releaseLocalResource];
     }
-    return false;
 }
 
 - (BOOL)releaseLocalResource{
