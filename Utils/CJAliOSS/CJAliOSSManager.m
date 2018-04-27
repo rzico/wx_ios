@@ -54,8 +54,7 @@ typedef void(^GetOSSDataBlock)(BOOL success);
 
 - (void)flushToken:(GetOSSDataBlock)block{
     [CJNetworkManager GetHttp:HTTPAPI(@"member/oss/sts") Parameters:nil Success:^(NSURLSessionDataTask *task, id  _Nonnull responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]){
-            if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
+        if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
                 CJAliOSSData *data = [[CJAliOSSData alloc] initWithDictionary:[responseObject objectForKey:@"data"] error:nil];
                 CJDatabaseManager *manager = [CJDatabaseManager defaultManager];
                 CJDatabaseData *model = [CJDatabaseData new];
@@ -70,8 +69,8 @@ typedef void(^GetOSSDataBlock)(BOOL success);
                 if (block){
                     block(YES);
                 }
-                
-            }
+        }else{
+            block(NO);
         }
     } andFalse:^(NSURLSessionDataTask *task, NSError * _Nonnull error) {
         NSLog(@"error=%@",error);
