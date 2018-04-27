@@ -60,6 +60,7 @@ static NSString *kAuthState = @"xxx";
 static NSString *WECHAT_APPID = @"wxxxx-1";
 
 //阿里云参数
+//static NSString *aliOSSEndPoint = @"http://oss-cn-hongkong.aliyuncs.com";
 static NSString *aliOSSEndPoint = @"http://oss-cn-hongkong.aliyuncs.com";
 static NSString *aliOSSBucketName = @"appcenter";
 
