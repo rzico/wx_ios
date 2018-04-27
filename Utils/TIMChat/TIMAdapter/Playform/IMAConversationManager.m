@@ -517,7 +517,7 @@
             //添加消息类型 By CJ 2018年04月17日10:32:55
             NSDictionary *message = @{@"receiver":receiver,@"msg":msg,@"type":@"message"};
             CJPostNotification(CJNOTIFICATION_GROUP_MESSAGE, message);
-        }else if([conv getType] == TIM_GROUP){
+        }else if([conv getType] == TIM_C2C){
             __block NSMutableDictionary *message = [NSMutableDictionary new];
             [message setObject:@"receive" forKey:@"type"];
             [message setObject:msg forKey:@"msg"];
