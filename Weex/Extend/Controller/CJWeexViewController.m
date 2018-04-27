@@ -38,6 +38,14 @@
     BOOL isRendered;
 }
 
+- (BOOL)shouldAutorotate{
+    return true;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (instancetype)initWithUrl:(NSURL *)url{
     self = [super init];
     self.url = url;
@@ -427,7 +435,7 @@
 }
 
 - (void)notificationImUnreadCount:(NSNotification *)notification{
-    NSString *badgeValue = [NSString string];
+    NSString *badgeValue = nil;
     NSInteger unReadCount = 0;
     if ([self.label isEqualToString:@"message"]){
         if ([[TIMManager sharedInstance] getLoginUser]){
@@ -441,11 +449,11 @@
                 badgeValue = nil;
             }
         }
+        WXPerformBlockOnMainThread(^{
+            [self.tabBarController.tabBar.items objectAtIndex:3].badgeValue = badgeValue;
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unReadCount];
+        });
     }
-    WXPerformBlockOnMainThread(^{
-        [self.tabBarController.tabBar.items objectAtIndex:3].badgeValue = badgeValue;
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unReadCount];
-    });
 }
 
 - (void)notificationWXSendGlobalEvent:(NSNotification *)notification{

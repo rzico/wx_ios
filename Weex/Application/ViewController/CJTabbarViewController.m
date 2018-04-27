@@ -28,7 +28,7 @@
 @implementation CJTabbarViewController
 
 - (BOOL)shouldAutorotate{
-    return false;
+    return true;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
