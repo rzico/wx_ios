@@ -56,7 +56,7 @@ WX_EXPORT_METHOD(@selector(toKick:nickName:callback:))
             pushVC.isRecord = record;
             pushVC.liveTitle = title;
             pushVC.frontCover = frontCover;
-//            pushVC.isNativeConfig = !play;
+            pushVC.isNativeConfig = !play;
             [self->weexInstance.viewController presentViewController:pushVC animated:true completion:nil];
         }else{
             [SVProgressHUD showErrorWithStatus:@"获取用户信息失败"];
