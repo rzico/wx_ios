@@ -34,6 +34,7 @@
 		225C62D5207CC773005ABD69 /* gift-666.gif in Resources */ = {isa = PBXBuildFile; fileRef = 225C62C8207CC773005ABD69 /* gift-666.gif */; };
 		226100B3207DE568001F5ADB /* CJLivePlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 226100B2207DE568001F5ADB /* CJLivePlayViewController.m */; };
 		226100B8207E0E7A001F5ADB /* CJLivePlayBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 226100B7207E0E7A001F5ADB /* CJLivePlayBottomView.m */; };
+		226E73F62094782400EC2999 /* CJYinpiaoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 226E73F52094782400EC2999 /* CJYinpiaoView.m */; };
 		2282BA5820806150002648FB /* CJLivePlayHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2282BA5720806150002648FB /* CJLivePlayHeadView.m */; };
 		2282BA5B2080B919002648FB /* CJLivePlayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2282BA5A2080B919002648FB /* CJLivePlayModel.m */; };
 		228FD3F9207369CB009C39D5 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 228FD3F8207369B9009C39D5 /* libresolv.tbd */; };
@@ -624,6 +625,8 @@
 		226100B2207DE568001F5ADB /* CJLivePlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJLivePlayViewController.m; sourceTree = "<group>"; };
 		226100B6207E0E7A001F5ADB /* CJLivePlayBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJLivePlayBottomView.h; sourceTree = "<group>"; };
 		226100B7207E0E7A001F5ADB /* CJLivePlayBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJLivePlayBottomView.m; sourceTree = "<group>"; };
+		226E73F42094782300EC2999 /* CJYinpiaoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJYinpiaoView.h; sourceTree = "<group>"; };
+		226E73F52094782400EC2999 /* CJYinpiaoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJYinpiaoView.m; sourceTree = "<group>"; };
 		2282BA5620806150002648FB /* CJLivePlayHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJLivePlayHeadView.h; sourceTree = "<group>"; };
 		2282BA5720806150002648FB /* CJLivePlayHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJLivePlayHeadView.m; sourceTree = "<group>"; };
 		2282BA592080B919002648FB /* CJLivePlayModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJLivePlayModel.h; sourceTree = "<group>"; };
@@ -1699,6 +1702,8 @@
 		220700DE2074796500DB3BA6 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				226E73F42094782300EC2999 /* CJYinpiaoView.h */,
+				226E73F52094782400EC2999 /* CJYinpiaoView.m */,
 				22A35CC920897FE5000EEC44 /* Model */,
 				22AE277F207EA1580082D462 /* LiveGiftView */,
 				22AE277D207E999A0082D462 /* Emoji.plist */,
@@ -4350,6 +4355,7 @@
 				88C2DA2C1FE9C16A000BCAB4 /* UIImage+Additions.m in Sources */,
 				88C2D99C1FE9C16A000BCAB4 /* KeyValue.m in Sources */,
 				88C2D9CA1FE9C16A000BCAB4 /* IMAGroup+MemberList.m in Sources */,
+				226E73F62094782400EC2999 /* CJYinpiaoView.m in Sources */,
 				88C2D96C1FE9C16A000BCAB4 /* UIImage+Alpha.m in Sources */,
 				882C8AB31FE7DF4600C6DB32 /* CJCallbackMessage.m in Sources */,
 				88C2DA4D1FE9C16A000BCAB4 /* RichChatViewController.m in Sources */,
@@ -4671,7 +4677,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = RZM923L6RM;
+				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4711,7 +4717,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = RZM923L6RM;
+				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4861,7 +4867,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = RZM923L6RM;
+				DEVELOPMENT_TEAM = 8JJY2PJSQ2;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

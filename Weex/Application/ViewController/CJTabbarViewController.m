@@ -170,7 +170,7 @@
 }
 
 - (void)setupTabBar{
-    NSArray *titleArray = [[NSArray alloc] initWithObjects:@"首页",@"好友",@"",@"消息",@"我的", nil];
+    NSArray *titleArray = [[NSArray alloc] initWithObjects:@"发现",@"圈子",@"",@"消息",@"我的", nil];
     NSArray *imageArray = [[NSArray alloc] initWithObjects:@"ico_home",@"ico_friend",@"",@"ico_msg",@"ico_my", nil];
     
     [UITabBar appearance].translucent = NO;
