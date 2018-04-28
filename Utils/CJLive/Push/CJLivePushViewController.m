@@ -748,6 +748,8 @@
             [self readyToBeginLive];
         }else{
             NSLog(@"error=%@",error);
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:error];
         }
     }];
 
@@ -828,11 +830,13 @@
 #endif
                     });
                 }else{
-                    
+                    [SVProgressHUD showErrorWithStatus:@"网络繁忙，请稍后再试"];
+                    [self exitLive];
                 }
             }];
         }else{
-            
+            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"创建直播间失败(%d)",code]];
+            [self exitLive];
         }
     }];
 //    [SVProgressHUD showErrorWithStatus:@"创建房间失败"];
