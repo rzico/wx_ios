@@ -21,6 +21,7 @@
 #import "CJAudienceView.h"
 #import "CJLivePushBottomView.h"
 #import "CJLiveBeautySettingPanel.h"
+#import "CJYinpiaoView.h"
 
 #import "CJLiveProtocolViewController.h"
 
@@ -35,6 +36,7 @@
 #import "CustonCell.h"
 #import "LiveGiftView.h"
 
+
 #import "FriendshipManager.h"
 
 #import <OCBarrage.h>
@@ -44,9 +46,10 @@
 }
 
 @property (nonatomic, strong) CJReadyToLiveView         *readyToLiveView;
-@property (nonatomic, strong) CJLivePushHeadView            *headView;
+@property (nonatomic, strong) CJLivePushHeadView        *headView;
 @property (nonatomic, strong) CJAudienceView            *audienceView;
 @property (nonatomic, strong) CJLivePushBottomView      *bottomView;
+@property (nonatomic, strong) CJYinpiaoView             *yinpiaoView;
 
 @property (nonatomic, strong) CJLiveBeautySettingPanel  *beautyPanel;
 
@@ -159,6 +162,7 @@
     [self setAudienceTimer:nil];
     [self setTimeLabelTimer:nil];
     [self setTimeLabel:nil];
+    [self setYinpiaoView:nil];
 }
 
 - (void)dealloc{
@@ -499,6 +503,13 @@
     [self.audienceView layoutToLeftOf:closeBtn margin:10.0];
     
     
+    self.yinpiaoView = [[CJYinpiaoView alloc] initWithFrame:CGRectMake(0, 0, 60, 20)];
+    [self.view addSubview:self.yinpiaoView];
+    
+    [self.yinpiaoView alignLeft:self.headView];
+    [self.yinpiaoView layoutBelow:self.headView margin:10];
+    
+    
     self.bottomView = [[CJLivePushBottomView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen getWidth], 40)];
     [self.view addSubview:self.bottomView];
     self.bottomView.delegate = self;
@@ -515,7 +526,7 @@
     [self.view addSubview:self.beautyPanel];
     
     self.timeLabel = [[UILabel alloc] init];
-    [self.timeLabel setTextAlignment:NSTextAlignmentLeft];
+    [self.timeLabel setTextAlignment:NSTextAlignmentRight];
     [self.timeLabel setFont:[UIFont systemFontOfSize:12]];
     [self.timeLabel setTextColor:[UIColor colorWithHex:0xdd4242]];
     [self.view addSubview:self.timeLabel];
@@ -524,10 +535,14 @@
     [self.timeLabel setText:@"00:00"];
     
     [self.timeLabel sizeWith:CGSizeMake(100, 13)];
-    [self.timeLabel layoutBelow:self.headView margin:20];
-    [self.timeLabel alignLeft:self.headView];
+    [self.timeLabel layoutBelow:self.headView margin:10];
+    [self.timeLabel alignParentRightWithMargin:5];
     
     self.timeCount = 0;
+    
+    
+    [self.headView setFansCount:self.anchor.fans];
+    [self.headView setNickName:self.anchor.nickName];
 }
 
 - (void)creatTimeLabelTimer{
@@ -545,7 +560,7 @@
 - (void)showLiveTime{
     self.timeCount++;
     
-    self.timeLabel.text = [NSString stringWithFormat:@"%02d:%02d",self.timeCount/60,self.timeCount%60];
+    self.timeLabel.text = [NSString stringWithFormat:@"直播中:%02d:%02d",self.timeCount/60,self.timeCount%60];
 }
 
 - (BOOL)startPreview{
@@ -794,7 +809,7 @@
     [sender removeFromSuperview];
     [self createAVChatRoom:^(BOOL success, int code, NSString *msg) {
         if (success){
-            [self createLiveRoomWithTitle:self.liveTitle frontCover:self.frontCover complete:^(BOOL success, NSString *error) {
+            [self getLivePlayInfo:^(BOOL success, NSString *error) {
                 if (success){
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.bottomView setUserInteractionEnabled:true];
@@ -878,7 +893,7 @@
 
 - (void)refreshRoomMember{
     [self.headView setFansCount:follow];
-    [self.headView setAttentionCount:likeCount];
+    [self.headView setNickName:self.anchor.nickName];
     [self.audienceView setAudience:viewerCount];
 }
 
@@ -911,7 +926,8 @@
                 self.liveTitle = [data objectForKey:@"title"];
                 [self.audienceView setAudience:[[data objectForKey:@"viewerCount"] integerValue]];
                 [self.headView setFansCount:self.anchor.fans];
-                [self.headView setAttentionCount:self.anchor.favorite];
+                [self.headView setNickName:self.anchor.nickName];
+                
                 complete(true, nil);
             }else{
                 //未找到Key

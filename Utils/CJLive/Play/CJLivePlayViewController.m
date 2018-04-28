@@ -16,7 +16,7 @@
 #import "CJLivePlayHeadView.h"
 #import "CJAudienceView.h"
 #import "CJLiveMessageViewCell.h"
-
+#import "CJYinpiaoView.h"
 
 #import "CJLivePlayBottomView.h"
 
@@ -40,6 +40,7 @@
 @property (nonatomic, strong) UITableView               *messageView;
 @property (nonatomic, strong) CJLivePlayBottomView      *bottomView;
 @property (nonatomic, strong) LiveGiftView              *giftView;
+@property (nonatomic, strong) CJYinpiaoView             *yinpiaoView;
 
 @property (nonatomic, strong) NSMutableArray<CJLiveMessageModel *>            *messageList;
 
@@ -176,6 +177,12 @@
     
     [self.audienceView alignVerticalCenterOf:closeBtn];
     [self.audienceView layoutToLeftOf:closeBtn margin:10.0];
+    
+    self.yinpiaoView = [[CJYinpiaoView alloc] initWithFrame:CGRectMake(0, 0, 60, 20)];
+    [self.view addSubview:self.yinpiaoView];
+    
+    [self.yinpiaoView alignLeft:self.headView];
+    [self.yinpiaoView layoutBelow:self.headView margin:10];
     
     self.messageView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.messageView.delegate = self;

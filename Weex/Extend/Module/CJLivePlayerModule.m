@@ -51,6 +51,7 @@ WX_EXPORT_METHOD(@selector(toKick:nickName:callback:))
         if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
             CJLivePlayUserModel *user = [CJLivePlayUserModel modelWithDictionary:[responseObject objectForKey:@"data"]];
             CJLivePushViewController *pushVC = [[CJLivePushViewController alloc] init];
+            pushVC.groupId = [NSString stringWithFormat:@"%d",Id];
             pushVC.anchor = user;
             pushVC.headIcon = user.logo;
             pushVC.isRecord = record;
