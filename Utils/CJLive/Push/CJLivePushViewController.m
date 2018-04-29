@@ -718,6 +718,10 @@
     
     imagePickerVc.naviTitleColor = [UIColor colorWithHex:UINavigationBarColor];
     
+    imagePickerVc.cropRect = CGRectMake(0, ([UIScreen getHeight] - [UIScreen getWidth] * 0.8) * 0.5, [UIScreen getWidth], [UIScreen getWidth] * 0.8);
+    
+    
+    
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
         [self.readyToLiveView setImage:[photos firstObject]];
     }];

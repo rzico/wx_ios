@@ -38,8 +38,9 @@
     [self addSubview:self.toggleTorchBtn];
     
     self.giftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.giftBtn setBackgroundImage:[UIImage imageNamed:@"Live_Gift"] forState:UIControlStateNormal];
-    [self.giftBtn addTarget:self action:@selector(toggleTorchBtnOnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.giftBtn setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.3]];
+    [self.giftBtn setImage:[UIImage imageNamed:@"Live_Gift"] forState:UIControlStateNormal];
+    [self.giftBtn addTarget:self action:@selector(giftBtnOnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.giftBtn];
 }
     
@@ -50,7 +51,7 @@
     
     [self.giftBtn sizeWith:CGSizeMake(self.height, self.height)];
     [self.giftBtn.layer setCornerRadius:self.height * 0.5];
-    [self.turnCameraBtn layoutToRightOf:self.filterBtn margin:20.0];
+    [self.giftBtn layoutToRightOf:self.filterBtn margin:20.0];
     
     [self.turnCameraBtn sizeWith:CGSizeMake(self.height, self.height)];
     [self.turnCameraBtn.layer setCornerRadius:self.height * 0.5];
