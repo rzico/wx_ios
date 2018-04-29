@@ -875,6 +875,7 @@
                 follow = [[NSString stringWithFormat:@"%@",[data objectForKey:@"follow"]] longLongValue];
                 likeCount = [[NSString stringWithFormat:@"%@",[data objectForKey:@"likeCount"]] longLongValue];
                 viewerCount = [[NSString stringWithFormat:@"%@",[data objectForKey:@"viewerCount"]] longLongValue];
+                [self.yinpiaoView setYinpiao:[[NSString stringWithFormat:@"%@",[data objectForKey:@"gift"]] longLongValue]];
                 [self refreshRoomMember];
                 complete(true, nil);
             }else{
@@ -1215,6 +1216,15 @@
 - (void)CJLivePushBottomOnClickToggleTorch{
     _torch_switch = !_torch_switch;
     [_txLivePublisher toggleTorch:_torch_switch];
+}
+
+- (void)CJLivePushBottomOnClickGift{
+    CJWeexViewController *weex = [[CJWeexViewController alloc] init];
+    NSString *url = [NSString stringWithFormat:@"file://view/live/gifts.js?liveId=%@",self.groupId];
+    url = [url rewriteURL];
+    weex.url = [NSURL URLWithString:url];
+    [weex render:nil];
+    [self presentViewController:[[WXRootViewController alloc]initWithRootViewController:weex] animated:true completion:nil];
 }
 
 #pragma mark - BeautySettingPanelDelegate

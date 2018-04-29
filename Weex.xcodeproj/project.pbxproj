@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		220700D7207473DE00DB3BA6 /* CJAudienceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 220700D6207473DE00DB3BA6 /* CJAudienceView.m */; };
 		220700DD2074792700DB3BA6 /* CJLivePushBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 220700DC2074792700DB3BA6 /* CJLivePushBottomView.m */; };
+		220A5D96209563E900A30593 /* CJYinpiaoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 220A5D95209563E900A30593 /* CJYinpiaoView.m */; };
 		2250B5262078FE160062961C /* CJLiveMessageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2250B5252078FE160062961C /* CJLiveMessageViewCell.m */; };
 		2250B5292078FE720062961C /* CJLiveMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2250B5282078FE720062961C /* CJLiveMessageModel.m */; };
 		225C62A7207C6420005ABD69 /* OLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C62A2207C6420005ABD69 /* OLImageView.m */; };
@@ -587,6 +588,8 @@
 		220700D6207473DE00DB3BA6 /* CJAudienceView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJAudienceView.m; sourceTree = "<group>"; };
 		220700DB2074792700DB3BA6 /* CJLivePushBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJLivePushBottomView.h; sourceTree = "<group>"; };
 		220700DC2074792700DB3BA6 /* CJLivePushBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJLivePushBottomView.m; sourceTree = "<group>"; };
+		220A5D94209563E900A30593 /* CJYinpiaoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJYinpiaoView.h; sourceTree = "<group>"; };
+		220A5D95209563E900A30593 /* CJYinpiaoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJYinpiaoView.m; sourceTree = "<group>"; };
 		2250B5242078FE160062961C /* CJLiveMessageViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJLiveMessageViewCell.h; sourceTree = "<group>"; };
 		2250B5252078FE160062961C /* CJLiveMessageViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJLiveMessageViewCell.m; sourceTree = "<group>"; };
 		2250B5272078FE720062961C /* CJLiveMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJLiveMessageModel.h; sourceTree = "<group>"; };
@@ -1699,6 +1702,8 @@
 		220700DE2074796500DB3BA6 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				220A5D94209563E900A30593 /* CJYinpiaoView.h */,
+				220A5D95209563E900A30593 /* CJYinpiaoView.m */,
 				22A35CC920897FE5000EEC44 /* Model */,
 				22AE277F207EA1580082D462 /* LiveGiftView */,
 				22AE277D207E999A0082D462 /* Emoji.plist */,
@@ -4350,6 +4355,7 @@
 				88C2DA2C1FE9C16A000BCAB4 /* UIImage+Additions.m in Sources */,
 				88C2D99C1FE9C16A000BCAB4 /* KeyValue.m in Sources */,
 				88C2D9CA1FE9C16A000BCAB4 /* IMAGroup+MemberList.m in Sources */,
+				220A5D96209563E900A30593 /* CJYinpiaoView.m in Sources */,
 				88C2D96C1FE9C16A000BCAB4 /* UIImage+Alpha.m in Sources */,
 				882C8AB31FE7DF4600C6DB32 /* CJCallbackMessage.m in Sources */,
 				88C2DA4D1FE9C16A000BCAB4 /* RichChatViewController.m in Sources */,
