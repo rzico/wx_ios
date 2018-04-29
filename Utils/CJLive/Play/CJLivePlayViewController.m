@@ -98,6 +98,8 @@
         [self start];
         [self enterLiveRoom];
     });
+    
+    [self.yinpiaoView setYinpiao:self.anchor.gift];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
