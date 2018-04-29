@@ -17,6 +17,7 @@
         [self.layer setCornerRadius:self.height * 0.5];
         [self createSubViews];
         [self layout];
+        [self setFans:0];
     }
     return self;
 }
@@ -32,6 +33,13 @@
     [self.titleLabel setBackgroundColor:[UIColor clearColor]];
     [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
     [self addSubview:self.titleLabel];
+    
+    self.fansLabel = [[UILabel alloc] init];
+    [self.fansLabel setFont:[UIFont systemFontOfSize:10]];
+    [self.fansLabel setTextColor:[UIColor whiteColor]];
+    [self.fansLabel setBackgroundColor:[UIColor clearColor]];
+    [self.fansLabel setTextAlignment:NSTextAlignmentCenter];
+    [self addSubview:self.fansLabel];
     
     self.attentionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.attentionBtn setImage:[UIImage imageNamed:@"Live-content"] forState:UIControlStateNormal];
@@ -50,8 +58,13 @@
     [self.attentionBtn.layer setCornerRadius:self.attentionBtn.height * 0.5];
     
     
-    [self.titleLabel sizeWith:CGSizeMake(self.attentionBtn.x - self.iconView.width, self.height)];
+    [self.titleLabel sizeWith:CGSizeMake(self.attentionBtn.x - self.iconView.width, self.height * 0.5 - 1)];
+    [self.titleLabel alignParentTop];
     [self.titleLabel layoutToRightOf:self.iconView];
+    
+    [self.fansLabel sizeWith:CGSizeMake(self.attentionBtn.x - self.iconView.width, self.height * 0.5 - 1)];
+    [self.fansLabel alignParentBottom];
+    [self.fansLabel layoutToRightOf:self.iconView];
 }
 
 - (void)setTitle:(NSString *)title{
@@ -61,6 +74,22 @@
 - (void)setAttention:(BOOL)isAttention{
     UIImage *image = isAttention ? [UIImage imageNamed:@"Live-didContent"] : [UIImage imageNamed:@"Live-content"];
     [self.attentionBtn setImage:image forState:UIControlStateNormal];
+}
+
+- (void)setFans:(int)fans{
+    [self.fansLabel setText:[NSString stringWithFormat:@"粉丝:%@",[self countFormat:fans]]];
+}
+
+- (NSString *)countFormat:(int)count{
+    NSString *strCount = nil;
+    if (count > 10000){
+        strCount = [NSString stringWithFormat:@"%.2fw",count * 1.0 / 10000.0];
+    }else if (count > 1000){
+        strCount = [NSString stringWithFormat:@"%.2fk",count * 1.0 / 1000.0];
+    }else{
+        strCount = [NSString stringWithFormat:@"%d",count];
+    }
+    return strCount;
 }
 
 - (void)onClickAttentionBtn:(id)sender{

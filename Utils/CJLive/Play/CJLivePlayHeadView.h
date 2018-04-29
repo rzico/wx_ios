@@ -23,11 +23,15 @@
 
 @property (nonatomic, strong) UILabel*      titleLabel;
 
+@property (nonatomic, strong) UILabel*      fansLabel;
+
 @property (nonatomic, strong) UIButton*     attentionBtn;
 
 - (void)setIconImage:(UIImage *)image;
 
 - (void)setTitle:(NSString *)title;
+
+- (void)setFans:(int)fans;
 
 - (void)setAttention:(BOOL)isAttention;
 
