@@ -569,7 +569,7 @@
     [UIView beginAnimations:nil context:(__bridge void *_Nullable)(imageView)];
     [UIView setAnimationDuration:7 * speed];
     
-    NSArray *imageArray =  @[[UIImage imageNamed:@"mao-zi_icon"], [UIImage imageNamed:@"zb_m-m-dà_icon"], [UIImage imageNamed:@"zb_mai-ke-feng_icon"], [UIImage imageNamed:@"zb_mei-gui-hua_icon"], [UIImage imageNamed:@"zb_yin-liao_icon"], [UIImage imageNamed:@"zn_huang-guan_icon"]];
+    NSArray *imageArray =  @[[UIImage imageNamed:@"mao-zi_icon"], [UIImage imageNamed:@"zb_m-m_icon"], [UIImage imageNamed:@"zb_mai-ke-feng_icon"], [UIImage imageNamed:@"zb_mei-gui-hua_icon"], [UIImage imageNamed:@"zb_yin-liao_icon"], [UIImage imageNamed:@"zn_huang-guan_icon"]];
     UIImage *praseimage= imageArray[rand()%(5+1)];
     imageView.image =praseimage;
     imageView.frame = CGRectMake([UIScreen getWidth] - startX, -100, 35 * scale, 35 * scale);
