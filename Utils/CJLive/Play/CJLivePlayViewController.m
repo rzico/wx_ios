@@ -602,12 +602,12 @@
                 self.giftView.currentInterl.text = [NSString stringWithFormat:@"%.2lf",self.user.balance];
                 [self.view addSubview:self.giftView];
                 
-                [self.giftView sizeWith:CGSizeMake([UIScreen getWidth], 230)];
+                [self.giftView sizeWith:CGSizeMake([UIScreen getWidth], 240)];
                 [self.giftView alignParentBottom];
                 [self.giftView alignParentLeft];
             }];
             
-            
+            [self.bottomView setHidden:true];
             
             
         }else{
@@ -628,6 +628,7 @@
         } completion:^(BOOL finished) {
             [self->_giftView removeFromSuperview];
             self->_giftView = nil;
+            [self.bottomView setHidden:false];
         }];
     }
 }

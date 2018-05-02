@@ -34,6 +34,8 @@ static NSMutableArray *giftList;
     self.isFirstClick = YES;
     self.chooseimage.hidden = YES;
     self.giftNum = 1;
+    
+    [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.1]];
 }
 
 - (void)changeSendBtn:(UIButton *)btn{
@@ -163,6 +165,7 @@ static NSMutableArray *giftList;
 }
 
 - (void)resetView:(UIView *)mView Id:(NSInteger)Id{
+    [mView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.3]];
     for (UIView *view in mView.subviews){
         if ([view isKindOfClass:[UIImageView class]]){
             [(UIImageView *)view sd_setImageWithURL:[NSURL URLWithString:[giftList[Id] objectForKey:@"thumbnail"]]];
