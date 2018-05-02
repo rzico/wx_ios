@@ -162,7 +162,7 @@
     
     [closeBtn sizeWith:CGSizeMake(54, 30)];
     [closeBtn alignParentRight];
-    [closeBtn alignParentTopWithMargin:60 * self.view.width / [UIScreen getWidth]];
+    [closeBtn alignParentTopWithMargin:[UIScreen getStatusBarHeight] + 10];
     
     self.headView = [[CJLivePlayHeadView alloc] initWithFrame:CGRectMake(0, 0, 150, 32)];
     [self.headView.iconView setBackgroundColor:[UIColor redColor]];

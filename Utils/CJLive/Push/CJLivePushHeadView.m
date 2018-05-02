@@ -14,7 +14,7 @@
     self = [super initWithFrame:frame];
     if (self){
         [self setBackgroundColor:[UIColor colorWithHex:0 alpha:0.2]];
-        [self.layer setCornerRadius:self.height * 0.4];
+        [self.layer setCornerRadius:self.height * 0.5];
         [self createSubViews];
         [self layout];
         [self setFansCount:0];
