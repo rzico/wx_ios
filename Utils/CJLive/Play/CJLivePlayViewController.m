@@ -177,8 +177,8 @@
     self.audienceView.delegate = self;
     [self.view addSubview:self.audienceView];
     
-    [self.audienceView alignVerticalCenterOf:closeBtn];
-    [self.audienceView layoutToLeftOf:closeBtn margin:10.0];
+    [self.audienceView alignParentRight];
+    [self.audienceView layoutBelow:closeBtn margin:10.0];
     
     self.yinpiaoView = [[CJYinpiaoView alloc] initWithFrame:CGRectMake(0, 0, 60, 20)];
     [self.view addSubview:self.yinpiaoView];
