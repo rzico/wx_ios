@@ -156,7 +156,8 @@ WX_EXPORT_METHOD(@selector(toKick:nickName:callback:))
 }
 
 - (void)toKick:(NSString *)Id nickName:(NSString *)nickName callback:(WXModuleCallback)callback{
-    NSDictionary *message = @{@"receiver":@"all",@"data":@{@"id":Id,@"nickName":nickName},@"type":@"kick"};
+    NSString *kickInfo = [NSString stringWithFormat:@"%@|%@",Id,nickName];
+    NSDictionary *message = @{@"receiver":@"all",@"info":kickInfo,@"type":@"kick"};
     CJPostNotification(CJNOTIFICATION_GROUP_MESSAGE, message);
     if (callback){
         callback(@{@"type":@"success",@"content":@"成功",@"data":@""});
