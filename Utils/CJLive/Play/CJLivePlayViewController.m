@@ -252,10 +252,10 @@
         [self sendMsg:CJLiveMessageTypeGag message:[notification.userInfo objectForKey:@"info"]];
     }else if ([type equalsString:@"SYSTEM_DELETE"]){
         [SVProgressHUD showInfoWithStatus:@"直播已结束"];
-        [self dismissViewControllerAnimated:true completion:nil];
+        [self exitLivePlay];
     }else if ([type equalsString:@"SYSTEM_KICK"]){
         [SVProgressHUD showInfoWithStatus:@"您已被请离直播间"];
-        [self dismissViewControllerAnimated:true completion:nil];
+        [self exitLivePlay];
     }else if ([type equalsString:@"message"]){
         TIMMessage *msg = [notification.userInfo objectForKey:@"msg"];
         if ([[[msg getConversation] getReceiver] equalsString:self.groupId]){
@@ -322,7 +322,7 @@
                                 [self appendMessage:data];
                                 if ([data.userId equalsString:[CJUserManager getUserId]]){
                                     [SVProgressHUD showInfoWithStatus:@"您已被请离直播间"];
-                                    [self dismissViewControllerAnimated:true completion:nil];
+                                    [self exitLivePlay];
                                 }
                                 break;
                             }
