@@ -249,7 +249,7 @@
     if ([type equalsString:@"gag"]){//禁言
         [self sendMsg:CJLiveMessageTypeGag message:[notification.userInfo objectForKey:@"info"]];
     }else if ([type equalsString:@"kick"]){
-        [self sendMsg:CJLiveMessageTypeGag message:[notification.userInfo objectForKey:@"info"]];
+        [self sendMsg:CJLiveMessageTypeKick message:[notification.userInfo objectForKey:@"info"]];
     }else if ([type equalsString:@"SYSTEM_DELETE"]){
         [SVProgressHUD showInfoWithStatus:@"直播已结束"];
         [self exitLivePlay];
