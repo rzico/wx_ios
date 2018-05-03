@@ -51,9 +51,10 @@
     [self.iconView sizeWith:CGSizeMake(self.height * 0.8, self.height * 0.8)];
     [self.iconView.layer setCornerRadius:self.height * 0.4];
     [self.iconView alignParentLeftWithMargin:self.height * 0.1];
+    [self.iconView layoutParentVerticalCenter];
     
     [self.attentionBtn sizeWith:CGSizeMake((self.height - 5) * 2.06, self.height - 5)];
-    [self.attentionBtn alignParentRightWithMargin:10];
+    [self.attentionBtn alignParentRightWithMargin:self.height * 0.1];
     [self.attentionBtn layoutParentVerticalCenter];
     [self.attentionBtn.layer setCornerRadius:self.attentionBtn.height * 0.5];
     

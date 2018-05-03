@@ -59,6 +59,7 @@
     [self registLocalNotification];
     
     [SVProgressHUD setMaximumDismissTimeInterval:0.5];
+    [SVProgressHUD setMaxSupportedWindowLevel:UIWindowLevelAlert + 1000];
 //    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 //    _live = [[CJLivePushViewController alloc] init];
 //    self.window.rootViewController = _live;
