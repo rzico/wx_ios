@@ -776,7 +776,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row % 2 == 0){
         NSInteger index = indexPath.row / 2;
-        NSString *userId = _messageList[index].userId;
+        NSString *userId = _messageList[index].Id;
         NSString *nickName = _messageList[index].nickName;
         if (userId){
             long uId = [userId longLongValue];
