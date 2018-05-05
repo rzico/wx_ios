@@ -25,10 +25,13 @@ static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 //#define kSdkAppId       @"1400060267"//SDK_APPID
 //#define kSdkAccountType @"21224"//用户类型
 
-
-#define kTLSAppid       @"1400037996"//TLS_APPID
-#define kSdkAppId       @"1400037996"//SDK_APPID
-#define kSdkAccountType @"25592"//用户类型
+#define kTLSAppid       @"1400085755"//TLS_APPID
+#define kSdkAppId       @"1400085755"//SDK_APPID
+#define kSdkAccountType @"25486"//用户类型
+//
+//#define kTLSAppid       @"1400037996"//TLS_APPID
+//#define kSdkAppId       @"1400037996"//SDK_APPID
+//#define kSdkAccountType @"25592"//用户类型
 
 
 
@@ -46,10 +49,10 @@ static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 
 //资源地址
-static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.ucmap.com/";
+static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.yzwap.com/";
 
 //接口地址
-static NSString *WXCONFIG_INTERFACE_PATH = @"https://weex.ucmap.com/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"https://weex.yzwap.com/";
 
 
 
@@ -60,9 +63,10 @@ static NSString *kAuthState = @"xxx";
 static NSString *WECHAT_APPID = @"wxxxx-1";
 
 //阿里云参数
-//static NSString *aliOSSEndPoint = @"http://oss-cn-hongkong.aliyuncs.com";
-static NSString *aliOSSEndPoint = @"http://oss-cn-hangzhou.aliyuncs.com";
-static NSString *aliOSSBucketName = @"appcenter";
+static NSString *aliOSSEndPoint = @"http://oss-cn-hongkong.aliyuncs.com";
+//static NSString *aliOSSEndPoint = @"http://oss-cn-hangzhou.aliyuncs.com";
+//static NSString *aliOSSBucketName = @"appcenter";
+static NSString *aliOSSBucketName = @"newgameoss";
 
 //主题颜色
 static int UINavigationBarColor = 0xEB4E40;
@@ -78,7 +82,7 @@ static NSString *openURLScheme = @"nihtan";
 
 //根视图配置
 typedef NS_ENUM(NSUInteger, RootViewType) {
-    RootViewTypeSingleView,//单视图模式
+    RootViewTypeSingleView,//单视图模式‘‘’’
     RootViewTypeTabbar,//Tabbar模式
 };
 static RootViewType CJRootViewType = RootViewTypeTabbar;
