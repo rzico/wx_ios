@@ -18,7 +18,6 @@
         [self createSubViews];
         [self layout];
         [self setFansCount:0];
-        [self setAttentionCount:0];
     }
     return self;
 }
@@ -28,31 +27,35 @@
     [self.iconView.layer setMasksToBounds:true];
     [self addSubview:self.iconView];
     
+    self.nickNameLabel = [[UILabel alloc] init];
+    [self.nickNameLabel setFont:[UIFont systemFontOfSize:10.0]];
+    [self.nickNameLabel setTextColor:[UIColor whiteColor]];
+    [self.nickNameLabel setBackgroundColor:[UIColor clearColor]];
+    [self addSubview:self.nickNameLabel];
+    
+    
     self.fansLabel = [[UILabel alloc] init];
     [self.fansLabel setFont:[UIFont systemFontOfSize:10.0]];
     [self.fansLabel setTextColor:[UIColor whiteColor]];
     [self.fansLabel setBackgroundColor:[UIColor clearColor]];
     [self addSubview:self.fansLabel];
-    
-    self.attentionLabel = [[UILabel alloc] init];
-    [self.attentionLabel setFont:[UIFont systemFontOfSize:10.0]];
-    [self.attentionLabel setTextColor:[UIColor whiteColor]];
-    [self.attentionLabel setBackgroundColor:[UIColor clearColor]];
-    [self addSubview:self.attentionLabel];
 }
 
 - (void)layout{
-    [self.iconView sizeWith:CGSizeMake(self.height, self.height)];
-    [self.iconView alignParentLeft];
-    [self.iconView.layer setCornerRadius:self.height * 0.5];
+    [self.iconView sizeWith:CGSizeMake(self.height * 0.8, self.height * 0.8)];
+    [self.iconView alignParentLeftWithMargin:self.height * 0.1];
+    [self.iconView layoutParentVerticalCenter];
+    [self.iconView.layer setCornerRadius:self.height * 0.4];
     
-    [self.fansLabel sizeWith:CGSizeMake(self.width - self.height, self.height * 0.5 - 1)];
-    [self.fansLabel layoutToRightOf:self.iconView];
+    [self.nickNameLabel sizeWith:CGSizeMake(self.width - self.height - 5, self.height * 0.5 - 1)];
+    [self.nickNameLabel layoutToRightOf:self.iconView margin:5];
+    [self.nickNameLabel alignParentTopWithMargin:1.0];
+    
+    
+    [self.fansLabel sizeEqualTo:self.nickNameLabel];
+    [self.fansLabel layoutToRightOf:self.iconView margin:5];
     [self.fansLabel alignParentTopWithMargin:1.0];
-    
-    [self.attentionLabel sizeEqualTo:self.fansLabel];
-    [self.attentionLabel alignLeft:self.fansLabel];
-    [self.attentionLabel alignBottom:self.iconView];
+    [self.fansLabel alignBottom:self.iconView];
 }
 
 - (void)setIconImage:(UIImage *)image{
@@ -75,7 +78,7 @@
     [self.fansLabel setText:[NSString stringWithFormat:@"粉丝:%@",[self countFormat:count]]];
 }
 
-- (void)setAttentionCount:(NSInteger)count{
-    [self.attentionLabel setText:[NSString stringWithFormat:@"关注:%@",[self countFormat:count]]];
+- (void)setNickName:(NSString *)nickName{
+    [self.nickNameLabel setText:nickName];
 }
 @end

@@ -28,6 +28,14 @@
     UIView *progressView;
 }
 
+- (BOOL)shouldAutorotate{
+    return true;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setBackgroundImage];

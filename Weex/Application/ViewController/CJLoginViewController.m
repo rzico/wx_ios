@@ -14,6 +14,13 @@
 
 @implementation CJLoginViewController
 
+- (BOOL)shouldAutorotate{
+    return true;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 - (instancetype)init{
     self = [super init];

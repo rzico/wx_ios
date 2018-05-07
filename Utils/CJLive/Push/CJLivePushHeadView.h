@@ -14,11 +14,11 @@
 
 @property (nonatomic, strong) UILabel*      fansLabel;
 
-@property (nonatomic, strong) UILabel*      attentionLabel;
+@property (nonatomic, strong) UILabel*      nickNameLabel;
 
 - (void)setIconImage:(UIImage *)image;
 
 - (void)setFansCount:(NSInteger)count;
 
-- (void)setAttentionCount:(NSInteger)count;
+- (void)setNickName:(NSString *)nickName;
 @end

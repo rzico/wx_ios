@@ -51,12 +51,13 @@ WX_EXPORT_METHOD(@selector(toKick:nickName:callback:))
         if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
             CJLivePlayUserModel *user = [CJLivePlayUserModel modelWithDictionary:[responseObject objectForKey:@"data"]];
             CJLivePushViewController *pushVC = [[CJLivePushViewController alloc] init];
+            pushVC.groupId = [NSString stringWithFormat:@"%d",Id];
             pushVC.anchor = user;
             pushVC.headIcon = user.logo;
             pushVC.isRecord = record;
             pushVC.liveTitle = title;
             pushVC.frontCover = frontCover;
-//            pushVC.isNativeConfig = !play;
+            pushVC.isNativeConfig = !play;
             [self->weexInstance.viewController presentViewController:pushVC animated:true completion:nil];
         }else{
             [SVProgressHUD showErrorWithStatus:@"获取用户信息失败"];
@@ -155,7 +156,8 @@ WX_EXPORT_METHOD(@selector(toKick:nickName:callback:))
 }
 
 - (void)toKick:(NSString *)Id nickName:(NSString *)nickName callback:(WXModuleCallback)callback{
-    NSDictionary *message = @{@"receiver":@"all",@"data":@{@"id":Id,@"nickName":nickName},@"type":@"kick"};
+    NSString *kickInfo = [NSString stringWithFormat:@"%@|%@",Id,nickName];
+    NSDictionary *message = @{@"receiver":@"all",@"info":kickInfo,@"type":@"kick"};
     CJPostNotification(CJNOTIFICATION_GROUP_MESSAGE, message);
     if (callback){
         callback(@{@"type":@"success",@"content":@"成功",@"data":@""});

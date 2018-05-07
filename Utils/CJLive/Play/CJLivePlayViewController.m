@@ -16,7 +16,7 @@
 #import "CJLivePlayHeadView.h"
 #import "CJAudienceView.h"
 #import "CJLiveMessageViewCell.h"
-
+#import "CJYinpiaoView.h"
 
 #import "CJLivePlayBottomView.h"
 
@@ -40,6 +40,7 @@
 @property (nonatomic, strong) UITableView               *messageView;
 @property (nonatomic, strong) CJLivePlayBottomView      *bottomView;
 @property (nonatomic, strong) LiveGiftView              *giftView;
+@property (nonatomic, strong) CJYinpiaoView             *yinpiaoView;
 
 @property (nonatomic, strong) NSMutableArray<CJLiveMessageModel *>            *messageList;
 
@@ -97,6 +98,8 @@
         [self start];
         [self enterLiveRoom];
     });
+    
+    [self.yinpiaoView setYinpiao:self.anchor.gift];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -159,7 +162,7 @@
     
     [closeBtn sizeWith:CGSizeMake(54, 30)];
     [closeBtn alignParentRight];
-    [closeBtn alignParentTopWithMargin:60 * self.view.width / [UIScreen getWidth]];
+    [closeBtn alignParentTopWithMargin:[UIScreen getStatusBarHeight] + 10];
     
     self.headView = [[CJLivePlayHeadView alloc] initWithFrame:CGRectMake(0, 0, 150, 32)];
     [self.headView.iconView setBackgroundColor:[UIColor redColor]];
@@ -174,8 +177,14 @@
     self.audienceView.delegate = self;
     [self.view addSubview:self.audienceView];
     
-    [self.audienceView alignVerticalCenterOf:closeBtn];
-    [self.audienceView layoutToLeftOf:closeBtn margin:10.0];
+    [self.audienceView alignParentRight];
+    [self.audienceView layoutBelow:closeBtn margin:10.0];
+    
+    self.yinpiaoView = [[CJYinpiaoView alloc] initWithFrame:CGRectMake(0, 0, 60, 20)];
+    [self.view addSubview:self.yinpiaoView];
+    
+    [self.yinpiaoView alignLeft:self.headView];
+    [self.yinpiaoView layoutBelow:self.headView margin:10];
     
     self.messageView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.messageView.delegate = self;
@@ -240,13 +249,13 @@
     if ([type equalsString:@"gag"]){//禁言
         [self sendMsg:CJLiveMessageTypeGag message:[notification.userInfo objectForKey:@"info"]];
     }else if ([type equalsString:@"kick"]){
-        [self sendMsg:CJLiveMessageTypeGag message:[notification.userInfo objectForKey:@"info"]];
+        [self sendMsg:CJLiveMessageTypeKick message:[notification.userInfo objectForKey:@"info"]];
     }else if ([type equalsString:@"SYSTEM_DELETE"]){
         [SVProgressHUD showInfoWithStatus:@"直播已结束"];
-        [self dismissViewControllerAnimated:true completion:nil];
+        [self exitLivePlay];
     }else if ([type equalsString:@"SYSTEM_KICK"]){
         [SVProgressHUD showInfoWithStatus:@"您已被请离直播间"];
-        [self dismissViewControllerAnimated:true completion:nil];
+        [self exitLivePlay];
     }else if ([type equalsString:@"message"]){
         TIMMessage *msg = [notification.userInfo objectForKey:@"msg"];
         if ([[[msg getConversation] getReceiver] equalsString:self.groupId]){
@@ -313,7 +322,7 @@
                                 [self appendMessage:data];
                                 if ([data.userId equalsString:[CJUserManager getUserId]]){
                                     [SVProgressHUD showInfoWithStatus:@"您已被请离直播间"];
-                                    [self dismissViewControllerAnimated:true completion:nil];
+                                    [self exitLivePlay];
                                 }
                                 break;
                             }
@@ -560,7 +569,7 @@
     [UIView beginAnimations:nil context:(__bridge void *_Nullable)(imageView)];
     [UIView setAnimationDuration:7 * speed];
     
-    NSArray *imageArray =  @[[UIImage imageNamed:@"mao-zi_icon"], [UIImage imageNamed:@"zb_m-m-dà_icon"], [UIImage imageNamed:@"zb_mai-ke-feng_icon"], [UIImage imageNamed:@"zb_mei-gui-hua_icon"], [UIImage imageNamed:@"zb_yin-liao_icon"], [UIImage imageNamed:@"zn_huang-guan_icon"]];
+    NSArray *imageArray =  @[[UIImage imageNamed:@"mao-zi_icon"], [UIImage imageNamed:@"zb_m-m_icon"], [UIImage imageNamed:@"zb_mai-ke-feng_icon"], [UIImage imageNamed:@"zb_mei-gui-hua_icon"], [UIImage imageNamed:@"zb_yin-liao_icon"], [UIImage imageNamed:@"zn_huang-guan_icon"]];
     UIImage *praseimage= imageArray[rand()%(5+1)];
     imageView.image =praseimage;
     imageView.frame = CGRectMake([UIScreen getWidth] - startX, -100, 35 * scale, 35 * scale);
@@ -593,12 +602,12 @@
                 self.giftView.currentInterl.text = [NSString stringWithFormat:@"%.2lf",self.user.balance];
                 [self.view addSubview:self.giftView];
                 
-                [self.giftView sizeWith:CGSizeMake([UIScreen getWidth], 230)];
+                [self.giftView sizeWith:CGSizeMake([UIScreen getWidth], 240)];
                 [self.giftView alignParentBottom];
                 [self.giftView alignParentLeft];
             }];
             
-            
+            [self.bottomView setHidden:true];
             
             
         }else{
@@ -619,6 +628,7 @@
         } completion:^(BOOL finished) {
             [self->_giftView removeFromSuperview];
             self->_giftView = nil;
+            [self.bottomView setHidden:false];
         }];
     }
 }
@@ -766,7 +776,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row % 2 == 0){
         NSInteger index = indexPath.row / 2;
-        NSString *userId = _messageList[index].userId;
+        NSString *userId = _messageList[index].Id;
         NSString *nickName = _messageList[index].nickName;
         if (userId){
             long uId = [userId longLongValue];

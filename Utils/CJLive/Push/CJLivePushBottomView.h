@@ -17,6 +17,8 @@
 - (void)CJLivePushBottomOnClickToggleTorch;
     
 - (void)CJLivePushBottomOnClickFilter;
+
+- (void)CJLivePushBottomOnClickGift;
     
 @end
 
@@ -27,6 +29,8 @@
 @property (nonatomic, strong) UIButton  *toggleTorchBtn;
     
 @property (nonatomic, strong) UIButton  *filterBtn;
+
+@property (nonatomic, strong) UIButton  *giftBtn;
 
 @property (nonatomic, weak) id<CJLivePushBottomViewDelegate> delegate;
 
