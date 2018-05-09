@@ -81,6 +81,7 @@ WX_EXPORT_METHOD(@selector(getUnReadMessage))
 WX_EXPORT_METHOD_SYNC(@selector(deviceInfo))
 WX_EXPORT_METHOD(@selector(router:))
 WX_EXPORT_METHOD(@selector(closeRouter))
+WX_EXPORT_METHOD_SYNC(@selector(getLiveState))
 
 
 static NSMutableArray<NSDictionary *> *queueList;
@@ -901,6 +902,10 @@ static NSMutableArray<NSDictionary *> *queueList;
              @"height":[NSNumber numberWithFloat:height],
              @"statusBarHeight":[NSNumber numberWithFloat:statusBarHeight],
              @"bottomHeight":[NSNumber numberWithFloat:bottom]};
+}
+
+- (BOOL)getLiveState{
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"CJLiveState"] boolValue];
 }
 @end
 
