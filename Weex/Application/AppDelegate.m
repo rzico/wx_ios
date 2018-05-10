@@ -61,7 +61,7 @@
     [SVProgressHUD setMaximumDismissTimeInterval:0.5];
     [SVProgressHUD setMaxSupportedWindowLevel:UIWindowLevelAlert + 1000];
     
-    [[NSUserDefaults standardUserDefaults] setObject:@"zh-Hans" forKey:@"appLanguage"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"zh-Hans" forKey:@"preferredLanguages"];
 //    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 //    _live = [[CJLivePushViewController alloc] init];
 //    self.window.rootViewController = _live;
