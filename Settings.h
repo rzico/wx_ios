@@ -25,8 +25,8 @@ static NSString *AMapAPIKey = @"72e0eed9d55695b21e1ec6639f1387f4";
 #define kSdkAppId       @"1400043914"//SDK_APPID
 #define kSdkAccountType @"18325"//用户类型
 
-//#define kbusiId         6264
-#define kbusiId         6263
+#define kbusiId         6264
+//#define kbusiId         6263
 
 //服务器参数
 #define HTTPAPI(url) [NSString stringWithFormat:@"%@weex/%@.jhtml",WXCONFIG_INTERFACE_PATH,url]
