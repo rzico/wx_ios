@@ -67,7 +67,7 @@
 //    self.window.rootViewController = _live;
 //    [self.window makeKeyAndVisible];
     
-    
+
     return YES;
 }
 
