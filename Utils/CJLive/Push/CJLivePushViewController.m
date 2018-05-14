@@ -847,6 +847,9 @@
 #ifdef DEBUG
                         [self gagUser:@"u12079" time:0];
 #endif
+                        
+                        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"CJLiveState"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
                     });
                 }else{
                     [SVProgressHUD showErrorWithStatus:@"网络繁忙，请稍后再试"];
@@ -1018,6 +1021,8 @@
 }
 
 - (void)quit{
+    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"CJLiveState"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self.barrageManager stop];
     [self.txLivePublisher stopPush];
     [self.txLivePublisher stopPreview];
