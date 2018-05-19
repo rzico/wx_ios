@@ -42,7 +42,7 @@ static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.rzico.com/";
 
 //接口地址
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"http://water.rzico.com/";
 
 //微信参数
 static NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
