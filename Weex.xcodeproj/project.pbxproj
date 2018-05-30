@@ -4306,8 +4306,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "aa9ad9d7-b387-4c86-86d1-d545a40d2c4e";
-				PROVISIONING_PROFILE_SPECIFIER = "mopian Development Provisioning Profile";
+				PROVISIONING_PROFILE = "0ab7b61d-ca95-4c37-8315-3dd4233e57ad";
+				PROVISIONING_PROFILE_SPECIFIER = mopian_dev;
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
 					"-Wno-documentation",
@@ -4347,8 +4347,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ffbdede6-734e-4eec-b0e7-6fc75aa09b0f";
-				PROVISIONING_PROFILE_SPECIFIER = "mopian Distribution Provisioning Profile";
+				PROVISIONING_PROFILE = "de45a52c-0b8e-48c7-b79f-67ad75c4f958";
+				PROVISIONING_PROFILE_SPECIFIER = mopian_dis;
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
 					"-Wno-documentation",
@@ -4496,8 +4496,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1xx.mopian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "27340d0a-9855-460a-9f07-1800d05603d6";
-				PROVISIONING_PROFILE_SPECIFIER = "mopian Ad Hoc Provisioning Profile";
+				PROVISIONING_PROFILE = "46071f07-c5c3-4bf9-9794-b7d51183bddc";
+				PROVISIONING_PROFILE_SPECIFIER = mopian_test;
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = (
 					"-Wno-documentation",
