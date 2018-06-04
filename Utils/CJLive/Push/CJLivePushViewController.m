@@ -431,8 +431,8 @@
 
 
     //水印
-    _txLivePushConfig.watermark = [UIImage imageNamed:@"BaoUULivelogo"];
-    _txLivePushConfig.watermarkNormalization = CGRectMake(0.1, 0.1, 0.1, 0);
+//    _txLivePushConfig.watermark = [UIImage imageNamed:@"BaoUULivelogo"];
+//    _txLivePushConfig.watermarkNormalization = CGRectMake(0.1, 0.1, 0.1, 0);
 
     
     _txLivePublisher = [[TXLivePush alloc] initWithConfig:_txLivePushConfig];
