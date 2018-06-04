@@ -60,11 +60,13 @@ static NSString *kAuthState = @"xxx";
 static NSString *WECHAT_APPID = @"wx490857e2baff7cfd";
 
 //阿里云参数
-static NSString *aliOSSEndPoint = @"http://oss-cn-shenzhen.aliyuncs.com";
-static NSString *aliOSSBucketName = @"rzico";
+//static NSString *aliOSSEndPoint = @"http://oss-cn-hongkong.aliyuncs.com";
+static NSString *aliOSSEndPoint = @"http://oss-cn-hangzhou.aliyuncs.com";
+static NSString *aliOSSBucketName = @"appcenter";
+//static NSString *aliOSSBucketName = @"newgameoss";
 
 //主题颜色
-static int UINavigationBarColor = 0x99CCFF;
+static int UINavigationBarColor = 0xEB4E40;
 
 //本地资源版本号
 static NSString *localResVersion = @"1.0.6";

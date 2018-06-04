@@ -37,8 +37,8 @@
     [self.yinpiaoLabel sizeWith:self.size];
 }
 
-- (void)setYinpiao:(NSInteger)yinpiao{
-    [self.yinpiaoLabel setText:[NSString stringWithFormat:@"碳币:%zd",yinpiao]];
+- (void)setYinpiao:(long)yinpiao{
+    [self.yinpiaoLabel setText:[NSString stringWithFormat:@"碳币:%ld",yinpiao]];
 }
 
 - (void)yinpiaoLabelOnClick:(id)sender{

@@ -96,6 +96,7 @@
     long likeCount;
     long follow;
     long viewerCount;
+    long yinpiao;
 }
 
 - (void)viewDidLoad {
@@ -356,12 +357,17 @@
                                 [self kickUser:data.userId];
                                 data.messageType = CJLiveMessageTypeTip;
                                 data.message = [elemData objectForKey:@"text"];
+                                if ([data.message containsString:@"取消"]){
+                                    self.anchor.fans --;
+                                }else{
+                                    self.anchor.fans ++;
+                                }
+                                [self.headView setFansCount:self.anchor.fans];
                                 [self appendMessage:data];
                                 break;
                             }
                         }else if ([[dic objectForKey:@"cmd"] equalsString:@"CustomBarrageMsg"]){
                             if (i+1 < msg.elemCount){
-                                [self kickUser:data.userId];
                                 data.messageType = CJLiveMessageTypeTip;
                                 data.message = [elemData objectForKey:@"text"];
                                 [self appendMessage:data];
@@ -886,7 +892,8 @@
                 follow = [[NSString stringWithFormat:@"%@",[data objectForKey:@"follow"]] longLongValue];
                 likeCount = [[NSString stringWithFormat:@"%@",[data objectForKey:@"likeCount"]] longLongValue];
                 viewerCount = [[NSString stringWithFormat:@"%@",[data objectForKey:@"viewerCount"]] longLongValue];
-                [self.yinpiaoView setYinpiao:[[NSString stringWithFormat:@"%@",[data objectForKey:@"gift"]] longLongValue]];
+                yinpiao = [[NSString stringWithFormat:@"%@",[data objectForKey:@"gift"]] longLongValue];
+                [self.yinpiaoView setYinpiao:self->yinpiao];
                 [self refreshRoomMember];
                 complete(true, nil);
             }else{
@@ -908,7 +915,7 @@
 }
 
 - (void)refreshRoomMember{
-    [self.headView setFansCount:follow];
+    [self.headView setFansCount:self.anchor.fans];
     [self.headView setNickName:self.anchor.nickName];
     [self.audienceView setAudience:viewerCount];
 }
@@ -1150,7 +1157,9 @@
             for (id gift in giftList){
                 if ([gift isKindOfClass:[NSDictionary class]]){
                     if ([title containsString:[gift objectForKey:@"name"]]){
-                        [self showGifWebView:[gift objectForKey:@"animation"] giftName:[gift objectForKey:@"name"] name:senderName headUrl:senderHeadUrl giftID:[NSString stringWithFormat:@"%ld",[[gift objectForKey:@"id"] longValue]] giftSmallName:[gift objectForKey:@"animation"] isSelf:isSelf];
+                        [self showGifWebView:[gift objectForKey:@"animation"] giftName:[gift objectForKey:@"name"] name:senderName headUrl:senderHeadUrl giftID:[NSString stringWithFormat:@"%ld",[[gift objectForKey:@"id"] integerValue]] giftSmallName:[gift objectForKey:@"animation"] isSelf:isSelf];
+                        self->yinpiao += [[NSString stringWithFormat:@"%@",[gift objectForKey:@"price"]] longLongValue];
+                        [self.yinpiaoView setYinpiao:self->yinpiao];
                         break;
                     }
                 }
@@ -1199,7 +1208,8 @@
     }
     self.isShowGif = YES;
     
-    self.Aimv = [[OLImageView alloc] initWithImage:[OLImage imageNamed:[NSString stringWithFormat:@"%@.gif",gifImageName]]];
+    //    self.Aimv = [[OLImageView alloc] initWithImage:[OLImage imageNamed:[NSString stringWithFormat:@"%@.gif",gifImageName]]];
+    self.Aimv = [[OLImageView alloc] initWithImage:[OLImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:gifImageName]]]];
     [self.Aimv setFrame:CGRectMake(([UIScreen getWidth] - self.Aimv.image.size.width*2/3)/2, 160, self.Aimv.image.size.width*2/3, self.Aimv.image.size.height*2/3)];
     [self.Aimv setUserInteractionEnabled:YES];
     [self.view  addSubview:self.Aimv];

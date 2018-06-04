@@ -75,6 +75,8 @@
     
     
     double                  currentInterl;
+    
+    long                    yinpiao;
 }
 
 - (void)viewDidLoad {
@@ -100,6 +102,7 @@
     });
     
     [self.yinpiaoView setYinpiao:self.anchor.gift];
+    [self.headView setFans:self.anchor.fans];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -330,7 +333,21 @@
                             if (i+1 < msg.elemCount){
                                 data.messageType = CJLiveMessageTypeTip;
                                 data.message = [elemData objectForKey:@"text"];
+                                if ([data.message containsString:@"取消"]){
+                                    self.anchor.fans --;
+                                }else{
+                                    self.anchor.fans ++;
+                                }
+                                [self.headView setFans:self.anchor.fans];
                                 [self appendMessage:data];
+                                break;
+                            }
+                        }else if ([[dic objectForKey:@"cmd"] equalsString:@"CustomBarrageMsg"]){
+                            if (i+1 < msg.elemCount){
+                                data.messageType = CJLiveMessageTypeTip;
+                                data.message = [elemData objectForKey:@"text"];
+                                [self appendMessage:data];
+                                [self appendBarrageMessage:data.nickName message:data.message];
                                 break;
                             }
                         }
@@ -678,6 +695,12 @@
         if ([responseObject isKindOfClass:[NSDictionary class]] && ([[responseObject objectForKey:@"content"] equalsString:@"关注成功"] || [[responseObject objectForKey:@"content"] equalsString:@"取消成功"])){
             self.anchor.follow = isAttention;
             [self.headView setAttention:isAttention];
+            if ([[responseObject objectForKey:@"content"] equalsString:@"关注成功"]){
+                self.anchor.fans ++;
+            }else{
+                self.anchor.fans --;
+            }
+            [self.headView setFans:self.anchor.fans];
             [self sendMsg:isAttention ? CJLiveMessageTypeFollow : CJLiveMessageTypeUnFollow message:[NSString stringWithFormat:@"%@|%@",[CJUserManager getUserId],self.user.nickName]];
         }else{
             [SVProgressHUD showErrorWithStatus:@"网络不稳定，请稍后再试"];
@@ -900,8 +923,10 @@
             for (id gift in giftList){
                 if ([gift isKindOfClass:[NSDictionary class]]){
                     if ([title containsString:[gift objectForKey:@"name"]]){
-                        [self showGifWebView:[gift objectForKey:@"animation"] giftName:[gift objectForKey:@"name"] name:senderName headUrl:senderHeadUrl giftID:[NSString stringWithFormat:@"%ld",[[gift objectForKey:@"id"] longValue]] giftSmallName:[gift objectForKey:@"animation"] isSelf:isSelf];
-                         break;
+                        [self showGifWebView:[gift objectForKey:@"animation"] giftName:[gift objectForKey:@"name"] name:senderName headUrl:senderHeadUrl giftID:[NSString stringWithFormat:@"%ld",[[gift objectForKey:@"id"] integerValue]] giftSmallName:[gift objectForKey:@"animation"] isSelf:isSelf];
+                        self.anchor.gift += [[NSString stringWithFormat:@"%@",[gift objectForKey:@"price"]] longLongValue];
+                        [self.yinpiaoView setYinpiao:self.anchor.gift];
+                        break;
                     }
                 }
             }

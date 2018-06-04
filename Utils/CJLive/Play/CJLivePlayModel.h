@@ -45,6 +45,7 @@
 @property (nonatomic, copy) NSString *status;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) long viewerCount;
+@property (nonatomic, assign) long fans;
 
 + (instancetype)modelWithDictionary:(NSDictionary *)dic;
 @end
