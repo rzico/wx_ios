@@ -852,7 +852,11 @@
                         [[NSUserDefaults standardUserDefaults] synchronize];
                     });
                 }else{
-                    [SVProgressHUD showErrorWithStatus:@"网络繁忙，请稍后再试"];
+                    if ([error equalsString:@"接口数据返回错误"]){
+                        [SVProgressHUD showErrorWithStatus:@"网络繁忙，请稍后再试"];
+                    }else{
+                        [SVProgressHUD showErrorWithStatus:error];
+                    }
                     [self exitLive];
                 }
             }];
@@ -891,7 +895,11 @@
             }
         }else{
             //接口数据返回错误
-            complete(false, @"接口数据返回错误");
+            if ([[responseObject objectForKey:@"type"] equalsString:@"error"]){
+                complete(false, [responseObject objectForKey:@"content"]);
+            }else{
+                complete(false, @"接口数据返回错误");
+            }
         }
     } andFalse:^(NSURLResponse * _Nonnull response, NSError * _Nonnull error) {
         //请求接口错误

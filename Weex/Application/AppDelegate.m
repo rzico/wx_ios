@@ -58,7 +58,7 @@
 
     [self registLocalNotification];
     
-    [SVProgressHUD setMaximumDismissTimeInterval:0.5];
+    [SVProgressHUD setMaximumDismissTimeInterval:1];
     [SVProgressHUD setMaxSupportedWindowLevel:UIWindowLevelAlert + 1000];
     
     [[NSUserDefaults standardUserDefaults] setObject:@"zh-Hans" forKey:@"appLanguage"];

@@ -21,9 +21,9 @@
 static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 
 //腾讯IM参数
-#define kTLSAppid       @"1400043914"//TLS_APPID
-#define kSdkAppId       @"1400043914"//SDK_APPID
-#define kSdkAccountType @"18325"//用户类型
+#define kTLSAppid       @"1400037996"//TLS_APPID
+#define kSdkAppId       @"1400037996"//SDK_APPID
+#define kSdkAccountType @"25592"//用户类型
 
 //开发环境
 //#define kbusiId         6684
@@ -42,14 +42,15 @@ static NSString *AMapAPIKey = @"98c20f0485d1a19685288a739ec5f505";
 static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 
 //资源地址
-static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdn.rzico.com/";
+static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdnx.ucmap.com/";
 
 //接口地址
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.1xx.me/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://192.168.2.110:8088/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://mopian.1xx.me/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.1xx.me/";
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/";
+//static NSString *WXCONFIG_INTERFACE_PATH = @"http://dev.rzico.com/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"https://weex.ucmap.com/";
 
 
 //微信参数
