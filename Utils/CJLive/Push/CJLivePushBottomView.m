@@ -42,6 +42,15 @@
     [self.giftBtn setImage:[UIImage imageNamed:@"Live_Gift"] forState:UIControlStateNormal];
     [self.giftBtn addTarget:self action:@selector(giftBtnOnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.giftBtn];
+    
+    self.gameBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.gameBtn setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.3]];
+    [self.gameBtn addTarget:self action:@selector(gameBtnOnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.gameBtn.titleLabel setFont:[UIFont systemFontOfSize:13]];
+    [self.gameBtn setTitle:@"开始游戏" forState:UIControlStateNormal];
+    [self.gameBtn setTitle:@"开始游戏" forState:UIControlStateSelected];
+    [self.gameBtn setTitle:@"开始游戏" forState:UIControlStateHighlighted];
+    [self addSubview:self.gameBtn];
 }
     
 - (void)layout{
@@ -60,6 +69,11 @@
     [self.toggleTorchBtn sizeWith:CGSizeMake(self.height, self.height)];
     [self.toggleTorchBtn.layer setCornerRadius:self.height * 0.5];
     [self.toggleTorchBtn layoutToRightOf:self.turnCameraBtn margin:20.0];
+    
+    [self.gameBtn sizeWith:CGSizeMake(80, self.height * 0.8)];
+    [self.gameBtn.layer setCornerRadius:self.height * 0.4];
+    [self.gameBtn layoutToRightOf:self.toggleTorchBtn margin:20.0];
+    [self.gameBtn layoutParentVerticalCenter];
 }
     
 - (void)filterBtnOnClick:(id)sender{
@@ -83,6 +97,25 @@
 - (void)giftBtnOnClick:(id)sender{
     if ([_delegate respondsToSelector:@selector(CJLivePushBottomOnClickGift)]){
         [_delegate CJLivePushBottomOnClickGift];
+    }
+}
+
+- (void)gameBtnOnClick:(id)sender{
+    if ([_delegate respondsToSelector:@selector(CJLivePushBottomOnClickGame)]){
+        [_delegate CJLivePushBottomOnClickGame];
+    }
+}
+
+- (void)setGameBtnState{
+    [self.gameBtn setSelected:!self.gameBtn.isSelected];
+    if (self.gameBtn.isSelected){
+        [self.gameBtn setTitle:@"退出游戏" forState:UIControlStateNormal];
+        [self.gameBtn setTitle:@"退出游戏" forState:UIControlStateSelected];
+        [self.gameBtn setTitle:@"退出游戏" forState:UIControlStateHighlighted];
+    }else{
+        [self.gameBtn setTitle:@"开始游戏" forState:UIControlStateNormal];
+        [self.gameBtn setTitle:@"开始游戏" forState:UIControlStateSelected];
+        [self.gameBtn setTitle:@"开始游戏" forState:UIControlStateHighlighted];
     }
 }
 @end

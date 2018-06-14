@@ -69,7 +69,7 @@ static NSString *aliOSSBucketName = @"appcenter";
 static int UINavigationBarColor = 0xEB4E40;
 
 //本地资源版本号
-static NSString *localResVersion = @"1.0.6";
+static NSString *localResVersion = @"0.0.0";
 
 //伪协议头
 static NSString *openURLScheme = @"yundian";
@@ -91,4 +91,11 @@ static BOOL CJTIMEnabled = true;
 //登录页面
 static NSString *UninstalledWechatLoginPath = @"file://view/login/index.js";
 static NSString *InstalledWechatLoginPath = @"file://view/index.js";
+
+//是否更新
+static BOOL IsNeedUpdate = true;
+
+//强制更新地址
+#define ForceUpdateUrl @"http://rzico.oss-cn-shenzhen.aliyuncs.com/nihtan/release/res-0.0.1.zip"
+
 #endif /* Settings_h */

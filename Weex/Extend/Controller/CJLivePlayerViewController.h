@@ -6,11 +6,8 @@
 //  Copyright © 2018年 rzico. All rights reserved.
 //
 
-typedef void(^LivePlayerDidClosed)(void);
+#import "CJGameViewController.h"
 
-@interface CJLivePlayerViewController : UIViewController
-
-- (void)loadWithUrl:(NSString *)url video:(NSString *)video method:(NSString *)method callback:(LivePlayerDidClosed)callback;
-
+@interface CJLivePlayerViewController : CJGameViewController
 
 @end

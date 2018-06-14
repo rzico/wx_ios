@@ -40,6 +40,8 @@
 #import "FriendshipManager.h"
 
 #import <OCBarrage.h>
+
+#import "CJGameViewController.h"
 @interface CJLivePushViewController ()<TXLivePushListener, CJLivePushBottomViewDelegate, CJReadyToLiveDelegate, CJLiveBeautySettingPanelDelegate, CJAudienceViewDelegate, UITableViewDelegate, UITableViewDataSource, PresentViewDelegate>{
     NSTimeInterval  _dlTime;
     NSLock          *_dlLock;
@@ -72,6 +74,8 @@
 @property (nonatomic, strong) UILabel                   *timeLabel;
 
 @property (nonatomic, strong) OCBarrageManager          *barrageManager;
+
+@property (nonatomic, strong) CJGameViewController      *gameVC;
 @end
 
 @implementation CJLivePushViewController{
@@ -97,6 +101,8 @@
     long follow;
     long viewerCount;
     long yinpiao;
+    
+    NSString *gameUrl;
 }
 
 - (void)viewDidLoad {
@@ -122,6 +128,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitLive) name:UIApplicationWillTerminateNotification object:nil];
     
     CJRegisterNotification(@selector(onNewMessage:), CJNOTIFICATION_GROUP_MESSAGE);
+    CJRegisterNotification(@selector(onLoadGame:), CJNOTIFICATION_LIVE_LOADGAME);
+    
     _messageList = [[NSMutableArray alloc] init];
 }
 
@@ -226,6 +234,16 @@
         
         textElem.text = CJLiveMessageKickString;
         [msg addElem:textElem];
+    }else if (type == CJLiveMessageTypeGame){
+        data = [NSJSONSerialization dataWithJSONObject:@{@"cmd":@"CustomGameMsg",
+                                                         @"data":@{@"cmd":@"CustomGameMsg",@"text":message,@"type":Id}}
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:&error];
+        [custElem setData:data];
+        [msg addElem:custElem];
+        
+        textElem.text = message;
+        [msg addElem:textElem];
     }
     
     TIMConversation *conv = [[TIMManager sharedInstance] getConversation:TIM_GROUP receiver:self.groupId];
@@ -265,6 +283,68 @@
     
 }
 
+- (void)onLoadGame:(NSNotification *)notification{
+    _appIsInterrupt = NO;
+    [_txLivePublisher resumePush];
+    NSString *url = [notification.userInfo objectForKey:@"url"];
+    [self loadGame:url];
+}
+
+- (void)loadGame:(NSString *)url{
+    gameUrl = url;
+    
+    [self sendMsg:CJLiveMessageTypeGame Id:@"load" nickName:nil message:url];
+    
+    
+    [CJNetworkManager GetHttp:[NSString stringWithFormat:@"%@%@",WXCONFIG_INTERFACE_PATH,url] Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
+            self.gameVC = [[CJGameViewController alloc] initWithType:CJGameTypeHalfView];
+            [self addChild:self.gameVC inRect:CGRectMake(0, 0, [UIScreen getWidth], [UIScreen getWidth] * 0.5625)];
+            [self.view addSubview:self.gameVC.view];
+            self.gameVC.view.frame = CGRectMake(0, [UIDevice isIphoneX] ? [UIScreen getHeight] - [UIScreen getWidth] * 0.5625 - 34 : [UIScreen getHeight] - [UIScreen getWidth] * 0.5625, [UIScreen getWidth], [UIDevice isIphoneX] ? [UIScreen getWidth] * 0.5625 + 34 : [UIScreen getWidth] * 0.5625);
+            [self.gameVC didMoveToParentViewController:self];
+            NSDictionary *data = [responseObject objectForKey:@"data"];
+            [self.bottomView setGameBtnState];
+            [self.gameVC loadWithUrl:[data objectForKey:@"url"] video:[data objectForKey:@"video"] method:@"GET" callback:^{
+                [self.bottomView setGameBtnState];
+                self->gameUrl = nil;
+                [self sendMsg:CJLiveMessageTypeGame Id:@"exit" nickName:nil message:url];
+                [self resetSubViews];
+                self.gameVC = nil;
+            }];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self setSubViews];
+            });
+        }else{
+            [SVProgressHUD showErrorWithStatus:@"网络不稳定，请稍后再试"];
+        }
+    } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:@"网络不稳定，请稍后再试"];
+    }];
+}
+
+- (void)setSubViews{
+    [self.bottomView layoutAbove:self.gameVC.view margin:5.0];
+    [self.beautyPanel layoutAbove:self.gameVC.view];
+    [self.messageView layoutAbove:self.bottomView margin:10];
+    [self.presentView layoutAbove:self.messageView];
+    [self.barrageManager.renderView sizeWith:CGSizeMake([UIScreen getWidth], self.messageView.y - 40 - self.headView.y - self.headView.height)];
+    [self.barrageManager.renderView layoutAbove:self.messageView margin:20];
+//    NSUInteger beautyPanelHeight = [CJLiveBeautySettingPanel getHeight];
+//    self.beautyPanel.frame = CGRectMake(0, self.view.height - beautyPanelHeight, [UIScreen getWidth], beautyPanelHeight);
+}
+
+- (void)resetSubViews{
+    [self.bottomView alignParentBottomWithMargin:20.0];
+    NSUInteger beautyPanelHeight = [CJLiveBeautySettingPanel getHeight];
+    self.beautyPanel.frame = CGRectMake(0, self.view.height - beautyPanelHeight, [UIScreen getWidth], beautyPanelHeight);
+    [self.messageView layoutAbove:self.bottomView margin:10];
+    [self.presentView layoutAbove:self.messageView];
+    [self.barrageManager.renderView sizeWith:CGSizeMake([UIScreen getWidth], self.messageView.y - 40 - self.headView.y - self.headView.height)];
+    [self.barrageManager.renderView layoutAbove:self.messageView margin:20];
+}
+
 - (void)onNewMessage:(NSNotification *)notification{
     NSLog(@"%@",notification.userInfo);
     NSString *type = [notification.userInfo objectForKey:@"type"];
@@ -301,9 +381,7 @@
                         data.icon = [elemData objectForKey:@"headPic"];
                         data.Id = [elemData objectForKey:@"id"];
                         data.userId = [elemData objectForKey:@"imid"];
-                        if ([elemData objectForKey:@"vip"] && [[elemData objectForKey:@"vip"] length] > 0){
-                            data.VIP = [elemData objectForKey:@"vip"];
-                        }
+                        data.VIP = [elemData objectForKey:@"vip"];
                         if ([[dic objectForKey:@"cmd"] equalsString:@"CustomGifMsg"]){
                             //礼物消息
                             if (i+1 < msg.elemCount){
@@ -324,6 +402,12 @@
                                     if ([text equalsString:@"加入房间"]){
                                         data.messageType = CJLiveMessageTypeEnter;
                                         [self.audienceView setAudience:++viewerCount];
+                                        
+                                        if (gameUrl != nil){
+                                            [self sendMsg:CJLiveMessageTypeGame Id:@"load" nickName:nil message:gameUrl];
+                                        }
+                                        
+                                        
                                     }else{
                                         data.messageType = CJLiveMessageTypeText;
                                     }
@@ -530,6 +614,7 @@
     self.beautyPanel.delegate = self;
     [self.beautyPanel resetValues];
     [self.view addSubview:self.beautyPanel];
+    
     
     self.timeLabel = [[UILabel alloc] init];
     [self.timeLabel setTextAlignment:NSTextAlignmentRight];
@@ -1016,6 +1101,9 @@
 }
 
 - (void)exitLive{
+    if (self.gameVC){
+        [self.gameVC destroy];
+    }
     if (self.groupId){
         [[TIMGroupManager sharedInstance] deleteGroup:self.groupId succ:^{
             NSLog(@"delete group success");
@@ -1252,6 +1340,22 @@
     weex.url = [NSURL URLWithString:url];
     [weex render:nil];
     [self presentViewController:[[WXRootViewController alloc]initWithRootViewController:weex] animated:true completion:nil];
+}
+
+- (void)CJLivePushBottomOnClickGame{
+    if (_bottomView.gameBtn.isSelected){
+        _appIsInterrupt = YES;
+        [_txLivePublisher pausePush];
+        CJWeexViewController *weex = [[CJWeexViewController alloc] init];
+        NSString *url = @"file://view/game/open.js";
+        url = [url rewriteURL];
+        weex.url = [NSURL URLWithString:url];
+        [weex render:nil];
+        [self presentViewController:[[WXRootViewController alloc]initWithRootViewController:weex] animated:true completion:nil];
+    }else{
+        [self.gameVC destroy];
+    }
+    
 }
 
 #pragma mark - BeautySettingPanelDelegate

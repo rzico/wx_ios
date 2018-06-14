@@ -17,6 +17,8 @@
 #import "FriendshipManager.h"
 #import "CJLivePlayModel.h"
 #import "CJLivePlayUserModel.h"
+
+#import "CJGameViewController.h"
 @implementation CJLivePlayerModule
 
 @synthesize weexInstance;
@@ -29,9 +31,11 @@ WX_EXPORT_METHOD(@selector(toLookLiveRoom:title:fm:callback:))
 WX_EXPORT_METHOD(@selector(toGag:nickName:groupId:time:callback:))
 WX_EXPORT_METHOD(@selector(getGag:gourpId:callback:))
 WX_EXPORT_METHOD(@selector(toKick:nickName:callback:))
+WX_EXPORT_METHOD(@selector(loadGame:))
 
 - (void)loadUrl:(NSString *)url video:(NSString *)video method:(NSString *)method callback:(WXModuleCallback)callback{
-    CJLivePlayerViewController *livePlayer = [[CJLivePlayerViewController alloc] init];
+//    CJLivePlayerViewController *livePlayer = [[CJLivePlayerViewController alloc] init];
+    CJLivePlayerViewController *livePlayer = [[CJLivePlayerViewController alloc] initWithType:CJGameTypeLandscape];
     [weexInstance.viewController presentViewController:livePlayer animated:true completion:^{
         [livePlayer loadWithUrl:url video:video method:method callback:^{
             if (callback){
@@ -39,6 +43,20 @@ WX_EXPORT_METHOD(@selector(toKick:nickName:callback:))
             }
         }];
     }];
+//    [weexInstance.viewController addChild:livePlayer inRect:CGRectMake(0, 0, [UIScreen getWidth], [UIScreen getWidth] * 0.5625)];
+//    [weexInstance.viewController.view addSubview:livePlayer.view];
+//    livePlayer.view.frame = CGRectMake(0, [UIDevice isIphoneX] ? [UIScreen getHeight] - [UIScreen getWidth] * 0.5625 - 34 : [UIScreen getHeight] - [UIScreen getWidth] * 0.5625, [UIScreen getWidth], [UIDevice isIphoneX] ? [UIScreen getWidth] * 0.5625 + 34 : [UIScreen getWidth] * 0.5625);
+//    [livePlayer didMoveToParentViewController:weexInstance.viewController];
+//    [livePlayer loadWithUrl:url video:video method:method callback:^{
+//        if (callback){
+//            callback(@{@"type":@"success",@"content":@"已关闭",@"data":@""});
+//        }
+//    }];
+}
+
+- (void)loadGame:(NSString *)url{
+    CJPostNotification(CJNOTIFICATION_LIVE_LOADGAME, @{@"url":url});
+    [weexInstance.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)test{

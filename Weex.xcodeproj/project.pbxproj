@@ -12,6 +12,7 @@
 		220A5D96209563E900A30593 /* CJYinpiaoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 220A5D95209563E900A30593 /* CJYinpiaoView.m */; };
 		2250B5262078FE160062961C /* CJLiveMessageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2250B5252078FE160062961C /* CJLiveMessageViewCell.m */; };
 		2250B5292078FE720062961C /* CJLiveMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2250B5282078FE720062961C /* CJLiveMessageModel.m */; };
+		225B5E9F20CFB11100C71054 /* CJGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 225B5E9E20CFB11100C71054 /* CJGameViewController.m */; };
 		225C62A7207C6420005ABD69 /* OLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C62A2207C6420005ABD69 /* OLImageView.m */; };
 		225C62A8207C6420005ABD69 /* OLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 225C62A3207C6420005ABD69 /* OLImage.m */; };
 		225C62B2207C6431005ABD69 /* CustonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 225C62AC207C6430005ABD69 /* CustonCell.xib */; };
@@ -594,6 +595,8 @@
 		2250B5252078FE160062961C /* CJLiveMessageViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJLiveMessageViewCell.m; sourceTree = "<group>"; };
 		2250B5272078FE720062961C /* CJLiveMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJLiveMessageModel.h; sourceTree = "<group>"; };
 		2250B5282078FE720062961C /* CJLiveMessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJLiveMessageModel.m; sourceTree = "<group>"; };
+		225B5E9D20CFB11100C71054 /* CJGameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJGameViewController.h; sourceTree = "<group>"; };
+		225B5E9E20CFB11100C71054 /* CJGameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJGameViewController.m; sourceTree = "<group>"; };
 		225C62A2207C6420005ABD69 /* OLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLImageView.m; sourceTree = "<group>"; };
 		225C62A3207C6420005ABD69 /* OLImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLImage.m; sourceTree = "<group>"; };
 		225C62A4207C6420005ABD69 /* OLImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLImageView.h; sourceTree = "<group>"; };
@@ -2283,6 +2286,8 @@
 				886C6582202ECBD000ACF7CF /* CJLivePlayerViewController.m */,
 				886C6588202F3D2100ACF7CF /* CJRootViewController.h */,
 				886C6589202F3D2100ACF7CF /* CJRootViewController.m */,
+				225B5E9D20CFB11100C71054 /* CJGameViewController.h */,
+				225B5E9E20CFB11100C71054 /* CJGameViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4193,6 +4198,7 @@
 				88C2D9D01FE9C16A000BCAB4 /* IMAMsg.m in Sources */,
 				887E31DD1FE7BB3200D8627A /* HRColorUtil.m in Sources */,
 				88C2DA501FE9C16A000BCAB4 /* ChatRoomViewController.m in Sources */,
+				225B5E9F20CFB11100C71054 /* CJGameViewController.m in Sources */,
 				88C2D9E41FE9C16A000BCAB4 /* ChatFunctionPanel.m in Sources */,
 				88C2DA481FE9C16A000BCAB4 /* MicroVideoPlayView.m in Sources */,
 				88C2D9671FE9C16A000BCAB4 /* NSDate+Common.m in Sources */,

@@ -19,6 +19,8 @@
 - (void)CJLivePushBottomOnClickFilter;
 
 - (void)CJLivePushBottomOnClickGift;
+
+- (void)CJLivePushBottomOnClickGame;
     
 @end
 
@@ -32,6 +34,10 @@
 
 @property (nonatomic, strong) UIButton  *giftBtn;
 
+@property (nonatomic, strong) UIButton  *gameBtn;
+
 @property (nonatomic, weak) id<CJLivePushBottomViewDelegate> delegate;
+
+- (void)setGameBtnState;
 
 @end

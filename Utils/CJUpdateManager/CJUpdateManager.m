@@ -129,14 +129,18 @@
 }
 
 - (void)checkUpdateOfRemoteResource:(NSDictionary *)info{
+    if (!IsNeedUpdate){
+        [self updateComplete:UpdateResultSuccess];
+        return;
+    }
     if ([info objectForKey:@"resUrl"] && [info objectForKey:@"resVersion"]){
         BOOL isNeedToUpdate = [self needUpdateResource:[info objectForKey:@"resVersion"]];
         if (isNeedToUpdate){
             unsigned long timeInterval = [[NSDate date] timeIntervalSince1970] * 1000;
             NSString *urlStr = [NSString stringWithFormat:@"%@?rand=%lu",[info objectForKey:@"resUrl"],timeInterval];
-//#ifdef DEBUG
-//            urlStr = [NSString stringWithFormat:@"http://cdnx.1xx.me/weex/release/res-0.0.0.zip?rand=%lu",timeInterval];
-//#endif
+#ifdef ForceUpdateUrl
+            urlStr = [NSString stringWithFormat:@"%@?rand=%lu",ForceUpdateUrl,timeInterval];
+#endif
             NSString *path = [CACHES_PATH stringByAppendingPathComponent:@"temp.zip"];
             CJDownloader *downloader = [[CJDownloader alloc] init];
             downloader.progress = ^(int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {

@@ -23,7 +23,8 @@ typedef NS_ENUM(NSUInteger, CJLiveMessageType){
     CJLiveMessageTypeKick,//踢人消息
     CJLiveMessageTypeFollow,//关注消息
     CJLiveMessageTypeUnFollow,//取消关注消息
-    CJLiveMessageTypeBarrage//弹幕消息
+    CJLiveMessageTypeBarrage,//弹幕消息
+    CJLiveMessageTypeGame,//游戏消息
 };
 
 @interface CJLiveMessageModel : NSObject

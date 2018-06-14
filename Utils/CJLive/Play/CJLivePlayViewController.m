@@ -31,6 +31,8 @@
 #import "CustonCell.h"
 
 #import <OCBarrage.h>
+
+#import "CJGameViewController.h"
 @interface CJLivePlayViewController ()<CJAudienceViewDelegate, UITableViewDelegate, UITableViewDataSource, CJLivePlayBottomViewDelegate, RCTKInputBarControlDelegate, LiveGiftViewDelegate, PresentViewDelegate, CJLivePlayHeadDelegate, TXLivePlayListener>
 
 @property (nonatomic, strong) TXLivePlayer *txLivePlayer;
@@ -58,6 +60,8 @@
 @property (nonatomic, assign) int                       timeCount;
 
 @property (nonatomic, strong) OCBarrageManager          *barrageManager;
+
+@property (nonatomic, strong) CJGameViewController      *gameVC;
 @end
 
 @implementation CJLivePlayViewController{
@@ -77,6 +81,10 @@
     double                  currentInterl;
     
     long                    yinpiao;
+    
+    BOOL                    isOnGame;
+    
+    UIView                  *gameContainerView;
 }
 
 - (void)viewDidLoad {
@@ -276,9 +284,7 @@
                         data.icon = [elemData objectForKey:@"headPic"];
                         data.Id = [elemData objectForKey:@"id"];
                         data.userId = [elemData objectForKey:@"imid"];
-                        if ([elemData objectForKey:@"vip"] && [[elemData objectForKey:@"vip"] length] > 0){
-                            data.VIP = [elemData objectForKey:@"vip"];
-                        }
+                        data.VIP = [elemData objectForKey:@"vip"];
                         if ([[dic objectForKey:@"cmd"] equalsString:@"CustomGifMsg"]){
                             //礼物消息
                             if (i+1 < msg.elemCount){
@@ -350,6 +356,19 @@
                                 [self appendBarrageMessage:data.nickName message:data.message];
                                 break;
                             }
+                        }else if ([[dic objectForKey:@"cmd"] equalsString:@"CustomGameMsg"]){
+                            if (i+1 < msg.elemCount){
+                                if ([[elemData objectForKey:@"type"] equalsString:@"load"]){
+                                    [self loadGame:[elemData objectForKey:@"text"]];
+                                }else if([[elemData objectForKey:@"type"] equalsString:@"exit"]){
+                                    if (self.gameVC){
+//                                        [self removeChild:self.gameVC];
+                                        [self.gameVC destroy];
+
+                                    }
+                                }
+                                break;
+                            }
                         }
                     }
                 }else if ([elem isKindOfClass:[TIMTextElem class]]){
@@ -362,6 +381,77 @@
         }
     }
 }
+
+- (void)loadGame:(NSString *)url{
+    if (!isOnGame){
+        isOnGame = true;
+        [CJNetworkManager GetHttp:[NSString stringWithFormat:@"%@%@",WXCONFIG_INTERFACE_PATH,url] Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
+                self->isOnGame = YES;
+                self.gameVC = [[CJGameViewController alloc] initWithType:CJGameTypeHalfView];
+                CGRect childFrame = CGRectMake(0, [UIDevice isIphoneX] ? [UIScreen getHeight] - [UIScreen getWidth] * 0.5625 - 34 : [UIScreen getHeight] - [UIScreen getWidth] * 0.5625, [UIScreen getWidth], [UIDevice isIphoneX] ? [UIScreen getWidth] * 0.5625 + 34 : [UIScreen getWidth] * 0.5625);
+                [self addChild:self.gameVC inRect:childFrame];
+                [self.gameVC didMoveToParentViewController:self];
+                NSDictionary *data = [responseObject objectForKey:@"data"];
+                [self.gameVC loadWithUrl:[data objectForKey:@"url"] video:[data objectForKey:@"video"] method:@"GET" callback:^{
+                    for (UIViewController *view in self.childViewControllers){
+                        NSLog(@"%@",[view class]);
+                        if ([view isKindOfClass:[CJGameViewController class]]){
+                            for (UIView *sub in view.view.subviews){
+                                [sub removeFromSuperview];
+                            }
+                            UIView *superView = view.view.superview;
+                            [view removeFromParentViewController];
+                            if (superView != self.view){
+                                [superView removeFromSuperview];
+                            }
+                        }
+                    }
+                    
+                    for (UIView *view in self.view.subviews){
+                        if (CGRectEqualToRect(view.frame, childFrame)){
+                            [view removeFromSuperview];
+                        }
+                    }
+                    
+                    self->isOnGame = NO;
+                    [self resetSubViews];
+                    self.gameVC = nil;
+                }];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self setSubViews];
+                });
+            }else{
+                [SVProgressHUD showErrorWithStatus:@"网络不稳定，请稍后再试"];
+                self->isOnGame = NO;
+            }
+        } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            [SVProgressHUD showErrorWithStatus:@"网络不稳定，请稍后再试"];
+            self->isOnGame = NO;
+        }];
+    }
+    
+}
+
+- (void)setSubViews{
+    [self.bottomView layoutAbove:self.gameVC.view margin:5.0];
+    [self.messageView layoutAbove:self.bottomView margin:10];
+    [self.presentView layoutAbove:self.messageView];
+    [self.barrageManager.renderView sizeWith:CGSizeMake([UIScreen getWidth], self.messageView.y - 40 - self.headView.y - self.headView.height)];
+    [self.barrageManager.renderView layoutAbove:self.messageView margin:20];
+    //    NSUInteger beautyPanelHeight = [CJLiveBeautySettingPanel getHeight];
+    //    self.beautyPanel.frame = CGRectMake(0, self.view.height - beautyPanelHeight, [UIScreen getWidth], beautyPanelHeight);
+}
+
+- (void)resetSubViews{
+    [self.bottomView alignParentBottomWithMargin:20.0];
+    [self.messageView layoutAbove:self.bottomView margin:10];
+    [self.presentView layoutAbove:self.messageView];
+    [self.barrageManager.renderView sizeWith:CGSizeMake([UIScreen getWidth], self.messageView.y - 40 - self.headView.y - self.headView.height)];
+    [self.barrageManager.renderView layoutAbove:self.messageView margin:20];
+}
+
 
 - (void)onreceiveGift:(CJLiveMessageModel *)data{
     [self showGiftGif:data.message giftID:nil senderName:data.nickName senderHeadUrl:data.icon isSelf:false];
@@ -620,7 +710,11 @@
                 [self.view addSubview:self.giftView];
                 
                 [self.giftView sizeWith:CGSizeMake([UIScreen getWidth], 240)];
-                [self.giftView alignParentBottom];
+                if (self.gameVC){
+                    [self.giftView layoutAbove:self.gameVC.view margin:5];
+                }else{
+                    [self.giftView alignParentBottom];
+                }
                 [self.giftView alignParentLeft];
             }];
             
@@ -651,6 +745,9 @@
 }
 
 - (void)exitLivePlay{
+    if (self.gameVC){
+        [self.gameVC destroy];
+    }
     [self stop];
     [self.barrageManager stop];
     NSString *url = [NSString stringWithFormat:@"%@?id=%@",HTTPAPI(@"live/quit"),self.groupId];
@@ -814,9 +911,22 @@
                     [weex render:nil];
                     [self presentViewController:[[WXRootViewController alloc]initWithRootViewController:weex] animated:true completion:nil];
                     NSLog(@"memberInfo=%@",members);
+                }else{
+                    CJWeexViewController *weex = [[CJWeexViewController alloc] init];
+                    NSString *url = [NSString stringWithFormat:@"file://view/live/host.js?id=%ld&groupId=%@&nickName=%@&isUser=true&hasGag=%@",uId, self.groupId, [nickName URLEncodedString], @"false"];
+                    url = [url rewriteURL];
+                    weex.url = [NSURL URLWithString:url];
+                    [weex render:nil];
+                    [self presentViewController:[[WXRootViewController alloc]initWithRootViewController:weex] animated:true completion:nil];
                 }
             } fail:^(int code, NSString *msg) {
                 NSLog(@"memberInfo=%d,%@",code,msg);
+                CJWeexViewController *weex = [[CJWeexViewController alloc] init];
+                NSString *url = [NSString stringWithFormat:@"file://view/live/host.js?id=%ld&groupId=%@&nickName=%@&isUser=true&hasGag=%@",uId, self.groupId, [nickName URLEncodedString], @"false"];
+                url = [url rewriteURL];
+                weex.url = [NSURL URLWithString:url];
+                [weex render:nil];
+                [self presentViewController:[[WXRootViewController alloc]initWithRootViewController:weex] animated:true completion:nil];
             }];
         }
     }
