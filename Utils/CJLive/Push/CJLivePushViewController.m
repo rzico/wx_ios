@@ -1101,25 +1101,28 @@
 }
 
 - (void)exitLive{
-    if (self.gameVC){
-        [self.gameVC destroy];
-    }
-    if (self.groupId){
-        [[TIMGroupManager sharedInstance] deleteGroup:self.groupId succ:^{
-            NSLog(@"delete group success");
-        } fail:^(int code, NSString *msg) {
-            NSLog(@"delete group error:%d,%@",code,msg);
-        }];
-        NSString *url = [NSString stringWithFormat:@"%@?id=%@",HTTPAPI(@"live/stop"),self.groupId];
-        [CJNetworkManager PostHttp:url Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-            [self quit];
-            NSLog(@"exitLive=%@",responseObject);
-        } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-            NSLog(@"exitLive=%@",error);
-            [self quit];
-        }];
+    if (gameUrl){
+        //[self.gameVC destroy];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请您关闭游戏后再退出直播!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
     }else{
-        [self quit];
+        if (self.groupId){
+            [[TIMGroupManager sharedInstance] deleteGroup:self.groupId succ:^{
+                NSLog(@"delete group success");
+            } fail:^(int code, NSString *msg) {
+                NSLog(@"delete group error:%d,%@",code,msg);
+            }];
+            NSString *url = [NSString stringWithFormat:@"%@?id=%@",HTTPAPI(@"live/stop"),self.groupId];
+            [CJNetworkManager PostHttp:url Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                [self quit];
+                NSLog(@"exitLive=%@",responseObject);
+            } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                NSLog(@"exitLive=%@",error);
+                [self quit];
+            }];
+        }else{
+            [self quit];
+        }
     }
 }
 
@@ -1343,7 +1346,7 @@
 }
 
 - (void)CJLivePushBottomOnClickGame{
-    if (_bottomView.gameBtn.isSelected){
+    if (!_bottomView.gameBtn.isSelected){
         _appIsInterrupt = YES;
         [_txLivePublisher pausePush];
         CJWeexViewController *weex = [[CJWeexViewController alloc] init];

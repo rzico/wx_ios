@@ -39,11 +39,11 @@
 
 - (void)setAudience:(NSInteger)count{
     if (count > 10000){
-        _audienceLabel.text = [NSString stringWithFormat:@"在线:%.2fw",count * 1.0 / 10000.0];
+        _audienceLabel.text = [NSString stringWithFormat:@"人气值:%.2fw",count * 1.0 / 10000.0];
     }else if (count > 1000){
-        _audienceLabel.text = [NSString stringWithFormat:@"在线:%.2fk",count * 1.0 / 1000.0];
+        _audienceLabel.text = [NSString stringWithFormat:@"人气值:%.2fk",count * 1.0 / 1000.0];
     }else{
-        _audienceLabel.text = [NSString stringWithFormat:@"在线:%zd",count];
+        _audienceLabel.text = [NSString stringWithFormat:@"人气值:%zd",count];
     }
 }
 
