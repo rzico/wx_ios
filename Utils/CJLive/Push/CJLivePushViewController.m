@@ -1248,7 +1248,12 @@
             for (id gift in giftList){
                 if ([gift isKindOfClass:[NSDictionary class]]){
                     if ([title containsString:[gift objectForKey:@"name"]]){
-                        [self showGifWebView:[gift objectForKey:@"animation"] giftName:[gift objectForKey:@"name"] name:senderName headUrl:senderHeadUrl giftID:[NSString stringWithFormat:@"%ld",[[gift objectForKey:@"id"] integerValue]] giftSmallName:[gift objectForKey:@"animation"] isSelf:isSelf];
+                        if ([gift objectForKey:@"isPlay"] && [[gift objectForKey:@"isPlay"] boolValue] == YES){
+                            [self showGifWebView:[gift objectForKey:@"animation"] giftName:[gift objectForKey:@"name"] name:senderName headUrl:senderHeadUrl giftID:[NSString stringWithFormat:@"%ld",[[gift objectForKey:@"id"] integerValue]] giftSmallName:[gift objectForKey:@"animation"] isSelf:isSelf isPlay:YES];
+                        }else{
+                            [self showGifWebView:[gift objectForKey:@"animation"] giftName:[gift objectForKey:@"name"] name:senderName headUrl:senderHeadUrl giftID:[NSString stringWithFormat:@"%ld",[[gift objectForKey:@"id"] integerValue]] giftSmallName:[gift objectForKey:@"animation"] isSelf:isSelf isPlay:NO];
+                        }
+                        
                         self->yinpiao += [[NSString stringWithFormat:@"%@",[gift objectForKey:@"price"]] longLongValue];
                         [self.yinpiaoView setYinpiao:self->yinpiao];
                         break;
@@ -1282,7 +1287,7 @@
 //    }
 }
 #pragma 显示git礼物图
-- (void)showGifWebView:(NSString *)gifImageName giftName:(NSString *)giftName name:(NSString *)name headUrl:(NSString *)headUrl giftID:(NSInteger)giftID giftSmallName:(NSString *)giftSmallName isSelf:(BOOL)isSelf{
+- (void)showGifWebView:(NSString *)gifImageName giftName:(NSString *)giftName name:(NSString *)name headUrl:(NSString *)headUrl giftID:(NSInteger)giftID giftSmallName:(NSString *)giftSmallName isSelf:(BOOL)isSelf isPlay:(BOOL)isPlay{
     if (self.currentGiftId != giftID || ![self.currentGiftSernderName isEqualToString:name]) {
         self.currentGiftId = giftID;
         self.currentGiftSernderName = name;
@@ -1300,12 +1305,15 @@
     self.isShowGif = YES;
     
     //    self.Aimv = [[OLImageView alloc] initWithImage:[OLImage imageNamed:[NSString stringWithFormat:@"%@.gif",gifImageName]]];
-    self.Aimv = [[OLImageView alloc] initWithImage:[OLImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:gifImageName]]]];
-    [self.Aimv setFrame:CGRectMake(([UIScreen getWidth] - self.Aimv.image.size.width*2/3)/2, 160, self.Aimv.image.size.width*2/3, self.Aimv.image.size.height*2/3)];
-    [self.Aimv setUserInteractionEnabled:YES];
-    [self.view  addSubview:self.Aimv];
-    self.giftTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(stopGif) userInfo:nil repeats:NO];
-    [[NSRunLoop mainRunLoop] addTimer:self.giftTimer forMode:NSDefaultRunLoopMode];
+    if (isPlay){
+        self.Aimv = [[OLImageView alloc] initWithImage:[OLImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:gifImageName]]]];
+        [self.Aimv setFrame:CGRectMake(([UIScreen getWidth] - self.Aimv.image.size.width*2/3)/2, 160, self.Aimv.image.size.width*2/3, self.Aimv.image.size.height*2/3)];
+        [self.Aimv setUserInteractionEnabled:YES];
+        [self.view  addSubview:self.Aimv];
+        self.giftTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(stopGif) userInfo:nil repeats:NO];
+        [[NSRunLoop mainRunLoop] addTimer:self.giftTimer forMode:NSDefaultRunLoopMode];
+    }
+    
     
 }
 
