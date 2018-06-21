@@ -76,6 +76,15 @@ WX_EXPORT_METHOD(@selector(loadGame:))
             pushVC.liveTitle = title;
             pushVC.frontCover = frontCover;
             pushVC.isNativeConfig = !play;
+            pushVC.onComplete = ^(id data) {
+                if (callback){
+                    if (data){
+                        callback(@{@"type":@"success",@"content":@"直播已结束",@"data":data});
+                    }else{
+                        callback(@{@"type":@"error",@"content":@"网络繁忙",@"data":@""});
+                    }
+                }
+            };
             [self->weexInstance.viewController presentViewController:pushVC animated:true completion:nil];
         }else{
             [SVProgressHUD showErrorWithStatus:@"获取用户信息失败"];

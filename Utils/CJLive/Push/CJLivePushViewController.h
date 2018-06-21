@@ -10,6 +10,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <TXLivePush.h>
 #import "CJLivePlayUserModel.h"
+
+typedef void(^CJLivePushOnComplete)(id data);
+
 /**
  推流模块主控制器,承载了渲染view,逻辑view,以及相关逻辑,同时也是SDK层事件通知的接收者
  */
@@ -79,4 +82,11 @@
  是否录制
  */
 @property (nonatomic, assign) BOOL                  isRecord;
+
+
+
+/**
+ 直播结束回调
+ */
+@property (nonatomic, strong) CJLivePushOnComplete  onComplete;
 @end

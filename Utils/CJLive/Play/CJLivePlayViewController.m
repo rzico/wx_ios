@@ -247,11 +247,25 @@
 }
 
 - (void)enterLiveRoom{
-    CJLiveMessageModel *message = [[CJLiveMessageModel alloc] init];
-    message.messageType = CJLiveMessageTypeTip;
-    message.message = @"倡导绿色直播，封面和直播内容涉及色情、低俗、暴力、引诱、暴露等都将被封停账号，同时禁止直播闹事，集会。文明直播，从我做起【网警24小时在线巡查】\n安全提示：若涉及本系统以外的交易操作，请一定要先核实对方身份，谨防受骗！";
-    [self appendMessage:message];
-    [self sendMsg:CJLiveMessageTypeEnter message:@"加入房间"];
+    [CJNetworkManager GetHttp:HTTPAPI(@"live/notice/list") Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
+            NSArray *array = [[responseObject objectForKey:@"data"] objectForKey:@"data"];
+            for (NSDictionary *dic in array){
+                CJLiveMessageModel *message = [[CJLiveMessageModel alloc] init];
+                message.messageType = CJLiveMessageTypeTip;
+                message.message = [dic objectForKey:@"title"];
+                [self appendMessage:message];
+            }
+        }
+        [self sendMsg:CJLiveMessageTypeEnter message:@"加入房间"];
+    } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        
+    }];
+//    CJLiveMessageModel *message = [[CJLiveMessageModel alloc] init];
+//    message.messageType = CJLiveMessageTypeTip;
+//    message.message = @"倡导绿色直播，封面和直播内容涉及色情、低俗、暴力、引诱、暴露等都将被封停账号，同时禁止直播闹事，集会。文明直播，从我做起【网警24小时在线巡查】\n安全提示：若涉及本系统以外的交易操作，请一定要先核实对方身份，谨防受骗！";
+//    [self appendMessage:message];
+//    [self sendMsg:CJLiveMessageTypeEnter message:@"加入房间"];
 }
 
 - (void)onNewMessage:(NSNotification *)notification{
@@ -887,7 +901,7 @@
 #pragma mark - MessageView Delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row % 2 == 1){
-        return 3;
+        return 0;
     }else{
         return [CJLiveMessageViewCell getHeightWithData:_messageList[indexPath.row / 2]] + 10;
     }

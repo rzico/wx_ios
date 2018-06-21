@@ -103,6 +103,8 @@
     long yinpiao;
     
     NSString *gameUrl;
+    
+    NSDictionary *roomData;
 }
 
 - (void)viewDidLoad {
@@ -939,6 +941,23 @@
                         [self gagUser:@"u12079" time:0];
 #endif
                         
+                        
+                        [CJNetworkManager GetHttp:HTTPAPI(@"live/notice/list") Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                            if ([responseObject isKindOfClass:[NSDictionary class]] && [[responseObject objectForKey:@"type"] equalsString:@"success"]){
+                                NSArray *array = [[responseObject objectForKey:@"data"] objectForKey:@"data"];
+                                for (NSDictionary *dic in array){
+                                    CJLiveMessageModel *message = [[CJLiveMessageModel alloc] init];
+                                    message.messageType = CJLiveMessageTypeTip;
+                                    message.message = [dic objectForKey:@"title"];
+                                    [self appendMessage:message];
+                                }
+                            }
+                        } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                            
+                        }];
+                        
+                        
+                        
                         [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"CJLiveState"];
                         [[NSUserDefaults standardUserDefaults] synchronize];
                     });
@@ -1041,6 +1060,8 @@
                 //未找到Key
                 complete(false, @"未找到Key");
             }
+            
+            self->roomData = data;
         }else{
             //接口数据返回错误
             complete(false, @"接口数据返回错误");
@@ -1135,6 +1156,9 @@
     self.txLivePublisher.delegate = nil;
     self.txLivePublisher = nil;
     [self releaseObjects];
+    if (self.onComplete){
+        self.onComplete(roomData);
+    }
     [self dismissViewControllerAnimated:true completion:nil];
 }
 
@@ -1462,7 +1486,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row % 2 == 1){
-        return 3;
+        return 0;
     }else{
         return [CJLiveMessageViewCell getHeightWithData:_messageList[indexPath.row / 2]] + 10;
     }

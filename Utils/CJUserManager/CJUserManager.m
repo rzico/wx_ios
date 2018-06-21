@@ -39,6 +39,7 @@ static NSDictionary *localUser;
 + (void)removeUser{
     localUser = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"CJUser"];
+    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"CJLiveState"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
